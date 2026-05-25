@@ -63,7 +63,3 @@ The repository is organized into two main components:
 Detailed documentation for each component can be found in their respective `docs/` or `memory-bank/` directories:
 - [API Documentation](./API/docs/README.md)
 - [WebApp Documentation](./WebApp/README.md)
-
-## License
-
-[Insert License Information Here]
