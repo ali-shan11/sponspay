@@ -1,0 +1,290 @@
+.tutorial-wrapper {
+  border-radius: 8px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12),
+    0 23px 44px 0 rgba(176, 183, 195, 0.14);
+  .heading {
+    color: #030712;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 28px;
+    letter-spacing: -0.24px;
+    align-self: center;
+  }
+  .list-wrapper {
+    overflow-x: auto;
+    .list {
+      width: min-content;
+      img {
+        border-radius: 8px 8px 0px 0px;
+      }
+      border-radius: 8px;
+      border: 1px solid #e6e7e8;
+      .heading {
+        color: #030712;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 21px;
+        letter-spacing: -0.18px;
+      }
+      .desc {
+        color: #8d9299;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 19px;
+        letter-spacing: -0.12px;
+      }
+    }
+  }
+}
+
+.search-field {
+  position: relative;
+  .search-icon {
+    position: absolute;
+    top: 12px;
+    left: 13px;
+  }
+  .search-input {
+    padding: 10px 13px 10px 36px;
+    border-radius: 6px;
+    border: 1px solid #eaeaea;
+    background: #f8f8f8;
+    box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.05);
+
+    color: rgba(132, 129, 138, 0.5);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.14px;
+    &::placeholder {
+      color: rgba(132, 129, 138, 0.5);
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+}
+.search-wrapper {
+  .filter-wrapper {
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #e4e4e4;
+    box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.05);
+    &:hover {
+      background: #f8f8f8;
+    }
+  }
+}
+
+.faq-wrapper {
+  border-radius: 8px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12),
+    0 23px 44px 0 rgba(176, 183, 195, 0.14);
+  .heading {
+    color: #030712;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 28px;
+    letter-spacing: -0.24px;
+  }
+  .tags-wrapper {
+    display: flex;
+    // flex-wrap: wrap;
+    overflow-x: auto;
+    gap: 10px;
+    .tag {
+      min-width: max-content;
+      color: #030712;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 16px;
+      letter-spacing: -0.14px;
+      padding: 7px 14px;
+
+      border-radius: 32px;
+      border: 1px solid #d4d6d9;
+      box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.05);
+      &.selected {
+        background: #213458;
+        color: white;
+      }
+    }
+  }
+}
+
+.contact-wrapper {
+  border-radius: 8px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12),
+    0 23px 44px 0 rgba(176, 183, 195, 0.14);
+  .heading {
+    color: #151515;
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 110%;
+    letter-spacing: -1.26px;
+  }
+  .desc {
+    color: #8e8e8f;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.18px;
+  }
+  .text-area-wrapper {
+    label {
+      color: rgba(3, 7, 18, 1);
+      font-weight: 500;
+      font-size: 14px;
+    }
+    textarea {
+      box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.05);
+
+      border: 1px solid #e6e6e6;
+      background: rgba(255, 255, 255, 1);
+      padding: 14px 30px 14px 16px;
+      border-radius: 8px;
+      color: rgba(3, 7, 18, 1);
+      font-family: Inter;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: normal;
+
+      &.invalid {
+        border: 1.4px solid rgba(234, 67, 52, 1) !important;
+      }
+
+      &:focus,
+      &:focus-visible {
+        outline: none;
+        border: 1.5px solid rgba(54, 85, 145, 1) !important;
+      }
+      &::placeholder {
+        color: #aeafb0;
+      }
+    }
+  }
+
+  .condition-text{
+    color: #030712;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.16px;
+  }
+}
+
+.link{
+  color: #007AFF;
+}
+
+
+.faq-wrapper{
+  .accordion .accordion-item {
+    margin-bottom: 1rem;
+    overflow: hidden;
+    border: 1px solid #E6E6E6;
+    border-radius: 6px;
+  }
+  
+  .accordion .accordion-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .accordion-button:not(.collapsed) {
+    background-color: #fff !important;
+    color: inherit;
+    box-shadow: none;
+  }
+  
+  .accordion-button {
+    background-color: #fff;
+    border: none;
+    &:focus{
+      box-shadow: none !important;
+    }
+  }
+  
+  .accordion-button{
+    color: #030712 !important;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 21px;
+    letter-spacing: -0.18px;
+    padding: 16px 16px 12px 16px;
+  }
+
+  .accordion-body {
+    background-color: #fff;
+    border: none;
+    padding: 0px 16px 16px 16px;
+    color: #8E8E8F;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.16px;
+  }
+  
+  .accordion .accordion-item {
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #dee2e6;
+    overflow: hidden;
+  }
+  
+  .accordion-item .accordion-collapse {
+    border-top: none;
+  }
+}
+
+@media (max-width: 769px) {
+  .faq-wrapper{
+    .accordion-button{
+      font-size: 14px;
+      line-height: 19px;
+      padding: 12px;
+    }
+    .accordion-body {
+      padding: 0px 12px 12px 12px;
+      font-size: 12px;
+      line-height: 18px;
+    }
+  }
+
+  .tutorial-wrapper {
+    overflow-x: auto;
+    .heading {
+      font-size: 20px;
+      line-height: 26px;
+    }
+  }
+}
+
+@media (max-width: 425.98px) {
+  .tutorial-wrapper {
+    .heading {
+      font-size: 18px;
+      line-height: 24px;
+      width: 100%;
+    }
+    .search-wrapper, .search-field, .search-input{
+      width: 100%;
+    }
+  }
+
+  .faq-wrapper {
+    .heading {
+      font-size: 20px;
+      line-height: 26px;
+    }
+  }
+
+  .contact-wrapper {
+    .heading {
+      font-size: 35px;
+    }
+    .desc{
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+}

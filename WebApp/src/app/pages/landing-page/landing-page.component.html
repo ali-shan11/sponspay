@@ -1,0 +1,132 @@
+
+  @if (latestNews && latestNews.length>0) {
+    <div class="text-center mt-60px">
+      <div class="country-count">
+        <img src="svg/landing/stars-1.svg" alt="star">
+        <div>
+          <span class="new-text">New:</span> {{latestNews[0].subtitle}}
+        </div>
+        <img src="svg/landing/arrow-right.svg" alt="right">
+      </div>
+    </div>
+  }
+
+  <div class="content-wrapper bring-forward mt-60px">
+    
+    <div class="main-text-wrapper">
+      <div class="main-text">Start earning from your global YouTube fans — <span class="gradient-text">instantly</span> 💸</div>
+      <div class="point-wrapper">
+        <div class="point d-flex gap-3">
+          <img src="svg/badge-check.svg" alt="check">
+          <div class="text">Fans use Premium Messages to message you anytime—during livestreams or video views</div>
+        </div>
+        <div class="point d-flex gap-3">
+          <img src="svg/badge-check.svg" alt="check">
+          <div class="text">Premium Messages are delivered to a dedicated Telegram channel for follow-up</div>
+        </div>
+        <div class="point d-flex gap-3">
+          <img src="svg/badge-check.svg" alt="check">
+          <div class="text">You get daily payouts for generated revenue</div>
+        </div>
+        <div class="point d-flex gap-3">
+          <img src="svg/badge-check.svg" alt="check">
+          <div class="text">Creators do NOT need to be YouTube monetized to participate</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions-wrapper d-flex gap-4 justify-content-center">
+      <button class="get-started" [routerLink]="'/onboarding'">
+        Get Started for Free
+      </button>
+      <button class="contact" [routerLink]="'/contact-us'">
+        <div>Contact Us</div>
+        <img src="svg/landing/arrow-right.svg" alt="arrow">
+      </button>
+    </div>
+
+    @if (landingDetails && landingDetails.users.length === 4) {
+      <div class="users-wrapper d-flex gap-3 justify-content-center">
+        <div class="user-images">
+          @for (user of landingDetails.users; track $index) {
+            <img [src]="user.avatar" alt="" class="img">
+          }
+        </div>
+        <div class="text">
+          Trusted by 5,000+ Happy <br> Creator Worldwide
+        </div>
+      </div>
+    }
+
+    <img class="background-element bring-backward" src="svg/landing/background-element.svg" alt="">
+
+    <div class="video-wrapper mt-5">
+      <div class="video text-center position-relative">
+        <img src="svg/landing/landing-video.png" alt="">
+        <img class="play-btn" src="svg/landing/play-button.svg" alt="play">
+        <img class="shade" src="svg/landing/video-black-shade.png" alt="">
+
+        @if (landingDetails && landingDetails.totalRevenue>1000) {
+          <div class="card1">
+            <div class="title">
+              <img src="svg/landing/coins-pound.svg" alt="pound">
+              <div class="text">Total Revenue</div>
+            </div>
+            <div class="value">${{landingDetails.totalRevenue | numberFormat}}</div>
+            <div class="desc d-flex gap-2 gap-md-3">
+              <div class="d-flex gap-md-1">
+                <img src="svg/landing/revenue-icon.svg" alt="revenue">
+                <div class="green-text">{{landingDetails.growth}}%</div>
+              </div>
+              <div class="text">Last 30d</div>
+            </div>
+          </div>
+        }
+
+        @if (landingDetails && landingDetails.transactions>1000) {
+          <div class="card2">
+            <div class="title">
+              <div class="text">{{landingDetails.countriesSupported}}+</div>
+              <div class="text-light">Countries supported all over the world</div>
+            </div>
+            <div class="title">
+              <div class="text">{{landingDetails.transactions | numberFormat}}+</div>
+              <div class="text-light">Transactions processed to date</div>
+            </div>
+          </div>
+        }
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="feature-wrapper">
+    <div class="feature">
+      <img src="svg/landing/feature1.svg" alt="feature">
+      <div class="title">Complete Registration</div>
+      <div class="text">
+        Get your revenue estimate, set up Telegram and compensation.
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="feature">
+      <img src="svg/landing/feature2.svg" alt="feature">
+      <div class="title">Get Your Unique Link</div>
+      <div class="text">
+        Share your SponsPay Payment Link—we handle the rest.
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="feature">
+      <img src="svg/landing/feature3.svg" alt="feature">
+      <div class="title">Get Payments & Support</div>
+      <div class="text">
+        Manage payments, insights, and support in your SponsPay Revenue Dashboard.
+      </div>
+    </div>
+  </div>
+  <div class="feature-bg-cards">
+    <div class="background1"></div>
+    <div class="background2"></div>
+  </div>

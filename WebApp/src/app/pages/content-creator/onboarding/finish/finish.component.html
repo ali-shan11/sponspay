@@ -1,0 +1,14 @@
+<div class="d-flex gap-4 justify-content-center onboard-wrapper-images">
+    <img class="condition-img" src="svg/content-creator/condition-icon.svg" alt="Condition">
+</div>
+<div class="title-wrapper mt-4">
+    <div class="text-medium text-center">Terms & Conditions</div>
+    <div class="text-regular text-center mt-3">Please review and accept our terms and conditions to complete your registration and start receiving payments.</div>
+</div>
+
+<div class="conditions-wrapper mt-4" data-cy="terms-content" [innerHTML]="termsHtml"></div>
+
+<div class="accept-condition mt-3 mt-md-3 mt-lg-4" [ngClass]="{'accepted': conditionsAccepted}">
+    <div><input class="accept-condititon-checkbox" data-cy="terms-checkbox" [(ngModel)]="conditionsAccepted" (ngModelChange)="acceptTermsChange()" type="checkbox" name="accept-condition" id="accept-condition"></div>
+    <label for="accept-condition" class="condition-text">By checking this, I agree that I have read and accepted the Terms of Use and Privacy Policy</label>
+</div>

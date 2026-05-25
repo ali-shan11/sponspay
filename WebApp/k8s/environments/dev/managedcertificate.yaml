@@ -1,0 +1,7 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: sponspay-webapp-cert
+spec:
+  domains:
+    - dev.sponspay.com

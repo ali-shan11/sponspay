@@ -1,0 +1,168 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sponspay-api
+  labels:
+    app: sponspay-api
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sponspay-api
+  template:
+    metadata:
+      labels:
+        app: sponspay-api
+        version: v1
+    spec:
+      containers:
+      - name: api
+        image: us-east1-docker.pkg.dev/sponspay-deployment/sponspay-dev/api:latest
+        ports:
+        - containerPort: 3000
+          name: http
+        env:
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: password
+        - name: NODE_ENV
+          value: "production"
+        - name: DB_HOST
+          value: "10.67.208.3"
+        - name: DB_NAME
+          value: "dev"
+        - name: DB_SYNC
+          value: "true"
+        - name: SERVICE_ACCOUNT
+          valueFrom:
+            secretKeyRef:
+              name: google-account
+              key: service-account
+        - name: SERVICE_ACCOUNT_PRIVATE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: google-account
+              key: service-account-private-key
+        - name: SERVICE_ACCOUNT_USER
+          valueFrom:
+            secretKeyRef:
+              name: google-account
+              key: service-account-user
+        - name: SENDGRID_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: sendgrid-api-key
+              key: apikey
+        - name: API_KEY_ALLOWED_DOMAINS
+          value: '["https://dev.sponspay.com"]'
+        - name: FROM_EMAIL
+          value: "noreply@sponspay.com"
+        - name: CONTACT_US_EMAIL
+          value: "contactus@sponspay.com"
+        - name: MANAGEMENT_EMAIL
+          value: "sponspay-management@sponspay.com"
+        - name: FIREBASE_SERVICE_ACCOUNT
+          valueFrom:
+            secretKeyRef:
+              name: firebase-service-account
+              key: account
+        - name: TIMEZONE_API_URL
+          value: "https://timeapi.io/"
+        - name: PHOTOS_BUCKET
+          value: "sponspay-dev-images"
+        - name: ZOHO_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: zoho
+              key: client_id
+        - name: ZOHO_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: zoho
+              key: client_secret
+        - name: ZOHO_REFRESH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: zoho
+              key: refresh_token
+        - name: ZOHO_REDIRECT_URI
+          valueFrom:
+            secretKeyRef:
+              name: zoho
+              key: redirect_uri
+        - name: TELEGRAM_SERVICE_URL
+          value: "http://telegram-service"
+        - name: INTERNAL_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: internal-api-key
+              key: key
+        - name: PORT
+          value: "3000"
+        - name: PAWAPAY_API_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: pawapay-credentials
+              key: api_token
+        - name: INFOBIP_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: infobip-credentials
+              key: api-key
+        - name: ANONYMIZATION_SALT
+          valueFrom:
+            secretKeyRef:
+              name: anonymization
+              key: salt
+        - name: EXCHANGE_RATE_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: exchange-rate-api
+              key: key
+        - name: YOUTUBE_TOKEN_ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: youtube-encryption
+              key: encryption-key
+        - name: REDIS_URL
+          value: redis://redis:6379
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health/live
+            port: 3000
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 5
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          runAsUser: 1000
+          capabilities:
+            drop:
+            - ALL
+      securityContext:
+        fsGroup: 1000

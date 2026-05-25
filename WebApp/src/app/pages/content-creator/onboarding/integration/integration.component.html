@@ -1,0 +1,134 @@
+<div class="d-flex gap-4 justify-content-center onboard-wrapper-images">
+    <img class="integration-img" src="svg/content-creator/integration.svg" alt="Integration">
+</div>
+<div class="title-wrapper mt-4">
+    <div class="text-medium text-center">
+        Connect Telegram
+    </div>
+    <div class="text-regular text-center mt-3">
+        We'll create a Telegram channel for you. Connect your Telegram account to enable replies and engage with premium messages from your audience.
+    </div>
+</div>
+
+<div class="telegram-handle mt-4">
+    <div class="text-center">
+        @if (onboardingService.integrationStep===1) {
+            <img src="svg/content-creator/step-1.svg" alt="step">
+        } @else if (onboardingService.integrationStep===2) {
+            <img src="svg/content-creator/step-2.svg" alt="step">
+        }
+
+        @if (onboardingService.integrationStep===1) {
+            <div class="heading text-center mt-3">
+                Choose a Telegram channel handle
+            </div>
+            <div class="d-flex flex-wrap gap-2 justify-content-center mt-4">
+                @for (handle of telegramHandles; track $index) {
+                    <app-badge [badgeText]="`@${handle}`" [isSelected]="selectedHandle===handle" [disabled]="takenHandles.includes(handle)" (click)="onHandleClick(handle)" data-cy="handle-badge" ></app-badge>
+
+                    @if (isCheckingAvailability(handle)) {
+                        <div class="skeleton-overlay animate-shimmer">
+                            <div class="skeleton-content"></div>
+                        </div>
+                    }
+                }
+            </div>
+
+            <div class="divider d-flex align-items-center my-4">
+                <hr class="flex-grow-1" />
+                <span class="px-3">or enter a custom handle</span>
+                <hr class="flex-grow-1" />
+            </div>
+
+            <div class="handle-input-wrapper pt-2">
+                <app-custom-input class="input" placeholder="@yourhandle" [controlName]="handleControl" data-cy="handle-input" ></app-custom-input>
+                <div class="button-wrapper d-flex flex-column flex-md-row mt-4 pt-2 gap-2 gap-md-4">
+                    <app-button class="min-w-max" btnText="Learn More" type="secondary" (btnClick)="isLearnMoreOpen=true" ></app-button>
+                    <app-button class="w-100" btnText="Create Channel" iconUrl="svg/arrow-right.svg" [disabled]="isCreateLoading" (btnClick)="onboardCreator()" data-cy="create-channel-btn" ></app-button>
+                </div>
+            </div>
+        } @else if (onboardingService.integrationStep===2) {
+            <div class="heading text-center mt-3">
+                Join Your Channel
+            </div>
+            <div class="account-desc mt-2">
+                We've created your premium Telegram channel <strong>{{'@' + (channelData?.channelHandle || '')}}</strong>. Scan the QR code below to join it.
+            </div>
+
+            <!-- QR Code Section with State Management -->
+            <div class="mt-4 d-flex justify-content-center flex-column align-items-center">
+                @if (step2State === 'loading_qr') {
+                    <!-- Loading skeleton -->
+                    <div class="skeleton skeleton-text" data-cy="qr-loading" [style.width]="'185px'" [style.height]="'185px'"></div>
+                } @else if (step2State === 'timeout') {
+                    <!-- Timeout message + Refresh button -->
+                    <div class="qr-expired text-center" data-cy="qr-expired">
+                        <p class="mb-3">QR code has expired. Please generate a new one.</p>
+                        <app-button btnText="Refresh QR Code" (btnClick)="refreshQRCode()" data-cy="refresh-qr-btn"></app-button>
+                    </div>
+                } @else if (step2State === 'error' || !channelData?.inviteLink) {
+                    <!-- Error message -->
+                    <div class="qr-error text-center" data-cy="qr-error">
+                        <p class="mb-3">Unable to generate invite link. Please contact support.</p>
+                    </div>
+                } @else {
+                    <!-- QR Code Image -->
+                    <div class="qr-code-container" data-cy="qr-code">
+                        @if (channelData?.qr) {
+                            <img [src]="channelData?.qr"
+                            (click)="openTelegram(channelData?.inviteLink)" tabindex="0" role="button"  alt="Telegram Channel QR Code">
+                        } @else {
+                            <div class="skeleton skeleton-text" [style.width]="'185px'" [style.height]="'185px'"></div>
+                        }
+                    </div>
+
+                    <!-- State Indicators -->
+                    <div class="mt-3">
+                        @if (step2State === 'waiting_for_join') {
+                            <div class="waiting-indicator" data-cy="waiting-for-join">
+                                <div class="spinner-border spinner-border-sm me-2" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <span>Waiting for you to join...</span>
+                            </div>
+                        } @else if (step2State === 'promoting') {
+                            <div class="promoting-indicator">
+                                <div class="spinner-border spinner-border-sm me-2" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <span>Promoting you to co-admin...</span>
+                            </div>
+                        } @else if (step2State === 'success') {
+                            <div class="success-indicator" data-cy="join-success">
+                                <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                                </svg>
+                                <span>Successfully joined channel!</span>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+
+            <div class="points-wrapper mt-4">
+                <div class="point">
+                    <div class="count">1</div>
+                    <div class="title">Scan the QR code above with your phone</div>
+                </div>
+                <div class="point">
+                    <div class="count">2</div>
+                    <div class="title">Join the channel when prompted</div>
+                </div>
+            </div>
+
+            <!-- "I'll do this later" button -->
+            <!-- <button class="do-late mt-4 div-btn" (click)="onboardingService.currentStep=onboardingService.currentStep+1">
+                I'll do this later
+            </button> -->
+        }
+    </div>
+</div>
+
+@if (isLearnMoreOpen) {
+    <app-learn-more-dialog (closed)="isLearnMoreOpen=false"></app-learn-more-dialog>
+}

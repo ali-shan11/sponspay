@@ -1,0 +1,119 @@
+::ng-deep .tab-wrapper {
+  padding: 20px 10px 10px 10px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12),
+    0 23px 44px 0 rgba(176, 183, 195, 0.14);
+
+  .menu-child {
+    font-size: 13px;
+    color: #213458;
+
+    .icon.Notification svg path {
+      fill: none !important;
+      stroke: #8e8e8f !important;
+    }
+
+    &:hover,
+    &.active {
+      .icon.Notification svg path {
+        fill: none !important;
+        stroke: #213458 !important;
+      }
+    }
+  }
+
+  .divider {
+    padding: 18px 0px;
+    hr {
+      margin: 0px;
+      opacity: 1;
+      color: #e6e7e8;
+    }
+  }
+}
+
+::ng-deep.setting-card {
+  border-radius: 8px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12),
+    0 23px 44px 0 rgba(176, 183, 195, 0.14);
+  min-height: 650px;
+  .title {
+    color: #030712;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    letter-spacing: -0.26px;
+  }
+  .text {
+    color: #8e8e8f;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 19px;
+    letter-spacing: -0.12px;
+  }
+}
+
+::ng-deep .mobile-link-wrapper{
+  border-radius: 8px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 23px 44px 0 rgba(176, 183, 195, 0.14);
+  .link{
+    color: #213458;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.14px;
+
+    .icon.Notification svg path {
+      fill: none !important;
+      stroke: #213458 !important;
+    }
+
+    svg{
+      path{
+          fill: #213458;
+      }
+    }
+  }
+}
+
+::ng-deep .link-dropdown-menu{
+  width: 95.5%;
+  .menu-child{
+    padding: 10px;
+  }
+  .label{
+    color: #A3A3A3;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0.4px;
+  }
+  .name{
+    color: #213458;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    letter-spacing: -0.14px;
+  }
+  .icon.Notification svg path {
+    fill: none !important;
+    stroke: #213458 !important;
+  }
+  svg{
+    path{
+        fill: #213458;
+    }
+  }
+}
+.backdrop{
+  z-index: 99;
+}
+
+@media (max-width: 769px) {
+  ::ng-deep{
+    .setting-card {
+      min-height: max-content !important;
+    }
+  }
+}

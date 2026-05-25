@@ -1,0 +1,33 @@
+<div #modal class="custom-modal modal fade modal-fullscreen-md-down">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-body p-0">
+            <div class="row justify-content-center onboard-wrapper p-0 m-0">
+                <div class="col-12 p-0">
+                    <div class="message-card bg-white">
+                        <div class="d-flex gap-4 justify-content-center onboard-wrapper-images">
+                            <img class="welcome-img" src="svg/fan/message-declined.svg" alt="Success">
+                        </div>
+                        <div class="title-wrapper mt-2 pt-lg-2">
+                            @if (modalType==='failed') {
+                                <div class="text-medium text-center">Your payment method declined</div>
+                            }
+                            @if (modalType==='refunded') {
+                                <div class="text-medium text-center">Your payment is refunded due to a technical issue</div>
+                            }
+                            @if (modalType==='timed_out') {
+                                <div class="text-medium text-center">Your payment was canceled because the session timed out.</div>
+                            }
+                            <div class="text-regular text-center mt-3">Something went wrong while processing your payment. Please try again or contact support if the issue persists.</div>
+                        </div>
+                        
+                        <div class="d-flex gap-2 mt-2 pt-lg-2 pb-2">
+                            <app-button class="w-100" btnText="Close" type="secondary" (btnClick)="close()" ></app-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>

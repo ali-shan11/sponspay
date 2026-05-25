@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sponspay-webapp
+spec:
+  replicas: 3
+  template:
+    spec:
+      containers:
+      - name: sponspay-webapp
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+        env:
+        - name: NODE_ENV
+          value: "production"

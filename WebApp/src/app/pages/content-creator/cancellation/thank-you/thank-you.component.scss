@@ -1,0 +1,50 @@
+.onboard-wrapper-images{
+    margin-top: 70px;
+}
+.welcome-img{
+    width: 160px !important;
+}
+.estimator-check-img{
+    width: 100px !important;
+}
+.text-regular{
+    color: #8e8e8f !important;
+}
+.title-wrapper{
+    padding: 0px 50px;
+}
+
+/* Tablet breakpoint (below 992px) */
+@media (max-width: 991.98px) {
+    .onboard-wrapper-images{
+        margin-top: 40px;
+    }
+    .text-regular{
+        color: #8e8e8f !important;
+        padding: 0px 80px;
+    }
+    .welcome-img{
+        width: 120px !important;
+    }
+    .title-wrapper{
+        padding: 0px 30px;
+    }    
+}
+
+/* Mobile breakpoint (below 768px) */
+@media (max-width: 767.98px) {
+    .onboard-wrapper-images{
+        margin-top: 25px;
+    }
+    .text-regular{
+        color: #8e8e8f !important;
+        padding: 0px 20px;
+    }
+    .welcome-img{
+        width: 80px !important;
+    }
+    .title-wrapper{
+        padding: 0px 10px;
+    }    
+}
+  

@@ -1,0 +1,66 @@
+.custom-modal {
+  .modal-header {
+    display: block;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+    padding: 15px 23px;
+  }
+
+  .modal-content {
+    border-radius: 12px;
+  }
+
+  .modal-body {
+    padding: 15px 23px 23px;
+  }
+
+  .heading {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+    letter-spacing: -0.26px;
+    color: rgba(3, 7, 18, 1);
+  }
+}
+
+.intro {
+  font-size: 13px;
+  color: #6B7280;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.status-item {
+  padding: 14px 16px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  border: 1px solid;
+
+  &.awaiting {
+    background: #FFFBEB;
+    border-color: #FFE69C;
+  }
+  &.earned {
+    background: rgba(52, 199, 89, 0.06);
+    border-color: #C2F5DA;
+  }
+  &.auto-replied {
+    background: #FFF8F0;
+    border-color: #FFE0B2;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.status-header {
+  margin-bottom: 8px;
+}
+
+.status-description {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #374151;
+}

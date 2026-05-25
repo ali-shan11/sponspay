@@ -1,0 +1,267 @@
+@use 'variables' as vars;
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin underline($image-path, $padding-bottom: 10px) {
+  position: relative;
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  padding-bottom: $padding-bottom;
+  background-image: url($image-path);
+  background-size: 295px 24px;
+  background-position-x: left;
+}
+
+@mixin underline-center($image-path, $padding-bottom: 10px) {
+  position: relative;
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  padding-bottom: $padding-bottom;
+  background-image: url($image-path);
+  background-size: 295px 24px;
+  background-position-x: center;
+  text-align: center;
+  width: 100%;
+}
+
+@mixin section-title {
+  font-size: 64px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  @media (max-width: 1024px) {
+    font-size: 36px; // Adjust for tablets
+  }
+
+  @media (max-width: 768px) {
+    font-size: 28px; // Adjust for mobile
+  }
+
+  @media (max-width: 480px) {
+    font-size: 22px; // Smaller screens
+  }
+}
+
+@mixin section-subtitle {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  @media (max-width: 1024px) {
+    font-size: 36px; // Adjust for tablets
+  }
+
+  @media (max-width: 768px) {
+    font-size: 28px; // Adjust for mobile
+  }
+
+  @media (max-width: 480px) {
+    font-size: 22px; // Smaller screens
+  }
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin base-btn {
+  min-width: 180px;
+  border-radius: 2px;
+  height: 40px;
+  padding-top: 5px;
+  font-size: 16px !important
+}
+
+// SponsPay Button Mixins
+@mixin btn-primary-large {
+  width: vars.$btn-width-lg;
+  height: vars.$btn-height-lg;
+  background: linear-gradient(180deg, vars.$sponspay-purple 0%, vars.$sponspay-blue 100%);
+  border: none;
+  border-radius: vars.$border-radius-md;
+  font-family: vars.$font-family-primary;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.4em;
+  letter-spacing: 0.15%;
+  color: vars.$bg-white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover:not(:disabled) {
+    background: linear-gradient(180deg, vars.$sponspay-purple-light 0%, vars.$sponspay-blue-light 100%);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  @media (max-width: 768px) {
+    width: 100%;
+    height: vars.$btn-height-md;
+    font-size: 18px;
+  }
+}
+
+@mixin btn-secondary-large {
+  width: vars.$btn-width-lg;
+  height: vars.$btn-height-lg;
+  background: vars.$bg-white;
+  border: 1px solid vars.$sponspay-purple-border;
+  border-radius: vars.$border-radius-md;
+  font-family: vars.$font-family-primary;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.4em;
+  letter-spacing: 0.15%;
+  color: vars.$sponspay-purple-border;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: rgba(101, 85, 143, 0.1);
+    border-color: vars.$sponspay-purple-border;
+    color: vars.$sponspay-purple-border;
+  }
+  
+  @media (max-width: 768px) {
+    width: 100%;
+    height: vars.$btn-height-md;
+    font-size: 18px;
+  }
+}
+
+// Typography Mixins
+@mixin text-primary {
+  font-family: vars.$font-family-primary;
+  color: vars.$text-primary;
+}
+
+@mixin text-secondary {
+  font-family: vars.$font-family-primary;
+  color: vars.$text-secondary;
+}
+
+@mixin text-muted {
+  font-family: vars.$font-family-primary;
+  color: vars.$text-muted;
+}
+
+@mixin modal-title {
+  font-family: vars.$font-family-primary;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 1.5em;
+  color: vars.$text-secondary;
+  margin-bottom: 20px;
+  
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 18px;
+  }
+}
+
+@mixin body-text {
+  font-family: vars.$font-family-primary;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.67em;
+  color: vars.$text-primary;
+  margin-bottom: 20px;
+  
+  strong {
+    font-weight: 600;
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 14px;
+    line-height: 1.5em;
+  }
+}
+
+// Form Mixins
+@mixin form-check-custom {
+  .form-check-input {
+    cursor: pointer;
+    
+    &:checked {
+      background-color: vars.$sponspay-purple;
+      border-color: vars.$sponspay-purple;
+    }
+    
+    &:focus {
+      border-color: vars.$sponspay-purple;
+      box-shadow: vars.$shadow-focus;
+    }
+  }
+  
+  .form-check-label {
+    font-family: vars.$font-family-primary;
+    font-size: 14px;
+    color: vars.$text-secondary;
+    cursor: pointer;
+  }
+}
+
+// Modal Mixins
+@mixin modal-container {
+  background: vars.$bg-white;
+  border: 1px solid vars.$border-light;
+  border-radius: vars.$border-radius-sm;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin modal-content-padding {
+  padding: vars.$modal-padding;
+  
+  @media (max-width: 768px) {
+    padding: vars.$modal-padding-mobile;
+  }
+  
+  @media (max-width: 480px) {
+    padding: vars.$modal-padding-small;
+  }
+}
+
+// Link Mixins
+@mixin link-primary {
+  color: vars.$sponspay-purple;
+  text-decoration: none;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+  
+  &.emphasis {
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+}
+
+// Card/List Item Mixins
+@mixin card-item {
+  border: 1px solid vars.$border-light;
+  border-radius: vars.$border-radius-md;
+  margin-bottom: 12px;
+  padding: 16px;
+  transition: background-color 0.3s ease;
+  
+  &:hover {
+    background-color: vars.$bg-light;
+  }
+}

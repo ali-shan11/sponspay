@@ -1,0 +1,168 @@
+<div class="main-cards-wrapper row m-0 p-0 pb-2 pb-lg-0">
+    @if (isTelegramConnected) {
+        <div class="col-12 col-md-5 pe-md-2 pe-lg-3 p-0">
+            <div class="telegram-card">
+                <img src="svg/content-creator/integration/telegram-icon.svg" alt="Telegram">
+                <div class="text-center">
+                    <div class="premium">Premium Handle</div>
+                    <div class="user-handle-wrapper mt-2">
+                        <div class="handle">{{'@daniel_scott'}}</div>
+                        <img src="svg/content-creator/integration/verified.svg" alt="verified">
+                    </div>
+                </div>
+                <button class="btn view-btn w-100">
+                    <div>View Channel</div>
+                    <img src="svg/content-creator/integration/view.svg" alt="View">
+                </button>
+            </div>
+        </div>
+    }
+    <div class="col-12 ps-md-2 ps-lg-3 p-0" [ngClass]="{'col-md-7': isTelegramConnected}" >
+        <div class="user-card h-100">
+            <div class="text-center"><img class="user-icon" [src]="user?.photoURL" alt="User" referrerPolicy="no-referrer"></div>
+            @if (!isTelegramConnected) {
+                <div class="heading mt-3">Connect your Telegram account</div>
+                <div class="text mt-2">Connect your personal Telegram account to enable replies and engage with premium messages from your audience.</div>
+                <button class="btn view-btn w-100 mt-3" (click)="isIntegrationDialogOpen=true">
+                    <img src="svg/content-creator/integration/telegram.svg" alt="View">
+                    <div>Connect Now</div>
+                    <img src="svg/content-creator/integration/arrow-right.svg" alt="View">
+                </button>
+            }@else {
+                <div class="heading mt-3">{{user?.displayName}}</div>
+                <div class="text mt-2">{{'+1 (943) 403 9031 · @scottjohn'}}</div>
+                <div class="d-flex flex-wrap gap-2 mt-3">
+                    <button class="btn view-btn flex-fill">
+                        <div>View in Telegram</div>
+                        <img src="svg/content-creator/integration/view.svg" alt="View">
+                    </button>
+                    <button class="btn remove-btn view-btn flex-fill">
+                        <img src="svg/content-creator/integration/remove-icon.svg" alt="Remove">
+                        <div>Remove Account</div>
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="messages-main mt-4">
+    <div class="heading">Messages</div>
+    <div class="text mt-2">View and reply to premium messages from your audience delivered to your Telegram channel.</div>
+
+    @if (messageList.length>0) {
+        <div class="d-none d-lg-block custom-table table-responsive payout-table mt-2 mt-md-3">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Username
+                            <img src="svg/table/sort.svg" alt="sort">
+                        </th>
+                        <th>
+                            Telegram Message
+                            <img src="svg/table/sort.svg" alt="sort">
+                        </th>
+                        <th>
+                            Message Date
+                            <img src="svg/table/sort.svg" alt="sort">
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="message-table-body">
+                    @for (message of messageList; track $index) {
+                        <tr class="custom-row">
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <div class="text align-self-center">
+                                        <img src="svg/content-creator/integration/telegram.svg" alt="telegram">
+                                    </div>
+                                    <div class="username align-self-center">{{message.userName}}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="message">
+                                    {{message.message}}
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    {{message.date | date:'d MMMM y'}}
+                                </div>
+                                <div class="text">
+                                    {{message.date | date:'shortTime'}}
+                                </div>
+                            </td>
+                            <td>
+                                <button class="btn reply-btn w-100">
+                                    <img src="svg/content-creator/integration/reply.svg" alt="View">
+                                    <div>Reply</div>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    
+        <div class="d-flex d-lg-none mt-3 mobile-message-list">
+            @for (message of messageList; track $index) {
+                <button class="btn message-card">
+
+                    <div class="username-wrapper d-flex justify-content-between mb-2">
+                        <div class="d-flex gap-2 w-100">
+                            <img class="telegram-icon" src="svg/content-creator/integration/telegram.svg" alt="telegram">
+                            <div class="align-self-center name">{{message.userName}}</div>
+                        </div>
+                        <button class="btn mobile-btn reply-btn">
+                            <img src="svg/content-creator/integration/reply.svg" alt="View">
+                            <div>Reply</div>
+                        </button>
+                    </div>
+                    
+                    <div class="list d-flex justify-content-between">
+                        <div class="heading">MESSAGE DATE</div>
+                        <div class="value">
+                            <div>
+                                {{message.date | date:'d MMMM y'}}
+                            </div>
+                            <div class="text">
+                                {{message.date | date:'shortTime'}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list d-flex justify-content-between">
+                        <div class="heading text-start me-3">TELEGRAM MESSAGE</div>
+                        <div class="value">
+                            <div class="message">
+                                {{message.message}}
+                            </div>
+                        </div>
+                    </div>
+                </button>
+            }
+        </div>
+        <div class="mt-3">
+            <app-pagination [totalItems]="100" ></app-pagination>
+        </div>
+    }@else {
+        <div class="no-data-wrapper">
+            <img src="svg/content-creator/integration/no-data.svg" alt="no payout">
+            <div class="text-center">
+                <div class="heading">No Messages Yet</div>
+                <div class="text mt-2">Once fans send premium messages, they'll appear here.</div>
+            </div>
+            <button class="share-btn">
+                <img src="svg/share.svg" alt="share">
+                <div>Share Link</div>
+            </button>
+        </div>
+    }
+</div>
+
+@if (isIntegrationDialogOpen) {
+    <app-integration-dialog (closed)="isIntegrationDialogOpen=false"></app-integration-dialog>
+}

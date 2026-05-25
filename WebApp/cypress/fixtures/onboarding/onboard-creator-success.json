@@ -1,0 +1,13 @@
+{
+  "success": true,
+  "message": "Creator onboarded successfully",
+  "isCreator": true,
+  "isCoAdmin": false,
+  "hasAcceptedTerms": false,
+  "data": {
+    "userId": "test-uid-123",
+    "youtubeChannelId": "UC_test_channel_123",
+    "telegramChannelHandle": "testcreator_channel",
+    "role": "creator"
+  }
+}

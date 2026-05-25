@@ -1,0 +1,106 @@
+<div class="card card3">
+    <div class="sub-heading">Link Management</div>
+    <div class="user-card mt-3">
+        <div class="user-name d-flex gap-2">
+            <img src="svg/content-creator/dashboard/user-youtube.svg" alt="youtube">
+            @if (!isLoading && channelStats) {
+                <div class="align-self-center">{{channelStats.channelHandle}}</div>
+            }
+            @if (isLoading) {
+                <div class="skeleton skeleton-text align-self-center ms-2" [style.width]="'100px'" [style.height]="'22px'"></div>
+            }
+        </div>
+        <div class="user-link mt-2 d-flex flex-column flex-md-row">
+            <div class="company-url d-flex gap-2 align-items-center">
+                <img src="svg/content-creator/estimation-icon.svg" alt="estimation">
+                <div>{{domainUrl}}</div>
+            </div>
+            @if (!isLoading && channelStats && channelStats.channelHandle) {
+                <div class="user-url">/fan/{{channelStats.channelHandle}}</div>
+            }
+            @if (isLoading) {
+                <div class="user-url skeleton skeleton-text align-self-center ms-2" [style.width]="'100px'"></div>
+            }
+        </div>
+        <div class="actions d-flex gap-2 mt-3">
+            <div class="copy w-100">
+                <app-button [btnText]="isTextCopied?'Copied!':'Copy Link'" type="secondary" [disabled]="isLoading" (btnClick)="copyToClipboard()" ></app-button>
+            </div>
+            <button class="goToLink" [ngClass]="{'disabled': isLoading}" (click)="openInNewTab()">
+                <img src="svg/content-creator/dashboard/gotoLink.svg" alt="link">
+            </button>
+        </div>
+    </div>
+
+    <div class="link-card mt-4">
+        <div class="heading-wrapper d-flex justify-content-between">
+            <div class="heading align-content-center">Link Analysis</div>
+            <app-inline-svg [src]="svgIcon.arrowRightIcon" ></app-inline-svg>
+        </div>
+
+        @if (isLoading) {
+            <div class="card-wrapper mt-2 d-flex gap-2 justify-content-between">
+                <div class="link-pay-card w-100">
+                    <div class="heading d-flex gap-2">
+                        <img class="icon" src="svg/content-creator/dashboard/link-pay-icon.svg" alt="pay-icon">
+                        <div>Paid via Link</div>
+                    </div>
+                    <div class="value mt-1 skeleton skeleton-text" [style.width]="'50px'" [style.height]="'20px'"></div>
+                </div>
+                <div class="click-card w-100">
+                    <div class="heading d-flex gap-2">
+                        <img class="icon" src="svg/content-creator/dashboard/click-icon.svg" alt="click-icon">
+                        <div>Clicked</div>
+                    </div>
+                    <div class="value mt-1 skeleton skeleton-text" [style.width]="'50px'" [style.height]="'20px'"></div>
+                </div>
+            </div>
+            <div class="d-flex gap-2 mt-3">
+                <div class="mt-1 skeleton skeleton-text" [style.width]="'200px'" [style.height]="'20px'"></div>
+                <!-- <app-growth [value]="null" [isLoading]="true"></app-growth> -->
+                <!-- <div class="earning-duration">in last {{lastDaysText}}</div> -->
+            </div>
+        } @else if (channelStats && hasLinkActivity) {
+            <div class="card-wrapper mt-2 d-flex gap-2 justify-content-between">
+                <div class="link-pay-card w-100">
+                    <div class="heading d-flex gap-2">
+                        <img class="icon" src="svg/content-creator/dashboard/link-pay-icon.svg" alt="pay-icon">
+                        <div>Paid via Link</div>
+                    </div>
+                    <div class="value mt-1">{{channelStats.transactions}}</div>
+                </div>
+                <div class="click-card w-100">
+                    <div class="heading d-flex gap-2">
+                        <img class="icon" src="svg/content-creator/dashboard/click-icon.svg" alt="click-icon">
+                        <div>Clicked</div>
+                    </div>
+                    <div class="value mt-1">{{channelStats.linkClicks}}</div>
+                </div>
+            </div>
+            <div class="d-flex gap-2 mt-3">
+                @if (channelStats.transactionTrend === null) {
+                    <div class="trend-data d-flex gap-2 align-items-center">
+                        <img [src]="svgIcon.clockHistory" alt="clock">
+                        <div class="earning-duration">Not enough data to show trend</div>
+                    </div>
+                } @else {
+                    <app-growth [value]="channelStats.transactionTrend" [isLoading]="false"></app-growth>
+                    <div class="trend-data earning-duration">
+                        @if (channelStats.transactionTrend > 0) {
+                            Improved
+                        } @else if (channelStats.transactionTrend < 0) {
+                            Decreased
+                        } @else {
+                            No change
+                        }
+                        in last {{lastDaysText}}
+                    </div>
+                }
+            </div>
+        } @else {
+            <div class="empty-state">
+                <img src="svg/content-creator/dashboard/no-link-activity.svg" alt="No link activity yet">
+            </div>
+        }
+    </div>
+</div>

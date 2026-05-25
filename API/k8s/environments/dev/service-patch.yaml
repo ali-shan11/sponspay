@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sponspay-api-service
+  labels:
+    environment: development
+  annotations:
+    cloud.google.com/backend-config: '{"ports": {"80":"sponspay-api-config"}}'

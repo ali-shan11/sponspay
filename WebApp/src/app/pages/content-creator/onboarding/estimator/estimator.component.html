@@ -1,0 +1,95 @@
+@if (showPotentialEarning) {
+    <app-potential-earning
+        [countryViewerData]="countryViewerData"
+        [totalSubscribers]="totalSubscribers"
+        [sponspayPayablePercent]="sponspayPayablePercent"
+        (backToResults)="showResults()"
+    ></app-potential-earning>
+}@else {
+    <div class="d-flex gap-4 justify-content-center onboard-wrapper-images">
+        <img class="estimator-check-img" src="svg/content-creator/estimator-check.svg" alt="Connect Youtube">
+    </div>
+    <div class="title-wrapper mt-4">
+        @if (getMessageVariation === 'loading') {
+            <div class="text-medium text-center" data-cy="estimator-loading">Analyzing your channel data...</div>
+            <div class="text-regular text-center mt-3">Please wait while we calculate your potential earnings.</div>
+        }@else if (getMessageVariation === 'no-channels') {
+            <div class="text-medium text-center" data-cy="estimator-no-channels">We couldn't find any YouTube channels linked to your account.</div>
+            <div class="text-regular text-center mt-3">Please make sure you're signed in with the Google account that owns your YouTube channel, and that your channel is publicly visible.</div>
+        }@else if (getMessageVariation === 'qualified-with-viewers') {
+            <div class="text-medium text-center" data-cy="estimator-qualified">Congratulations! With {{selectedChannel?.subscriberCount | number}} subscribers, you qualify to work with SponsPay!</div>
+            <div class="text-regular text-center mt-3">With SponsPay, up to <strong>{{sponspayPayablePercent}}%</strong> of your viewers in supported countries can pay using local payment methods—vs. just {{youtubePayablePercent}}% with YouTube's defaults <strong>(a {{revenueIncrease}}X increase)</strong>.</div>
+        }@else if (getMessageVariation === 'qualified-no-viewers') {
+            <div class="text-medium text-center" data-cy="estimator-no-viewers">Congratulations! With {{selectedChannel?.subscriberCount | number}} subscribers, you qualify to work with SponsPay!</div>
+            <div class="text-regular text-center mt-3">You currently have no viewers in countries where we offer local payments.</div>
+            <div class="text-regular text-center mt-2">No matter how many eligible subscribers you have now, if you register, all current and future subscribers in SponsPay-supported countries can automatically pay using local payment methods—with minimal effort from you. You'll receive payment alerts and track earnings in your dashboard.</div>
+        }@else {
+            <div class="text-medium text-center" data-cy="estimator-not-qualified">Unfortunately, with {{selectedChannel?.subscriberCount | number}} subscribers, you don't yet have the minimum required {{minimumNumberOfSubscribers | number}} subscribers to work with us.</div>
+            <div class="text-regular text-center mt-3">If you allow us to stay in touch, we'll update you as we expand to new countries and launch features, and notify you when you qualify to register.</div>
+        }
+    </div>
+    @if (supportedCountries > 0) {
+        <button class="estimator-detail-text d-flex gap-1 justify-content-center mt-3 div-btn w-100" data-cy="see-detail-btn" (click)="onShowEarningClick()">
+            <div class="text">See details here</div>
+            <app-inline-svg [src]="svgIcon.arrowRightIcon" ></app-inline-svg>
+        </button>
+    }
+    <div class="mt-3 row justify-content-center">
+        <div class="col-12 col-md-10 youtube-card">
+            <div class="user-card">
+                <div class="user-details">
+                    <img class="user-img" [src]="selectedChannel?.thumbnail" alt="thumbnail">
+                    <div class="align-self-center">
+                        <div class="name">{{selectedChannel?.title}}</div>
+                        <div class="user-tag">{{selectedChannel?.id}}</div>
+                    </div>
+                </div>
+                <div>
+                    <img class="d-none d-md-inline" [src]="svgIcon.youtubeIconBig" alt="youtube">
+                    <img class="d-inline d-md-none" [src]="svgIcon.youtubeIconSmall" alt="youtube">
+                </div>
+            </div>
+            <div class="divider"></div>
+            <div class="stats-wrapper d-flex flex-column gap-1 gap-md-3">
+                <div class="stat d-flex justify-content-between">
+                    <div class="title">Viewers in SponsPay Countries</div>
+                    <div class="value">{{ totalViewersInSupportedCountries ? (totalViewersInSupportedCountries | number) : '--' }}</div>
+                </div>
+                <div class="stat d-flex justify-content-between">
+                    <div class="title">Can Pay Today (Credit Card Only)</div>
+                    <div class="value">{{ viewersWhoCanPayViaYouTube ? (viewersWhoCanPayViaYouTube | number:'1.0-0') : '--' }}</div>
+                </div>
+            </div>
+            @if (supportedCountries > 0) {
+                <div class="estimated-stats d-flex flex-column gap-2">
+                    <div class="estimation d-flex justify-content-between gap-3">
+                        <div class="title d-flex gap-2 align-self-center">
+                            SponsPay Payment Access
+                            <img src="svg/content-creator/estimation-icon.svg" alt="icon">
+                        </div>
+                        <div class="value">
+                            {{ sponspayPayablePercent }}%
+                        </div>
+                    </div>
+                    <div class="estimation d-flex justify-content-between">
+                        <div class="title d-flex gap-2 align-self-center">
+                            Payment Access Increase
+                            <img src="svg/content-creator/estimation-icon.svg" alt="icon">
+                        </div>
+                        <div class="value">
+                            {{ revenueIncrease }}×
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="youtube-card-backgrounds col-12 col-md-10">
+            <div class="background1"></div>
+            <div class="background2"></div>
+        </div>
+    </div>
+    
+    <!-- <div class="text-regular text-regular-bottom text-center mt-3 pt-2">
+        No matter how many eligible subscribers you have now, if you register, all current and future subscribers in SponsPay-supported countries can automatically pay using local methods—with minimal effort from you. You’ll receive payment alerts and track earnings in your dashboard.
+    </div> -->
+}

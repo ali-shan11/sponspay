@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redisinsight
+  labels:
+    app: redisinsight
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redisinsight
+  template:
+    metadata:
+      labels:
+        app: redisinsight
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+      - name: redisinsight
+        image: redis/redisinsight:latest
+        ports:
+        - containerPort: 5540
+          name: http
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          # Seed Redis connection in background after startup
+          (
+            for i in $(seq 1 60); do
+              wget -qO- http://localhost:5540/api/health 2>/dev/null | grep -q up && break
+              sleep 2
+            done
+            wget -qO- --header "Content-Type: application/json" \
+              --post-data '{"name":"dev","host":"redis","port":6379}' \
+              http://localhost:5540/api/databases 2>/dev/null || true
+          ) &
+          # Run the original entrypoint
+          exec node /usr/src/app/redisinsight/api/dist/src/main.js
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: 5540
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: 5540
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        volumeMounts:
+        - name: redisinsight-data
+          mountPath: /data
+      volumes:
+      - name: redisinsight-data
+        emptyDir: {}

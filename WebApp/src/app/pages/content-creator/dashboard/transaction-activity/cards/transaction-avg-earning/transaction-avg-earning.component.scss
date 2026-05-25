@@ -1,0 +1,76 @@
+.card1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+    .earning-wrapper {
+      display: flex;
+      justify-content: space-between;
+    }
+  
+    .earning {
+      font-family: "Plus Jakarta Sans";
+      color: #1a1a1a;
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 36px;
+      letter-spacing: -0.4px;
+    }
+    .trend-data{
+      padding: 2px 0;
+      color: #9e9e9e;
+      font-size: 11px;
+      font-weight: 500;
+    }
+}
+
+.empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 120px;
+  img {
+    max-width: 140px;
+  }
+}
+
+.earning-skeleton{
+  height: 40px;
+  width: 120px;
+  border-radius: 5px;
+}
+
+.info-tooltip-wrapper {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+
+  .info-icon {
+    width: 14px;
+    height: 14px;
+    opacity: 0.5;
+  }
+
+  .info-tooltip {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2e2c34;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 16px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    width: 220px;
+    z-index: 10;
+    white-space: normal;
+  }
+
+  &:hover .info-tooltip,
+  &:active .info-tooltip {
+    display: block;
+  }
+}

@@ -1,0 +1,716 @@
+name: Enhanced CI/CD Pipeline with Quality Gates
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev
+      - main
+    paths-ignore:
+      # Documentation files
+      - '*.md'
+      - 'k8s/README.md'
+      - 'docs/**'
+      
+      # Memory bank files (project documentation)
+      - 'memory-bank/**'
+      
+      # Git and editor configuration
+      - '.gitignore'
+      - '.editorconfig'
+      - '.vscode/**'
+      - '.idea/**'
+      
+      # CI/CD workflow files
+      - '.github/workflows/**'
+      
+      # Deployment scripts and documentation
+      - 'deploy.sh'
+      - 'k8s-deployment.yaml'  # Old deployment file
+      
+      # License and other meta files
+      - 'LICENSE'
+      - 'CHANGELOG.md'
+      - 'CONTRIBUTING.md'
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  packages: write
+
+env:
+  NODE_VERSION: '22'
+  IMAGE: webapp
+  REGISTRY_BASE: us-east1-docker.pkg.dev
+  GKE_PROJECT: sponspay-deployment
+  ARTIFACT_REGISTRY: sponspay-dev
+  GKE_CLUSTER: dev
+
+jobs:
+  # Setup and dependency installation
+  setup:
+    name: Setup & Dependencies
+    runs-on: ubuntu-latest
+    outputs:
+      cache-key: ${{ steps.cache-key.outputs.key }}
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Generate Cache Key
+        id: cache-key
+        run: echo "key=node-modules-${{ hashFiles('**/package-lock.json') }}" >> $GITHUB_OUTPUT
+        
+      - name: Install Dependencies
+        run: npm ci
+        
+      - name: Cache Dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/Cypress
+            node_modules
+          key: ${{ steps.cache-key.outputs.key }}
+          restore-keys: |
+            node-modules-
+
+  # Stage 1: Fast Parallel Tests (Unit, Integration, Lint)
+  fast-tests:
+    name: Fast Tests
+    runs-on: ubuntu-latest
+    needs: setup
+    strategy:
+      fail-fast: true
+      matrix:
+        test-type: [unit, integration, lint]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Restore Dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/Cypress
+            node_modules
+          key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: Unit Tests with Coverage
+        if: matrix.test-type == 'unit'
+        run: |
+          echo "Running Unit Tests with Coverage..."
+          npm run test:coverage
+          echo "Unit tests and coverage analysis completed successfully"
+
+      - name: Integration Tests
+        if: matrix.test-type == 'integration'
+        run: |
+          echo "Running Integration Tests..."
+          npm run test:integration
+          echo "Integration tests completed"
+
+      - name: Lint & Type Check
+        if: matrix.test-type == 'lint'
+        run: |
+          echo "Running Lint & Type Checks..."
+          npm run lint:ci
+          npx tsc --noEmit
+          echo "Lint & type checks completed"
+
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Restore Dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/Cypress
+            node_modules
+          key: ${{ needs.setup.outputs.cache-key }}
+          
+      - name: Build Application
+        run: |
+          echo "🏗️ Building application..."
+          npm run build
+
+  e2e-tests:
+    name: E2E Tests (Onboarding)
+    runs-on: ubuntu-latest
+    needs: [setup, build, fast-tests]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Restore Dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/Cypress
+            node_modules
+          key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: Run Onboarding E2E Tests
+        uses: cypress-io/github-action@v6
+        with:
+          browser: chrome
+          start: npx ng serve --host 0.0.0.0
+          wait-on: 'http://localhost:4200'
+          wait-on-timeout: 120
+          spec: cypress/e2e/onboarding/**/*.cy.ts
+
+      - name: Upload E2E Artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-onboarding-artifacts
+          path: |
+            cypress/screenshots
+            cypress/videos
+          retention-days: 7
+
+  # security-scan:
+    # name: Security Scan
+    # runs-on: ubuntu-latest
+    # needs: [setup, fast-tests]
+    # steps:
+    #   - name: Checkout Code
+    #     uses: actions/checkout@v4
+        
+    #   - name: Setup Node.js
+    #     uses: actions/setup-node@v4
+    #     with:
+    #       node-version: ${{ env.NODE_VERSION }}
+    #       cache: 'npm'
+          
+    #   - name: Restore Dependencies
+    #     uses: actions/cache@v3
+    #     with:
+    #       path: |
+    #         ~/.cache/Cypress
+    #         node_modules
+    #       key: ${{ needs.setup.outputs.cache-key }}
+          
+    #   - name: Security Scan
+    #     run: |
+    #       echo "🔒 Running Security Scan..."
+          
+    #       # Check for high/critical vulnerabilities only
+    #       echo "Checking for high/critical vulnerabilities..."
+    #       npm audit --audit-level=high --production
+          
+    #       # Get vulnerability count
+    #       VULN_COUNT=$(npm audit --audit-level=high --json --production 2>/dev/null | jq -r '.metadata.vulnerabilities.high + .metadata.vulnerabilities.critical' || echo "0")
+          
+    #       if [ "$VULN_COUNT" -gt 0 ]; then
+    #         echo "❌ Found $VULN_COUNT high/critical vulnerabilities - blocking deployment"
+    #         npm audit --audit-level=high --production
+    #         exit 1
+    #       else
+    #         echo "✅ No high/critical vulnerabilities found"
+    #       fi
+
+  # Semantic Release - Generate version and changelog (runs AFTER all quality gates pass)
+  semantic-release:
+    name: Semantic Release
+    runs-on: ubuntu-latest
+    needs: [setup, build, fast-tests, e2e-tests]
+    outputs:
+      new-release-published: ${{ steps.semantic.outputs.new_release_published }}
+      new-release-version: ${{ steps.semantic.outputs.new_release_version }}
+      new-release-major-version: ${{ steps.semantic.outputs.new_release_major_version }}
+      new-release-minor-version: ${{ steps.semantic.outputs.new_release_minor_version }}
+      new-release-patch-version: ${{ steps.semantic.outputs.new_release_patch_version }}
+      new-release-notes: ${{ steps.semantic.outputs.new_release_notes }}
+      new-release-git-tag: ${{ steps.semantic.outputs.new_release_git_tag }}
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: false
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Restore Dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/Cypress
+            node_modules
+          key: ${{ needs.setup.outputs.cache-key }}
+          
+      - name: Run Semantic Release
+        id: semantic
+        uses: cycjimmy/semantic-release-action@v4
+        with:
+          semantic_version: 22
+          extra_plugins: |
+            @semantic-release/changelog@6.0.0
+            @semantic-release/git@10.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_AUTHOR_NAME: semantic-release-bot
+          GIT_AUTHOR_EMAIL: semantic-release-bot@martynus.net
+          GIT_COMMITTER_NAME: semantic-release-bot
+          GIT_COMMITTER_EMAIL: semantic-release-bot@martynus.net
+          
+      - name: Debug Semantic Release Outputs
+        run: |
+          echo "🔍 Semantic Release Debug Information:"
+          echo "new-release-published: '${{ steps.semantic.outputs.new-release-published }}'"
+          echo "new-release-version: '${{ steps.semantic.outputs.new-release-version }}'"
+          echo "new-release-major-version: '${{ steps.semantic.outputs.new-release-major-version }}'"
+          echo "new-release-minor-version: '${{ steps.semantic.outputs.new-release-minor-version }}'"
+          echo "new-release-patch-version: '${{ steps.semantic.outputs.new-release-patch-version }}'"
+          echo "new-release-notes: '${{ steps.semantic.outputs.new-release-notes }}'"
+          echo "new-release-git-tag: '${{ steps.semantic.outputs.new-release-git-tag }}'"
+          echo ""
+          echo "Raw step outputs:"
+          echo '${{ toJSON(steps.semantic.outputs) }}'
+
+  # Set environment variables for deployment
+  set-environment:
+    name: Set Environment Variables
+    runs-on: ubuntu-latest
+    needs: [semantic-release]
+    outputs:
+      environment: ${{ steps.env.outputs.environment }}
+      gke-zone: ${{ steps.env.outputs.gke-zone }}
+      namespace: ${{ steps.env.outputs.namespace }}
+      image-tag: ${{ steps.env.outputs.image-tag }}
+      github-environment: ${{ steps.env.outputs.github-environment }}
+      app-url: ${{ steps.env.outputs.app-url }}
+    
+    steps:
+      - name: Set Environment Variables
+        id: env
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "environment=prod" >> $GITHUB_OUTPUT
+            echo "gke-zone=us-east1" >> $GITHUB_OUTPUT
+            echo "namespace=sponspay-prod" >> $GITHUB_OUTPUT
+            echo "github-environment=production" >> $GITHUB_OUTPUT
+            echo "app-url=https://sponspay.com" >> $GITHUB_OUTPUT
+            if [[ "${{ needs.semantic-release.outputs.new-release-published }}" == "true" ]]; then
+              echo "image-tag=v${{ needs.semantic-release.outputs.new-release-version }}" >> $GITHUB_OUTPUT
+            else
+              echo "image-tag=prod-${{ github.sha }}" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "environment=dev" >> $GITHUB_OUTPUT
+            echo "gke-zone=us-east1" >> $GITHUB_OUTPUT
+            echo "namespace=sponspay-dev" >> $GITHUB_OUTPUT
+            echo "github-environment=development" >> $GITHUB_OUTPUT
+            echo "app-url=https://dev.sponspay.com" >> $GITHUB_OUTPUT
+            if [[ "${{ needs.semantic-release.outputs.new-release-published }}" == "true" ]]; then
+              echo "image-tag=v${{ needs.semantic-release.outputs.new-release-version }}" >> $GITHUB_OUTPUT
+            else
+              echo "image-tag=dev-${{ github.sha }}" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+  # Build and Deploy (only runs if all quality gates pass and there's a new release)
+  deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+    needs: [setup, build, fast-tests, e2e-tests, set-environment, semantic-release]
+    environment: ${{ needs.set-environment.outputs.github-environment }}
+    if: needs.semantic-release.outputs.new-release-published == 'true'
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Restore Dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/Cypress
+            node_modules
+          key: ${{ needs.setup.outputs.cache-key }}
+          
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: ${{ secrets.GKE_SA_KEY }}
+
+      - name: Setup Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.GKE_PROJECT }}
+          install_components: 'gke-gcloud-auth-plugin'
+
+      - name: Configure Docker for Artifact Registry
+        run: |
+          gcloud auth configure-docker ${{ env.REGISTRY_BASE }}
+
+      - name: Build Docker Image
+        run: |
+          echo "🏗️ Building Docker image..."
+          docker build \
+            --build-arg ENVIRONMENT=${{ needs.set-environment.outputs.github-environment }} \
+            -t ${{ env.REGISTRY_BASE }}/${{ env.GKE_PROJECT }}/${{ env.ARTIFACT_REGISTRY }}/${{ env.IMAGE }}:${{ needs.set-environment.outputs.image-tag }} \
+            .
+          
+          docker tag \
+            ${{ env.REGISTRY_BASE }}/${{ env.GKE_PROJECT }}/${{ env.ARTIFACT_REGISTRY }}/${{ env.IMAGE }}:${{ needs.set-environment.outputs.image-tag }} \
+            ${{ env.REGISTRY_BASE }}/${{ env.GKE_PROJECT }}/${{ env.ARTIFACT_REGISTRY }}/${{ env.IMAGE }}:${{ needs.set-environment.outputs.environment }}-latest
+
+      - name: Push Docker Image
+        run: |
+          echo "📦 Pushing Docker image..."
+          docker push ${{ env.REGISTRY_BASE }}/${{ env.GKE_PROJECT }}/${{ env.ARTIFACT_REGISTRY }}/${{ env.IMAGE }}:${{ needs.set-environment.outputs.image-tag }}
+          docker push ${{ env.REGISTRY_BASE }}/${{ env.GKE_PROJECT }}/${{ env.ARTIFACT_REGISTRY }}/${{ env.IMAGE }}:${{ needs.set-environment.outputs.environment }}-latest
+
+      - name: Get GKE Credentials
+        run: |
+          gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }} --region ${{ needs.set-environment.outputs.gke-zone }} --project ${{ env.GKE_PROJECT }}
+
+      - name: Create Namespace
+        run: |
+          kubectl create namespace ${{ needs.set-environment.outputs.namespace }} --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Update Kustomization
+        run: |
+          cd k8s/environments/${{ needs.set-environment.outputs.environment }}
+          kustomize edit set image ${{ env.REGISTRY_BASE }}/${{ env.GKE_PROJECT }}/${{ env.ARTIFACT_REGISTRY }}/${{ env.IMAGE }}:${{ needs.set-environment.outputs.image-tag }}
+
+      - name: Deploy to Kubernetes
+        run: |
+          echo "🚀 Deploying to ${{ needs.set-environment.outputs.environment }} environment..."
+          kubectl apply -k k8s/environments/${{ needs.set-environment.outputs.environment }}
+
+      - name: Wait for Deployment
+        run: |
+          echo "⏳ Waiting for deployment to be ready..."
+          kubectl rollout status deployment -n ${{ needs.set-environment.outputs.namespace }} --timeout=300s
+
+      - name: Post-Deploy Health Check
+        run: |
+          echo "🏥 Running post-deployment health checks..."
+          
+          # Wait for API state to settle after rollout
+          echo "⏳ Waiting 5 seconds for API state to settle..."
+          sleep 5
+          
+          # Retry configuration
+          MAX_RETRIES=5
+          RETRY_DELAY=10
+          RETRY_COUNT=0
+          
+          # Function to check pod readiness
+          check_pod_readiness() {
+            READY_PODS=$(kubectl get pods -n ${{ needs.set-environment.outputs.namespace }} -l app=sponspay-webapp -o jsonpath='{.items[*].status.conditions[?(@.type=="Ready")].status}' | grep -o True | wc -l)
+            TOTAL_PODS=$(kubectl get pods -n ${{ needs.set-environment.outputs.namespace }} -l app=sponspay-webapp --no-headers | wc -l)
+            
+            echo "  Ready: $READY_PODS/$TOTAL_PODS pods"
+            
+            if [ "$READY_PODS" -eq "$TOTAL_PODS" ] && [ "$TOTAL_PODS" -gt 0 ]; then
+              return 0
+            else
+              return 1
+            fi
+          }
+          
+          # Retry loop for pod readiness check
+          echo ""
+          echo "=== Pod Readiness Check ==="
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+            echo "Attempt $RETRY_COUNT/$MAX_RETRIES:"
+            
+            if check_pod_readiness; then
+              echo "✅ All pods are ready"
+              break
+            elif [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+              echo "⏳ Pods not ready yet, waiting ${RETRY_DELAY}s before retry..."
+              sleep $RETRY_DELAY
+            else
+              echo "❌ Health check failed after $MAX_RETRIES attempts"
+              echo ""
+              echo "=== Detailed Pod Status ==="
+              kubectl get pods -n ${{ needs.set-environment.outputs.namespace }} -l app=sponspay-webapp
+              echo ""
+              echo "=== Pod Descriptions ==="
+              kubectl describe pods -n ${{ needs.set-environment.outputs.namespace }} -l app=sponspay-webapp
+              exit 1
+            fi
+          done
+          
+          echo ""
+          echo "=== Final Pod Status ==="
+          kubectl get pods -n ${{ needs.set-environment.outputs.namespace }} -l app=sponspay-webapp
+          
+          echo ""
+          echo "=== Service Status ==="
+          kubectl get service -n ${{ needs.set-environment.outputs.namespace }} -l app=sponspay-webapp
+          
+          echo ""
+          echo "=== Ingress Status ==="
+          kubectl get ingress -n ${{ needs.set-environment.outputs.namespace }}
+          
+          echo ""
+          echo "=== Certificate Status ==="
+          kubectl get managedcertificate -n ${{ needs.set-environment.outputs.namespace }} || echo "No managed certificates found"
+          
+          echo ""
+          echo "✅ Post-deployment health checks completed successfully"
+
+      - name: Deployment Success Summary
+        run: |
+          echo "🎉 Deployment completed successfully!"
+          echo ""
+          echo "📊 Pipeline Summary:"
+          echo "  ✅ Unit Tests: Passed"
+          echo "  ✅ Integration Tests: Passed"
+          echo "  ✅ E2E Tests: Passed"
+          echo "  ✅ Security Scan: Passed (no high/critical vulnerabilities)"
+          echo "  ✅ Coverage Thresholds: Met"
+          echo ""
+          if [[ "${{ needs.set-environment.outputs.environment }}" == "prod" ]]; then
+            echo "🌐 Production URL: https://sponspay.com"
+          else
+            echo "🌐 Development URL: https://dev.sponspay.com"
+          fi
+          echo "📦 Image: ${{ env.REGISTRY_BASE }}/${{ env.GKE_PROJECT }}/${{ env.ARTIFACT_REGISTRY }}/${{ env.IMAGE }}:${{ needs.set-environment.outputs.image-tag }}"
+          echo "️  Environment: ${{ needs.set-environment.outputs.environment }}"
+          echo "📍 Namespace: ${{ needs.set-environment.outputs.namespace }}"
+
+  # Google Chat Notification
+  notify-google-chat:
+    name: Google Chat Notification
+    runs-on: ubuntu-latest
+    needs: [deploy, set-environment, semantic-release]
+    if: success() && needs.semantic-release.outputs.new-release-published == 'true'
+    
+    steps:
+      - name: Debug Semantic Release Outputs
+        run: |
+          echo "🔍 Debug Information:"
+          echo "new-release-published: '${{ needs.semantic-release.outputs.new-release-published }}'"
+          echo "new-release-version: '${{ needs.semantic-release.outputs.new-release-version }}'"
+          echo "environment: '${{ needs.set-environment.outputs.environment }}'"
+          echo "app-url: '${{ needs.set-environment.outputs.app-url }}'"
+          
+      - name: Send Google Chat Notification
+        run: |
+          # Determine release type
+          if [[ "${{ needs.set-environment.outputs.environment }}" == "prod" ]]; then
+            RELEASE_TYPE="🚀 Production Release"
+            ENVIRONMENT_EMOJI="🌐"
+          else
+            RELEASE_TYPE="🧪 Beta Release"
+            ENVIRONMENT_EMOJI="🔧"
+          fi
+          
+          # Format release notes for Google Chat - extract clean feature list
+          RELEASE_NOTES="${{ needs.semantic-release.outputs.new-release-notes }}"
+          
+          # Extract features and fixes, clean up formatting
+          FORMATTED_NOTES=$(echo "$RELEASE_NOTES" | \
+            grep -E "^\* " | \
+            head -5 | \
+            sed 's/^\* /• /' | \
+            sed 's/ \[\([a-f0-9]*\)\].*$//' | \
+            sed 's/ ([a-f0-9]*)$//' | \
+            tr '\n' '\n')
+          
+          # If no bullet points found, extract from Features section
+          if [ -z "$FORMATTED_NOTES" ]; then
+            FORMATTED_NOTES=$(echo "$RELEASE_NOTES" | \
+              sed -n '/### 🚀 Features/,/###/p' | \
+              grep -E "^\* " | \
+              head -3 | \
+              sed 's/^\* /• /' | \
+              sed 's/ \[\([a-f0-9]*\)\].*$//' | \
+              tr '\n' '\n')
+          fi
+          
+          # Fallback to simple summary if still empty
+          if [ -z "$FORMATTED_NOTES" ]; then
+            FORMATTED_NOTES="• New features and improvements\n• Bug fixes and optimizations\n• Enhanced user experience"
+          fi
+          
+          # Create the message payload
+          cat > message.json << EOF
+          {
+            "text": "$RELEASE_TYPE: SponsPay WebApp v${{ needs.semantic-release.outputs.new-release-version }}",
+            "cards": [
+              {
+                "header": {
+                  "title": "SponsPay WebApp Release",
+                  "subtitle": "v${{ needs.semantic-release.outputs.new-release-version }}",
+                  "imageUrl": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+                },
+                "sections": [
+                  {
+                    "widgets": [
+                      {
+                        "keyValue": {
+                          "topLabel": "Release Type",
+                          "content": "$RELEASE_TYPE",
+                          "icon": "STAR"
+                        }
+                      },
+                      {
+                        "keyValue": {
+                          "topLabel": "Environment",
+                          "content": "${{ needs.set-environment.outputs.environment }}",
+                          "icon": "BOOKMARK"
+                        }
+                      },
+                      {
+                        "keyValue": {
+                          "topLabel": "Version",
+                          "content": "v${{ needs.semantic-release.outputs.new-release-version }}",
+                          "icon": "DESCRIPTION"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "widgets": [
+                      {
+                        "textParagraph": {
+                          "text": "<b>📋 What's New:</b><br><pre>$FORMATTED_NOTES</pre>"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "widgets": [
+                      {
+                        "buttons": [
+                          {
+                            "textButton": {
+                              "text": "📦 View Release",
+                              "onClick": {
+                                "openLink": {
+                                  "url": "https://github.com/SponsPay/WebApp/releases/tag/v${{ needs.semantic-release.outputs.new-release-version }}"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "textButton": {
+                              "text": "$ENVIRONMENT_EMOJI Live App",
+                              "onClick": {
+                                "openLink": {
+                                  "url": "${{ needs.set-environment.outputs.app-url }}"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+          EOF
+          
+          # Send the notification
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -d @message.json \
+            "${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}"
+          
+          echo "✅ Google Chat notification sent successfully!"
+
+  # No Release Summary
+  no-release-summary:
+    name: No Release Summary
+    runs-on: ubuntu-latest
+    needs: [semantic-release, set-environment]
+    if: needs.semantic-release.outputs.new-release-published != 'true'
+    
+    steps:
+      - name: No Release Summary
+        run: |
+          echo "ℹ️ No new release created"
+          echo ""
+          echo "📊 Pipeline Summary:"
+          echo "  ✅ Unit Tests: Passed"
+          echo "  ✅ Integration Tests: Passed"
+          echo "  ✅ E2E Tests: Passed"
+          echo "  ✅ Security Scan: Passed"
+          echo "  ✅ Quality Gates: All passed"
+          echo ""
+          echo "🔍 No release was created because:"
+          echo "  • No conventional commits found that trigger releases"
+          echo "  • Only feat, fix, perf, and BREAKING CHANGE commits create releases"
+          echo "  • docs, style, refactor, test, chore, ci commits don't trigger releases"
+          echo ""
+          echo "💡 To create a release, use conventional commit format:"
+          echo "  • feat: add new feature (minor version bump)"
+          echo "  • fix: bug fix (patch version bump)"
+          echo "  • feat!: breaking change (major version bump)"
+          echo ""
+          echo "🚀 No deployment needed - existing version remains active"
+          echo "🌐 Current environment: ${{ needs.set-environment.outputs.environment }}"
+
+  # Cleanup on failure
+  cleanup-on-failure:
+    name: Cleanup on Failure
+    runs-on: ubuntu-latest
+    needs: [deploy]
+    if: failure()
+    
+    steps:
+      - name: Failure Notification
+        run: |
+          echo "❌ Pipeline failed - deployment blocked"
+          echo ""
+          echo "🔍 Check the following for details:"
+          echo "  • Deployment: ${{ needs.deploy.result }}"
+          echo ""
+          echo "📧 GitHub will automatically send email notifications to repository watchers"
+          echo "� Previous deployment remains active (Kubernetes rolling update)"

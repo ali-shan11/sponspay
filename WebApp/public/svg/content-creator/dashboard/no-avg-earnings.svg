@@ -1,0 +1,26 @@
+<svg width="140" height="130" viewBox="0 0 140 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="70" cy="42" r="34" fill="#F0F4FF"/>
+
+  <!-- Ghost bar chart -->
+  <rect x="42" y="48" width="10" height="18" rx="2" fill="#E8EDFB" opacity="0.5"/>
+  <rect x="56" y="40" width="10" height="26" rx="2" fill="#E8EDFB" opacity="0.4"/>
+  <rect x="70" y="44" width="10" height="22" rx="2" fill="#E8EDFB" opacity="0.5"/>
+  <rect x="84" y="36" width="10" height="30" rx="2" fill="#E8EDFB" opacity="0.4"/>
+
+  <!-- Average line across bars -->
+  <path d="M38 48 L100 48" stroke="#C5CEE0" stroke-width="1.2" stroke-dasharray="4 3"/>
+
+  <!-- Equals/average symbol -->
+  <circle cx="108" cy="34" r="10" fill="#F0F4FF" stroke="#D4DDEF" stroke-width="1"/>
+  <text x="108" y="38" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="600" fill="#C5CEE0">~</text>
+
+  <!-- Small decorative dots -->
+  <circle cx="30" cy="35" r="2.5" fill="#E8EDFB"/>
+  <circle cx="115" cy="58" r="3" fill="#E8EDFB"/>
+
+  <!-- Text -->
+  <text x="70" y="90" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="500" fill="#84818A">No average data yet</text>
+  <text x="70" y="105" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="400" fill="#ADAFB9">Average earning values will</text>
+  <text x="70" y="115" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="400" fill="#ADAFB9">be calculated from your transactions</text>
+</svg>

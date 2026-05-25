@@ -1,0 +1,28 @@
+<div #modal class="custom-modal modal fade modal-fullscreen-md-down">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="row justify-content-center onboard-wrapper p-0 m-0">
+                    <div class="col-12 p-0">
+                        <div class="message-card bg-white">
+                            <div class="d-flex gap-4 justify-content-center onboard-wrapper-images">
+                                <img class="welcome-img" src="svg/fan/message-success.svg" alt="Success">
+                            </div>
+                            <div class="title-wrapper mt-2 pt-0 pt-lg-2">
+                                <div class="text-medium text-center">Your message sent successfully</div>
+                                <div class="text-regular text-center mt-3">Your premium message has been sent
+                                    successfully! The creator will receive it shortly.</div>
+                            </div>
+
+
+                            <div class="d-flex gap-2 mt-3 pt-3 mt-lg-4 pt-lg-4">
+                                <app-button class="w-100" btnText="Close" type="secondary"
+                                    (btnClick)="close()"></app-button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

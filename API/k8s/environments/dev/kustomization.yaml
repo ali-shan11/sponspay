@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+metadata:
+  name: sponspay-api-dev
+
+namespace: sponspay-api-dev
+
+resources:
+- ../../base
+- namespace.yaml
+- ingress.yaml
+- managedcertificate.yaml
+- pgadmin-ingress.yaml
+- pgadmin-managedcertificate.yaml
+- redisinsight-ingress.yaml
+- redisinsight-managedcertificate.yaml
+- redisinsight-frontendconfig.yaml
+- pdb.yaml
+
+patches:
+- path: deployment-patch.yaml
+- path: service-patch.yaml
+- path: redis-statefulset-patch.yaml
+
+images:
+- name: us-east1-docker.pkg.dev/sponspay-deployment/sponspay-dev/api
+  newTag: dev-latest

@@ -1,0 +1,10 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: dev-redisinsight-cert
+  namespace: sponspay-api-dev
+  labels:
+    environment: development
+spec:
+  domains:
+  - redis-dev.sponspay.com

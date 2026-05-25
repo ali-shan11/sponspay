@@ -1,0 +1,162 @@
+<div
+  #offcanvasEl
+  class="offcanvas offcanvas-end custom-modal"
+  tabindex="-1"
+  id="rightModal"
+  aria-labelledby="rightModalLabel"
+>
+  <div class="offcanvas-header p-0">
+  </div>
+  <div class="offcanvas-body">
+    @if (CurrentData) {
+        <div class="content-wrapper d-flex flex-column gap-2 justify-content-between min-h-100 h-100">
+            <div>
+                <div class="user-country-wrapper">
+                    <div class="actions d-flex justify-content-between">
+                        <button class="btn cursor-pointer p-0 border-0" (click)="closeDrawer()">
+                            <img src="svg/menu/sidebar-sponspay-close.svg" alt="close">
+                        </button>
+                        <div class="move-actions">
+                            <div class="left action" role="presentation" [class.disabled]="selectedOption===0" (click)="goLeft()">
+                                <app-inline-svg [src]="svgIcons.arrowLeftIcon"></app-inline-svg>
+                            </div>
+                            <div class="right action" role="presentation" [class.disabled]="selectedOption===data.length-1" (click)="goRight()">
+                                <app-inline-svg [src]="svgIcons.arrowRightIcon"></app-inline-svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flag-wrapper text-center">
+                        <img class="icon" [src]="CurrentData.flag" alt="flag">
+                        <div class="name">{{CurrentData.countryCode}}</div>
+                    </div>
+                    @if (CurrentData.hasAccount) {
+                        <div class="configuration-status d-flex justify-content-center gap-2">
+                            <app-inline-svg src="svg/check-filled.svg" ></app-inline-svg>
+                            <div class="align-self-center">Compensation Configured</div>
+                        </div>    
+                    }@else {
+                        <div class="d-flex justify-content-center">
+                            <div class="drawer-pending compensation-card disabled-card">
+                                <app-inline-svg src="svg/plus.svg"></app-inline-svg>
+                                <div class="align-self-center">Configure</div>
+                                <span class="coming-soon-tooltip">Coming Soon</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="payout-view-btn d-flex gap-2 mt-3">
+                    <div class="payout-btn-wrapper w-100">
+                        <app-button class="general w-100" btnText="General Details" iconUrl="svg/content-creator/dashboard/general.svg" iconPlacement="before" type="primary" ></app-button>
+                        <span class="coming-soon-tooltip">Coming Soon</span>
+                    </div>
+                    <div class="payout-btn-wrapper w-100">
+                        <app-button class="payout w-100" btnText="Payout Statements" iconUrl="svg/content-creator/dashboard/payout.svg" iconPlacement="before" type="secondary" ></app-button>
+                        <span class="coming-soon-tooltip">Coming Soon</span>
+                    </div>
+                </div>
+
+                @if (paymentStep===1) {
+                    <div class="total-earning-wrapper mt-3">
+                        <div class="total-earning w-100">
+                            <div class="heading d-flex gap-2">
+                                <img src="svg/money-receive.svg" alt="money">
+                                <div>
+                                    Total Earning
+                                </div>
+                            </div>
+                            <div class="value-wrapper mt-1">
+                                <div class="value">{{CurrentData.totalLocal | number}} {{CurrentData.localCurrencyCode}}</div>
+                                <div class="percentage">~${{CurrentData.totalUsd}}</div>
+                            </div>
+                        </div>
+                        <div class="amount-wrapper w-100">
+                            <div class="amount text-end">
+                                <div class="heading">Payout</div>
+                                <div class="value">{{CurrentData.nextPayAmountLocal | number}} {{CurrentData.localCurrencyCode}}</div>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="amount text-end">
+                                <div class="heading">Payout date</div>
+                                <div class="value coming-soon-text">Coming Soon</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stats-wrapper mt-3">
+                        <div class="title-bar stat">
+                            <div class="message-wrapper">
+                                <div class="message">
+                                    <div class="title d-flex gap-2">
+                                        <img src="svg/message-multiple.svg" alt="message">
+                                        <div class="align-self-center">Premium Messages</div>
+                                    </div>
+                                    <div class="value d-flex gap-2 mt-1">
+                                        <div class="count">
+                                            {{CurrentData.premiumMessages | number}}
+                                        </div>
+                                        <img [src]="'svg/message-table.svg'" alt="message">
+                                    </div>
+                                </div>
+                                <div></div>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="mobile">
+                                <div class="title d-flex gap-2">
+                                    <img src="svg/call.svg" alt="call">
+                                    <div class="align-self-center">Mobile Number</div>
+                                </div>
+                                <div class="value coming-soon-text">Coming Soon</div>
+                            </div>
+                            <div></div>
+                        </div>
+                        <div class="stat">
+                            <div class="heading">Livestream Messages</div>
+                            <div class="value">{{CurrentData.livestreamMessages | number}}</div>
+                        </div>
+                        <div class="stat">
+                            <div class="heading">Video Messages</div>
+                            <div class="value">{{CurrentData.videoMessages | number}}</div>
+                        </div>
+                        <div class="stat">
+                            <div class="heading">Average messages value</div>
+                            <div class="value">{{CurrentData.averageMessageValue | number}}</div>
+                        </div>
+                    </div>
+                    <div class="sponspay-wrapper d-flex justify-content-between mt-3">
+                        <div class="heading d-flex gap-2">
+                            <img src="svg/message-multiple.svg" alt="message">
+                            <div class="align-self-center">SponsPay Fees</div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <div class="value">{{CurrentData.totalFees | number}} {{CurrentData.localCurrencyCode}}</div>
+                            <div class="text-grey">{{CurrentData.feePercentage}}% (Avg)</div>
+                        </div>
+                    </div>
+                    <!-- <div class="insight-wrapper mt-3">
+                        <div class="heading d-flex gap-2">
+                            <img src="svg/landing/stars-1.svg" alt="stars">
+                            <div>Key Insight</div>
+                        </div>
+                        <div class="value mt-2">
+                            Your livestream content earns 3X  more per message in Nigeria than video replies.
+                            Consider more livestreams to boost earnings!
+                        </div>
+                    </div> -->
+                }
+
+                @if (paymentStep===2) {
+                    <div class="payout-list my-3">
+                        <app-compensation-payout-list></app-compensation-payout-list>
+                    </div>
+                }
+            </div>
+            <div class="actions d-flex gap-3">
+                <app-button class="w-100" btnText="Close" type="secondary" (btnClick)="closeDrawer()" ></app-button>
+                <div class="generate-report-wrapper min-w-max w-100">
+                    <app-button class="w-100" btnText="Generate Report" [iconUrl]="svgIcons.download" iconPlacement="before" ></app-button>
+                    <span class="coming-soon-tooltip">Coming Soon</span>
+                </div>
+            </div>
+        </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,127 @@
+.custom-modal {
+    .modal-content {
+        border-radius: 12px;
+    }
+    .modal-body {
+        position: relative;
+        padding: 40px 35px 30px;
+    }
+    .close-icon {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+    }
+}
+
+.icon-wrapper {
+    margin-bottom: 16px;
+    img {
+        width: 48px;
+        height: 48px;
+    }
+}
+
+.title {
+    color: #030712;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 28px;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #84818a;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+    margin-bottom: 24px;
+}
+
+.contact-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.contact-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    border-radius: 10px;
+    background: #f7f7f8;
+    text-decoration: none;
+    transition: background 0.15s ease;
+
+    &:hover {
+        background: #eef0f3;
+        text-decoration: none;
+    }
+}
+
+.contact-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #007aff1a;
+    color: #007aff;
+}
+
+.contact-details {
+    text-align: left;
+}
+
+.contact-label {
+    color: #84818a;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+.contact-value {
+    color: #030712;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 22px;
+}
+
+.hours {
+    color: #b7b8bd;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    margin-bottom: 20px;
+}
+
+.cta-btn {
+    border-radius: 32px;
+    background: #1a2b4a;
+    color: #fff;
+    padding: 12px 48px;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 20px;
+    border: none;
+
+    &:hover {
+        background: #0f1d33;
+        color: #fff;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .custom-modal .modal-body {
+        padding: 30px 20px 20px;
+    }
+    .title {
+        font-size: 20px;
+    }
+    .contact-card {
+        padding: 14px 16px;
+    }
+}

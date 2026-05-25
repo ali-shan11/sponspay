@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: sponspay-api-dev
+  labels:
+    name: sponspay-api-dev
+    environment: development

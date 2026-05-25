@@ -1,0 +1,220 @@
+<div class="payout-list-wrapper">
+    @if (false) {
+        <div class="payouts-wrapper">
+            <div class="search-wrapper align-self-center d-flex gap-2 flex-wrap flex-md-nowrap justify-content-between">
+                <div class="d-flex gap-2">
+                    <div class="search-field align-self-center">
+                        <img class="search-icon" src="svg/content-creator/dashboard/search.svg" alt="search">
+                        <input type="text" class="search-input" placeholder="Search...">
+                    </div>
+                    <button class="btn filter-wrapper d-flex gap-1">
+                        <img src="svg/content-creator/dashboard/filter.svg" alt="filter">
+                        <div class="align-self-center">Filter</div>
+                    </button>
+                </div>
+                <button class="sort-btn btn filter-wrapper d-flex gap-1">
+                    <img src="svg/content-creator/dashboard/payout-sort.svg" alt="sort">
+                    <div class="align-self-center">Sort by</div>
+                    <img src="svg/content-creator/dashboard/arrow-down.svg" alt="arrow">
+                </button>
+            </div>
+        </div>
+    
+        @if (payoutList.length>0) {
+            <div class="d-none d-lg-block custom-table table-responsive payout-table mt-2 mt-md-3">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                Date & Time
+                                <img src="svg/table/sort.svg" alt="sort">
+                            </th>
+                            <th>
+                                Txn ID
+                                <img src="svg/table/sort.svg" alt="sort">
+                            </th>
+                            <th>
+                                Beneficiary
+                                <img src="svg/table/sort.svg" alt="sort">
+                            </th>
+                            <th>
+                                Payout Method
+                                <img src="svg/table/sort.svg" alt="sort">
+                            </th>
+                            <th>
+                                Amount Sent
+                                <img src="svg/table/sort.svg" alt="sort">
+                            </th>
+                            <th>
+                                Status
+                                <img src="svg/table/sort.svg" alt="sort">
+                            </th>
+                            <th>
+                                Invoice / Reference
+                                <img src="svg/table/sort.svg" alt="sort">
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="payment-table-body">
+                        @for (payout of payoutList; track $index) {
+                            <tr class="custom-row">
+                                <td>
+                                    <div class="align-self-center">{{payout.dateTime | date:'d MMMM y'}}</div>
+                                    <div class="text align-self-center">{{payout.dateTime | date:'shortTime'}}</div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{payout.txnId}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{payout.beneficiary.number}}
+                                    </div>
+                                    <div class="text">
+                                        {{payout.beneficiary.name}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{payout.payoutMethod}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{payout.amountSent.amount | number}} {{payout.currency}}
+                                    </div>
+                                    <div class="text">
+                                        {{payout.amountSent.percentage}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="status-wrapper">
+                                        @if (payout.status==='pending') {
+                                            <div class="status pending">Pending</div>
+                                        }
+                                        @if (payout.status==='failed') {
+                                            <div class="status failed">Failed</div>
+                                        }
+                                        @if (payout.status==='completed') {
+                                            <div class="status completed">Completed</div>
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="invoice-wrapper">
+                                        <div class="invoice">
+                                            <div class="invoice-number py-1 text-truncate">{{payout.invoiceRef}}</div>
+                                            <div class="divider"></div>
+                                            <app-inline-svg class="py-1 ps-1" [src]="svgIcon.download"></app-inline-svg>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        
+            <div class="d-flex d-lg-none mt-3 mobile-payment-list">
+                @for (payout of payoutList; track $index) {
+                    <button class="btn payment-card">
+        
+                        <div class="list d-flex justify-content-between">
+                            <div class="heading">DATE & TIME</div>
+                            <div class="value">
+                                <div>{{payout.dateTime | date:'d MMMM y'}}</div>
+                                <div class="text">{{payout.dateTime | date:'shortTime'}}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="list d-flex justify-content-between">
+                            <div class="heading">Txn ID</div>
+                            <div class="value d-flex gap-2">
+                                <div >{{payout.txnId}}</div>
+                            </div>
+                        </div>
+                        <div class="list d-flex justify-content-between">
+                            <div class="heading">BENEFICIARY</div>
+                            <div class="value">
+                                <div>
+                                    {{payout.beneficiary.number}}
+                                </div>
+                                <div class="text">
+                                    {{payout.beneficiary.name}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list d-flex justify-content-between">
+                            <div class="heading">PAYOUT METHOD</div>
+                            <div class="value">
+                                <div>{{payout.payoutMethod}}</div>
+                            </div>
+                        </div>
+                        <div class="list d-flex justify-content-between">
+                            <div class="heading">AMOUNT SENT</div>
+                            <div class="value">
+                                <div>
+                                    {{payout.amountSent.amount | number}} {{payout.currency}}
+                                </div>
+                                <div class="text">
+                                    {{payout.amountSent.percentage}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list d-flex justify-content-between">
+                            <div class="heading">STATUS</div>
+                            <div class="value">
+                                <div class="status-wrapper">
+                                    @if (payout.status==='pending') {
+                                        <div class="compensation-status pending">Pending</div>
+                                    }
+                                    @if (payout.status==='failed') {
+                                        <div class="compensation-status auto-replied">Auto-Replied</div>
+                                    }
+                                    @if (payout.status==='completed') {
+                                        <div class="compensation-status completed">Earned</div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list d-flex justify-content-between">
+                            <div class="heading">INVOICE / REFERENCE</div>
+                            <div class="value">
+                                <div class="invoice-wrapper">
+                                    <div class="invoice">
+                                        <div class="invoice-number py-1 text-truncate">{{payout.invoiceRef}}</div>
+                                        <div class="divider"></div>
+                                        <app-inline-svg class="py-1 ps-1" [src]="svgIcon.download"></app-inline-svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                }
+            </div>
+            <div class="mt-3 payment-pagination">
+                <app-pagination [totalItems]="100" ></app-pagination>
+            </div>
+        }@else {
+            <div class="no-data-wrapper">
+                <img src="svg/content-creator/compensation/no-payout.svg" alt="no payout">
+                <div class="text-center">
+                    <div class="heading">You don’t have any payout yet!</div>
+                    <div class="text mt-2">This feature is coming soon. Stay tuned for updates on payouts and compensation tracking.</div>
+                </div>
+                <button class="share-btn">
+                    <img src="svg/share.svg" alt="share">
+                    <div>Share Link</div>
+                </button>
+            </div>
+        }
+    }
+    <div class="no-data-wrapper mt-0">
+        <img src="svg/content-creator/dashboard/no-payment-data.svg" alt="no payments">
+        <div class="text-center">
+            <div class="heading">Coming Soon!</div>
+            <div class="text mt-2">This feature is coming soon. Stay tuned for updates on payouts and compensation tracking.</div>
+        </div>
+    </div>
+</div>

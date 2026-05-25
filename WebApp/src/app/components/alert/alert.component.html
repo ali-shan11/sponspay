@@ -1,0 +1,24 @@
+<div class="alert-container">
+    @for (alert of alertMessages; track $index) {
+        <div class="alert d-flex gap-2 justify-content-between" [ngClass]="alert.type" [@fadeInOut]>
+          <div class="icon">
+            @switch (alert.type) {
+                @case ('success') {
+                    <img [src]="alertIcons.success" alt="success">
+                }
+                @case ('error') {
+                    <img [src]="alertIcons.error" alt="error">
+                }
+                @case ('info') {
+                    <img [src]="alertIcons.info" alt="info">
+                }
+            }
+          </div>
+          <div class="message-wrapper d-flex flex-column gap-1">
+            <div class="title">{{alert.title}}</div>
+            <div class="text">{{alert.message}}</div>
+          </div>
+          <img role="presentation" class="cursor-pointer align-self-start" [src]="alertIcons.close" alt="close" (click)="removeAlert(alert.id)">
+        </div>
+    }
+</div>

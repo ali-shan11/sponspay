@@ -1,0 +1,53 @@
+<div class="custom-input-wrapper">
+    @if (label) {
+        <label for="ng-select" class="custom-select-label">{{ label }}</label>
+    }
+    <div class="position-relative">
+        <ng-select
+            name="ng-select"
+            class="custom-select w-100"
+            [items]="data"
+            [multiple]="multipleSelection"
+            [selectOnTab]="true"
+            [placeholder]="placeholder||`Select ${label}`"
+            [ngClass]="{'invalid': controlName && controlName.invalid && controlName.touched}"
+            [formControl]="controlName"
+            [clearable]="clearable"
+            [bindValue]="bindValue"
+            [bindLabel]="bindLabel"
+            >
+            <ng-template ng-option-tmp let-item="item">
+                <div class="d-flex gap-2 justify-content-between">
+                    <div class="d-flex gap-2 align-items-center">
+                        @if (showImage) {
+                            <img class="option-img align-self-center" [src]="item['img']" width="25px" height="25px" alt="" />
+                        }
+                        {{item[bindLabel]}}
+                    </div>
+                    @if (item.disabled) {
+                        <div class="unavailable-card">UNAVAILABLE</div>
+                    }
+                </div>
+            </ng-template>
+            <ng-template ng-label-tmp let-item="item">
+                <div class="d-flex gap-2 align-items-center">
+                    @if (showImage) {
+                        <img class="option-img align-self-center" [src]="item['img']" width="25px" height="25px" alt="" />
+                    }
+                    {{item[bindLabel]}}
+                </div>
+            </ng-template>
+        </ng-select>
+        @if (controlName && controlName.invalid && controlName.touched) {
+            <img class="error-icon" [src]="svgIcons.errorIcon" alt="error">
+        }
+    </div>
+
+    @if (controlName && controlName.invalid && controlName.touched) {
+        <div class="error">
+            @if (controlName.errors?.['required']) {
+                <small>{{label || 'This field'}} is required.</small>
+            }
+        </div>
+    }
+  </div>

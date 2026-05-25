@@ -1,0 +1,44 @@
+[
+  {
+    "iso2Code": "KE",
+    "iso3Code": "KEN",
+    "name": "Kenya",
+    "creditCardPenetration": 0.12,
+    "mobilePenetration": 0.78
+  },
+  {
+    "iso2Code": "NG",
+    "iso3Code": "NGA",
+    "name": "Nigeria",
+    "creditCardPenetration": 0.08,
+    "mobilePenetration": 0.65
+  },
+  {
+    "iso2Code": "TZ",
+    "iso3Code": "TZA",
+    "name": "Tanzania",
+    "creditCardPenetration": 0.05,
+    "mobilePenetration": 0.82
+  },
+  {
+    "iso2Code": "UG",
+    "iso3Code": "UGA",
+    "name": "Uganda",
+    "creditCardPenetration": 0.06,
+    "mobilePenetration": 0.71
+  },
+  {
+    "iso2Code": "ZA",
+    "iso3Code": "ZAF",
+    "name": "South Africa",
+    "creditCardPenetration": 0.35,
+    "mobilePenetration": 0.55
+  },
+  {
+    "iso2Code": "GH",
+    "iso3Code": "GHA",
+    "name": "Ghana",
+    "creditCardPenetration": 0.07,
+    "mobilePenetration": 0.68
+  }
+]

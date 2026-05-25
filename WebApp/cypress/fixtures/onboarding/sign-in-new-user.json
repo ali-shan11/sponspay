@@ -1,0 +1,9 @@
+{
+  "success": true,
+  "message": "User created",
+  "userId": "test-uid-123",
+  "isCreator": false,
+  "isCoAdmin": false,
+  "hasAcceptedTerms": false,
+  "youtubeConnected": false
+}

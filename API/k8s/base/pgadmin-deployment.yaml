@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgadmin
+  labels:
+    app: pgadmin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pgadmin
+  template:
+    metadata:
+      labels:
+        app: pgadmin
+    spec:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 0
+      containers:
+      - name: pgadmin
+        image: dpage/pgadmin4:latest
+        ports:
+        - containerPort: 80
+          name: http
+        readinessProbe:
+          httpGet:
+            path: /misc/ping
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /misc/ping
+            port: 80
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        env:
+        - name: PGADMIN_DEFAULT_EMAIL
+          value: filip@sponspay.com
+        - name: PGADMIN_DEFAULT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: pgadmin-credentials
+              key: password
+        - name: PGADMIN_CONFIG_SERVER_MODE
+          value: "True"
+        - name: PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED
+          value: "False"
+        - name: PGADMIN_CONFIG_WTF_CSRF_ENABLED
+          value: "False"
+        - name: PGADMIN_CONFIG_SESSION_COOKIE_SECURE
+          value: "False"
+        - name: PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION
+          value: "False"
+        - name: PGHOST
+          value: "10.67.208.3"
+        - name: PGPORT
+          value: "5432"
+        - name: PGDATABASE
+          value: "dev"
+        - name: PGUSER
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: user
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: password
+        volumeMounts:
+        - name: pgadmin-data
+          mountPath: /var/lib/pgadmin
+        command: ["/bin/sh", "-c", "python3 -c \"import json,os;json.dump({'Servers':{'1':{'Name':'PostgreSQL','Group':'Servers','Host':os.environ['PGHOST'],'Port':int(os.environ['PGPORT']),'MaintenanceDB':os.environ['PGDATABASE'],'Username':os.environ['PGUSER'],'Password':os.environ['PGPASSWORD'],'SSLMode':'prefer','Favorite':True,'SavePassword':True}}},open('/pgadmin4/servers.json','w'))\" && /entrypoint.sh"]
+      volumes:
+      - name: pgadmin-data
+        emptyDir: {}

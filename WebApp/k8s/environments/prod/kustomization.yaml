@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+metadata:
+  name: sponspay-webapp-prod
+
+namespace: sponspay-prod
+
+resources:
+  - ../../base
+  - ingress.yaml
+  - managedcertificate.yaml
+  - namespace.yaml
+
+patches:
+  - path: deployment-patch.yaml
+  - path: service-patch.yaml
+
+images:
+  - name: us-east1-docker.pkg.dev/sponspay-deployment/sponspay-dev/webapp
+    newTag: prod-latest
+
+namePrefix: prod-

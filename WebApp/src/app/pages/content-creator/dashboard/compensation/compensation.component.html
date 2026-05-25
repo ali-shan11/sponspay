@@ -1,0 +1,69 @@
+<div class="heading-wrapper d-flex flex-column flex-md-row gap-3 justify-content-between">
+    <div class="search-wrapper align-self-center d-flex gap-3 flex-wrap flex-md-nowrap">
+        <div class="search-field align-self-center">
+            <img class="search-icon" src="svg/content-creator/dashboard/search.svg" alt="search">
+            <input type="text" class="search-input" placeholder="Search...">
+        </div>
+        <button class="btn filter-wrapper d-flex gap-2">
+            <img src="svg/content-creator/dashboard/filter.svg" alt="filter">
+            <div class="align-self-center">Filter</div>
+        </button>
+    </div>
+    <div>
+        <app-button btnText="Configure New Compensation" [iconUrl]="svgIcons.plusIcon" iconPlacement="before" (btnClick)="isCompensationModalOpen=true" ></app-button>
+    </div>
+</div>
+
+<div class="list-wrapper mt-3 mt-md-4 mt-lg-4">
+    @for (item of compensationList; track $index) {
+        <div [routerLink]="item" class="list flex-column flex-lg-row p-0 p-lg-1 pe-lg-3">
+            <div class="country-wrapper d-flex justify-content-between gap-2 m-1 m-lg-0">
+                <div class="d-flex gap-2 w-100 align-items-center">
+                    <img class="flag-img" [src]="countryIcons.tanzania" alt="flag">
+                    <div>
+                        <div class="name">Tanzania</div>
+                        <div class="last-updated">Last Updated 19 July 2024</div>
+                    </div>
+                </div>
+                <div class="action-wrapper d-flex d-flex d-lg-none gap-2 align-self-center">
+                    <button class="action edit d-flex gap-2 p-2">
+                        <img src="svg/content-creator/compensation/edit.svg" alt="edit">
+                    </button>
+                    <button class="action delete p-2">
+                        <img src="svg/content-creator/compensation/delete.svg" alt="delete">
+                    </button>
+                </div>
+            </div>
+            <div class="mobile-wrapper d-flex gap-2 p-3 px-lg-0">
+                <img src="svg/content-creator/compensation/call.svg" alt="call">
+                <div class="align-self-center">
+                    <div class="heading">Mobile Number</div>
+                    <div class="value">+1 (234) 564 7899</div>
+                </div>
+            </div>
+            <!-- <div class="divider"></div> -->
+            <div class="payment-wrapper d-flex gap-2 p-3 px-lg-0">
+                <img src="svg/content-creator/compensation/message.svg" alt="message">
+                <div class="align-self-center">
+                    <div class="heading">Payment Method</div>
+                    <div class="value">M-Pesa</div>
+                </div>
+            </div>
+            <div class="action-wrapper d-flex d-none d-lg-flex gap-2 align-self-center">
+                <button class="action edit d-flex gap-2">
+                    <img src="svg/content-creator/compensation/edit.svg" alt="edit">
+                    <div class="align-self-center">Edit</div>
+                </button>
+                <button class="action delete">
+                    <img src="svg/content-creator/compensation/delete.svg" alt="delete">
+                </button>
+            </div>
+        </div>
+    }
+</div>
+@if (isCompensationModalOpen) {
+    <app-configure-compensation (closed)="isCompensationModalOpen=false" (verified)="isCompensationAddedModalOpen=true" ></app-configure-compensation>
+}
+@if (isCompensationAddedModalOpen) {
+    <app-compensation-added-dialog (closed)="isCompensationAddedModalOpen=false"></app-compensation-added-dialog>
+}

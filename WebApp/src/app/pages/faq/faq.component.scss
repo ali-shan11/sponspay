@@ -1,0 +1,55 @@
+@use "legal-page" as lp;
+
+.faq {
+  @include lp.legal-page;
+
+  .category-title {
+    font-family: Inter;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 40px;
+    letter-spacing: -0.6px;
+    margin-top: 3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .question {
+    font-family: Inter;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+    letter-spacing: -0.3px;
+    margin-bottom: 0.75rem;
+  }
+
+  section {
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .faq {
+    @include lp.legal-page-tablet;
+
+    .category-title {
+      font-size: 28px;
+      line-height: 36px;
+    }
+  }
+}
+
+@media (max-width: 600.98px) {
+  .faq {
+    @include lp.legal-page-mobile;
+
+    .category-title {
+      font-size: 24px;
+      line-height: 32px;
+    }
+
+    .question {
+      font-size: 18px;
+      line-height: 26px;
+    }
+  }
+}

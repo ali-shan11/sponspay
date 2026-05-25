@@ -1,0 +1,58 @@
+<div class="card card1">
+    @if (isLoading) {
+        <div class="country-wrapper h-100">
+            <div class="h-100">
+                <div class="sub-heading d-flex align-items-center gap-1">
+                    Top Earning Country
+                    <div class="info-tooltip-wrapper">
+                        <svg class="info-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="8" cy="8" r="7" stroke="#84818a" stroke-width="1.5"/>
+                            <path d="M8 7v4" stroke="#84818a" stroke-width="1.5" stroke-linecap="round"/>
+                            <circle cx="8" cy="5" r="0.75" fill="#84818a"/>
+                        </svg>
+                        <div class="info-tooltip">USD values are estimates based on current exchange rates and may differ from actual settlement amounts.</div>
+                    </div>
+                </div>
+                <div class="skeleton country-skeleton"></div>
+            </div>
+        </div>
+    } @else if (currentCountry) {
+        <div class="country-wrapper h-100">
+            @if (showArrows) {
+                <div class="move-actions">
+                    <div class="left action" role="presentation" [class.disabled]="selectedIndex === 0" (click)="goLeft()">
+                        <app-inline-svg [src]="svgIcons.arrowLeftIcon"></app-inline-svg>
+                    </div>
+                    <div class="right action" role="presentation" [class.disabled]="selectedIndex === totalCountries - 1" (click)="goRight()">
+                        <app-inline-svg [src]="svgIcons.arrowRightIcon"></app-inline-svg>
+                    </div>
+                </div>
+            }
+            <div class="h-100">
+                <div class="sub-heading d-flex align-items-center gap-1">
+                    {{ positionLabel }} Earning Country
+                    <div class="info-tooltip-wrapper">
+                        <svg class="info-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="8" cy="8" r="7" stroke="#84818a" stroke-width="1.5"/>
+                            <path d="M8 7v4" stroke="#84818a" stroke-width="1.5" stroke-linecap="round"/>
+                            <circle cx="8" cy="5" r="0.75" fill="#84818a"/>
+                        </svg>
+                        <div class="info-tooltip">USD values are estimates based on current exchange rates and may differ from actual settlement amounts.</div>
+                    </div>
+                </div>
+                <div class="country d-flex gap-2 mt-2">
+                    <img class="flag" [src]="currentCountry.flag" alt="flag">
+                    <span>{{currentCountry.countryName}}</span>
+                </div>
+                <div class="d-flex gap-2 mt-2">
+                    <div class="trend-data earning-duration">Total Earnings from this country <span class="fw-semibold">${{currentCountry.totalUsd | numberFormat}}</span></div>
+                </div>
+            </div>
+        </div>
+    } @else {
+        <div class="sub-heading">Top Earning Country</div>
+        <div class="empty-state">
+            <img src="svg/content-creator/dashboard/no-country-data.svg" alt="No countries yet">
+        </div>
+    }
+</div>

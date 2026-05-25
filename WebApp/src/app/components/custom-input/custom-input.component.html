@@ -1,0 +1,50 @@
+<div class="custom-input-wrapper">
+    @if (label) {
+        <div class="d-flex justify-content-between gap-3">
+            <div class="label-wrapper d-flex gap-2">
+                <label [for]="`custom-${label||''}-input`" class="custom-input-label text-start">{{ label }}</label>
+                @if (info) {
+                    <div class="info-mark" [attr.data-info]="info">?</div>
+                }
+            </div>
+            @if (subLabel) {
+                <div class="sub-label">{{subLabel}}</div>
+            }
+        </div>
+    }
+    <div class="position-relative">
+        <input
+            [name]="`custom-${label||''}-input`"
+            [type]="type"
+            class="custom-input w-100"
+            [ngClass]="{'invalid': controlName.invalid && controlName.touched}"
+            [formControl]="controlName"
+            [placeholder]="placeholder||`Enter ${label}`"
+            (keydown.enter)="onEnter()"
+        />
+        @if (controlName.invalid && controlName.touched) {
+            <img class="error-icon" [src]="svgIcons.errorIcon" alt="">
+        }
+    </div>
+
+    @if (controlName.invalid && controlName.touched) {
+        <div class="error">
+            @if (controlName.errors?.['required']) {
+                <small>{{label||'This field'}} is required.</small>
+            }
+            @if (controlName.errors?.['minlength']) {
+                <small>{{label}} must be at least {{findMinNumberOfControl}} characters long.</small>
+            }
+            @if (controlName.errors?.['maxlength']) {
+                <small>{{label}} cannot be more than {{findMaxNumberOfControl}} characters long.</small>
+            }
+            @if (controlName.errors?.['email']) {
+                <small>Invalid email format.</small>
+            }
+            @if (controlName.errors?.['handle_taken']) {
+                <small>This handle is already in use.</small>
+            }
+        </div>
+    }
+  </div>
+  

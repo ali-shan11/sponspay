@@ -1,0 +1,67 @@
+<div class="card card1">
+    @if (isLoading) {
+        <div class="earning-wrapper">
+            <div>
+                <div class="sub-heading d-flex align-items-center gap-1">
+                    Avg. Earning Value
+                    <div class="info-tooltip-wrapper">
+                        <svg class="info-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="8" cy="8" r="7" stroke="#84818a" stroke-width="1.5"/>
+                            <path d="M8 7v4" stroke="#84818a" stroke-width="1.5" stroke-linecap="round"/>
+                            <circle cx="8" cy="5" r="0.75" fill="#84818a"/>
+                        </svg>
+                        <div class="info-tooltip">USD values are estimates based on current exchange rates and may differ from actual settlement amounts.</div>
+                    </div>
+                </div>
+                <div class="skeleton earning-skeleton"></div>
+                <div class="d-flex gap-2 mt-2">
+                    <div class="skeleton skeleton-text" [style.width]="'200px'" [style.height]="'20px'"></div>
+                </div>
+            </div>
+            <div style="width:150px; height:90px;">
+                <div class="skeleton" style="width:100%; height:100%; border-radius:5px;"></div>
+            </div>
+        </div>
+    } @else if (hasData) {
+        <div class="earning-wrapper">
+            <div>
+                <div class="sub-heading d-flex align-items-center gap-1">
+                    Avg. Earning Value
+                    <div class="info-tooltip-wrapper">
+                        <svg class="info-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="8" cy="8" r="7" stroke="#84818a" stroke-width="1.5"/>
+                            <path d="M8 7v4" stroke="#84818a" stroke-width="1.5" stroke-linecap="round"/>
+                            <circle cx="8" cy="5" r="0.75" fill="#84818a"/>
+                        </svg>
+                        <div class="info-tooltip">USD values are estimates based on current exchange rates and may differ from actual settlement amounts.</div>
+                    </div>
+                </div>
+                <div class="earning mt-2">${{messageStats?.current30Days?.averageUsd | numberFormat}}</div>
+                <div class="d-flex gap-2 mt-2">
+                    @if (messageStats?.changePercentage === null) {
+                        <div class="trend-data d-flex gap-2 align-items-center">
+                            <img [src]="svgIcon.clockHistory" alt="clock">
+                            <div class="earning-duration">Not enough data to show trend</div>
+                        </div>
+                    } @else {
+                        <app-growth [value]="messageStats?.changePercentage ?? 0" [isLoading]="false"></app-growth>
+                        <div class="trend-data earning-duration">from Last 30 Days</div>
+                    }
+                </div>
+            </div>
+            <div style="width:150px; height:90px;">
+                <canvas
+                    baseChart
+                    [data]="barChartData"
+                    [options]="barChartOptions"
+                    type="bar">
+                </canvas>
+            </div>
+        </div>
+    } @else {
+        <div class="sub-heading">Avg. Earning Value</div>
+        <div class="empty-state">
+            <img src="svg/content-creator/dashboard/no-avg-earnings.svg" alt="No average data yet">
+        </div>
+    }
+</div>

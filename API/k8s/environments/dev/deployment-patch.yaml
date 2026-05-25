@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sponspay-api
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        environment: development
+    spec:
+      containers:
+      - name: api
+        imagePullPolicy: Always
+        env:
+        - name: NODE_ENV
+          value: "development"
+        - name: LOG_LEVEL
+          value: "debug"
+        - name: DB_NAME
+          value: "dev"
+        - name: API_KEY_ALLOWED_DOMAINS
+          value: '["https://dev.sponspay.com"]'
+        - name: PAWAPAY_BASE_URL
+          value: "https://api.sandbox.pawapay.io/v2"
+        - name: PAWAPAY_CALLBACK_AUTHORITY
+          value: "api-dev.sponspay.com"
+        - name: INFOBIP_BASE_URL
+          value: "https://v3njwm.api.infobip.com"
+        - name: INFOBIP_SENDER
+          value: "Sponspay"
+        - name: MANAGEMENT_EMAIL
+          value: "sponspay-management@sponspay.com"
+        - name: GOOGLE_OAUTH_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: google-oauth
+              key: client-id
+        - name: GOOGLE_OAUTH_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: google-oauth
+              key: client-secret
+        - name: GOOGLE_OAUTH_REDIRECT_URI
+          value: "https://api-dev.sponspay.com/creator/youtube/callback"
+        - name: FRONTEND_URL
+          value: "https://dev.sponspay.com"
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "50m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"

@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sponspay-webapp-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: dev-sponspay-ip
+    networking.gke.io/managed-certificates: dev-sponspay-webapp-cert
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.allow-http: "false"
+spec:
+  defaultBackend:
+    service:
+      name: dev-sponspay-webapp-service
+      port:
+        number: 80

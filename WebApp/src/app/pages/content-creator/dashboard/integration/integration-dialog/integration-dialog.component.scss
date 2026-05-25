@@ -1,0 +1,210 @@
+.custom-modal{
+    .modal-content{
+        border-radius: 12px;
+    }
+    .modal-body{
+        position: relative;
+    }
+    .close-icon{
+        position: absolute;
+        top: 15px;
+        right: 15px;
+    }
+}
+
+.integration-img{
+    width: 200px !important;
+}
+.onboard-wrapper-images{
+    margin-top: 30px;
+}
+.text-regular{
+    color: #030712 !important;
+}
+.heading{
+    color: #030712;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px;
+    letter-spacing: -0.16px;
+}
+.account-desc{
+    color: #8E8E8F;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 19px;
+    letter-spacing: -0.12px;
+    strong{
+        color: #030712;
+    }
+}
+.points-wrapper{
+    padding-left: 5%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    .point{
+        display: flex;
+        gap: 10px;
+        align-items: start;
+        .count{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #007AFF;
+            width: 30px;
+            min-width: 30px;
+            height: 30px;
+            border-radius: 50px;
+            color: #FFF;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 150%;
+            letter-spacing: -0.8px;
+        }
+        .title{
+            text-align: left;
+            color: #424345;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 150%;
+            letter-spacing: -0.8px;
+        }
+    }
+}
+
+.telegram-handle{
+    border-radius: 12px;
+    background: #F7F7F8;
+    padding: 20px 30px;
+    .divider{
+        hr{
+            border-color: #E9E9EC;
+            opacity: 1;
+        }
+        span{
+            color: #B7B8BD;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 20px;
+        }
+    }
+    .handle-input-wrapper{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .input{
+            display: block;
+            width: 80%;
+        }
+        .button-wrapper{
+            width: 80%;
+        }
+    }
+}
+.do-late{
+    cursor: pointer;
+    color: #007AFF;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px;
+    letter-spacing: -0.16px;
+}
+
+.min-w-max {
+    min-width: max-content;
+}
+
+/* Tablet breakpoint (below 992px) */
+@media (max-width: 991.98px) {
+    .points-wrapper{
+        padding-left: 2%;
+        .count, .title{
+            font-size: 15px;
+        }
+    }
+    .onboard-wrapper-images{
+        margin-top: 10px;
+    }
+    .integration-img{
+        width: 150px !important;
+    }
+    .telegram-handle{
+        border-radius: 12px;
+        background: #F7F7F8;
+        padding: 30px 22px;
+        .divider{
+            hr{
+                border-color: #E9E9EC;
+                opacity: 1;
+            }
+            span{
+                color: #B7B8BD;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 20px;
+            }
+        }
+        .handle-input-wrapper{
+            .input, .button-wrapper{
+                width: 100%;
+            }
+        }
+    }
+    .heading{
+        font-size: 15px;
+        line-height: 21px;
+    }
+    .do-late{
+        font-size: 15px;
+    }
+}
+
+/* Mobile breakpoint (below 768px) */
+@media (max-width: 767.98px) {
+    .points-wrapper{
+        padding-left: 0%;
+        .point{
+            .count{
+                width: 25px;
+                min-width: 25px;
+                height: 25px;
+            }
+            .count, .title{
+                font-size: 14px;
+            }
+        }
+    }
+    .telegram-handle{
+        padding: 20px 12px;
+    }
+    .heading{
+        font-size: 14px;
+        line-height: 20px;
+    }
+    .onboard-wrapper-images{
+        margin-top: 0px;
+    }
+    .integration-img{
+        width: 150px !important;
+    }
+    .do-late{
+        font-size: 14px;
+    }
+}
+@media (max-width: 426px) {
+    .custom-modal{
+        .modal-body{
+            padding: 30px 10px 15px 10px;
+        }
+        .close-icon{
+            top: 10px;
+            right: 10px;
+        }
+    }
+}

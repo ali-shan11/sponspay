@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dev-redisinsight-ingress
+  namespace: sponspay-api-dev
+  labels:
+    environment: development
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "dev-redisinsight-ip"
+    networking.gke.io/managed-certificates: "dev-redisinsight-cert"
+    kubernetes.io/ingress.class: "gce"
+    networking.gke.io/v1beta1.FrontendConfig: "redisinsight-frontendconfig"
+spec:
+  defaultBackend:
+    service:
+      name: redisinsight-service
+      port:
+        number: 80

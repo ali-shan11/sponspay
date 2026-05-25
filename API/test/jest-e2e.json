@@ -1,0 +1,25 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": ".",
+  "testEnvironment": "node",
+  "testRegex": ".e2e-spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "transformIgnorePatterns": [
+    "node_modules/(?!uuid)"
+  ],
+  "moduleNameMapper": {
+    "^config/(.*)$": "<rootDir>/../config/$1",
+    "^src/(.*)$": "<rootDir>/../src/$1"
+  },
+  "testPathIgnorePatterns": [
+    "<rootDir>/app.e2e-spec.ts"
+  ],
+  "setupFiles": ["<rootDir>/e2e.env.setup.ts"],
+  "setupFilesAfterEnv": ["<rootDir>/../jest.setup.ts"],
+  "silent": true,
+  "verbose": false,
+  "reporters": ["default"],
+  "testTimeout": 30000
+}

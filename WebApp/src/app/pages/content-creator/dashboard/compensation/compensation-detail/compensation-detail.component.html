@@ -1,0 +1,145 @@
+<div class="content-wrapper d-flex flex-column gap-2 justify-content-between">
+    <div>
+        <div class="user-country-wrapper d-flex gap-3 flex-column flex-md-row">
+            <div class="d-flex flex-column flex-md-row gap-3 gap-md-4">
+                <div class="flag">
+                    <img class="icon" [src]="flagIcons.kenya" alt="flag">
+                </div>
+                <div class="d-flex flex-column gap-2">
+                    <div class="country-name">Kenya</div>
+                    <div class="d-flex gap-4">
+                        <div class="shield-user d-flex justify-content-center gap-2">
+                            <app-inline-svg src="svg/content-creator/dashboard/shield-user.svg" ></app-inline-svg>
+                            <div class="align-self-center">Kwame Boateng</div>
+                        </div>
+                        <div class="configuration-status d-flex justify-content-center gap-2">
+                            <app-inline-svg src="svg/check-filled.svg" ></app-inline-svg>
+                            <div class="align-self-center">Compensation Configured</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="action-wrapper d-flex d-lg-flex gap-2 align-self-center">
+                <button class="action edit d-flex gap-2 w-100">
+                    <img src="svg/content-creator/compensation/edit.svg" alt="edit">
+                    <div class="align-self-center">Edit Compensation </div>
+                </button>
+                <button class="action delete">
+                    <img src="svg/content-creator/compensation/delete.svg" alt="delete">
+                </button>
+            </div>
+        </div>
+        <div class="payout-view-btn d-flex gap-2 mt-3">
+            <app-button class="general" btnText="General Details" iconUrl="svg/content-creator/dashboard/general.svg" iconPlacement="before" [type]="paymentStep===2?'secondary':'primary'" (btnClick)="paymentStep=1" ></app-button>
+            <app-button class="payout" btnText="Payout Statements" iconUrl="svg/content-creator/dashboard/payout.svg" iconPlacement="before" [type]="paymentStep===1?'secondary':'primary'" (btnClick)="paymentStep=2" ></app-button>
+        </div>
+
+        @if (paymentStep===1) {
+            <div class="total-earning-wrapper mt-3">
+                <div class="total-earning w-100">
+                    <div class="heading d-flex gap-2">
+                        <img src="svg/money-receive.svg" alt="money">
+                        <div>
+                            Total Earning
+                        </div>
+                    </div>
+                    <div class="value-wrapper mt-1">
+                        <div class="value">{{100000 | number}} KES</div>
+                        <div class="percentage">~$9.25</div>
+                    </div>
+                </div>
+                <div class="amount-wrapper w-100">
+                    <div class="amount text-end">
+                        <div class="heading">Next Pay Amount</div>
+                        <div class="value">{{80 | number}} KES</div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="amount text-end">
+                        <div class="heading">Next Pay date</div>
+                        <div class="value">01/20/2025</div>
+                    </div>
+                </div>
+            </div>
+            <div class="stats-wrapper mt-3">
+                <div class="title-bar stat">
+                    <div class="message-wrapper">
+                        <div class="message">
+                            <div class="title d-flex gap-2">
+                                <img src="svg/message-multiple.svg" alt="message">
+                                <div class="align-self-center">Premium Messages</div>
+                            </div>
+                            <div class="value d-flex gap-2 mt-1">
+                                <div class="count">
+                                    {{8503 | number}}
+                                </div>
+                                <img src="svg/message-table.svg" alt="message">
+                            </div>
+                        </div>
+                        <div class="mobile-action action gap-2 align-self-center">
+                            <div class="align-self-center">View</div>
+                            <img src="svg/link.svg" alt="link">
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="mobile">
+                        <div class="title d-flex gap-2">
+                            <img src="svg/call.svg" alt="call">
+                            <div class="align-self-center">Mobile Number</div>
+                        </div>
+                        <div class="value">
+                            +1 (234) 564 7899
+                        </div>
+                    </div>
+                    <div></div>
+        
+                    <div class="desktop-action action gap-2 align-self-center">
+                        <div class="align-self-center">View</div>
+                        <img src="svg/link.svg" alt="link">
+                    </div>
+                </div>
+                <div class="stat">
+                    <div class="heading">Livestream Messages</div>
+                    <div class="value">600</div>
+                </div>
+                <div class="stat">
+                    <div class="heading">Video Messages </div>
+                    <div class="value">32</div>
+                </div>
+                <div class="stat">
+                    <div class="heading">Livestream this period </div>
+                    <div class="value">3</div>
+                </div>
+                <div class="stat">
+                    <div class="heading">Average messages value </div>
+                    <div class="value">1.632</div>
+                </div>
+            </div>
+            <div class="sponspay-wrapper d-flex justify-content-between mt-3">
+                <div class="heading d-flex gap-2">
+                    <img src="svg/message-multiple.svg" alt="message">
+                    <div class="align-self-center">Sponspay Fees</div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="value">4.5</div>
+                    <div class="text-grey">3.5% (Avg)</div>
+                </div>
+            </div>
+            <div class="insight-wrapper mt-3">
+                <div class="heading d-flex gap-2">
+                    <img src="svg/landing/stars-1.svg" alt="stars">
+                    <div>Key Insight</div>
+                </div>
+                <div class="value mt-2">
+                    Your livestream content earns 3X  more per message in Nigeria than video replies.
+                    Consider more livestreams to boost earnings!
+                </div>
+            </div>
+        }
+
+        @if (paymentStep===2) {
+            <div class="payout-list my-3">
+                <app-compensation-payout-list></app-compensation-payout-list>
+            </div>
+        }
+    </div>
+</div>

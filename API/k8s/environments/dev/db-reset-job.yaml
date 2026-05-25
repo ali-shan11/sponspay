@@ -1,0 +1,93 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-reset
+  labels:
+    app: db-reset
+spec:
+  ttlSecondsAfterFinished: 300
+  backoffLimit: 1
+  template:
+    metadata:
+      labels:
+        app: db-reset
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: db-reset
+        image: postgres:17
+        env:
+        - name: PGUSER
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: user
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: password
+        - name: PGHOST
+          value: "10.67.208.3"
+        - name: PGDATABASE
+          value: "dev"
+        command:
+        - /bin/sh
+        - -c
+        - |
+          echo "=== Dev Database Reset ==="
+          echo "Host: $PGHOST"
+          echo "Database: $PGDATABASE"
+          echo ""
+          echo "Fetching all tables..."
+
+          TABLES=$(psql -t -c "
+            SELECT string_agg('\"' || tablename || '\"', ', ')
+            FROM pg_tables
+            WHERE schemaname = 'public'
+          ")
+
+          if [ -z "$TABLES" ] || [ "$TABLES" = " " ]; then
+            echo "No tables found. Database is already empty."
+            exit 0
+          fi
+
+          echo "Tables to truncate: $TABLES"
+          echo ""
+          echo "Truncating all tables with CASCADE..."
+
+          psql -c "TRUNCATE TABLE $TABLES CASCADE;"
+
+          if [ $? -eq 0 ]; then
+            echo ""
+            echo "Success! All tables truncated."
+
+            echo "Seeding Terms policy..."
+            psql -c "INSERT INTO \"terms\" (id, version, html, \"createdAt\") VALUES (gen_random_uuid(), 1, '<h1>SponsPay Terms and Conditions</h1>', NOW());"
+            echo "Terms policy seeded."
+
+            echo ""
+            echo "The API will re-seed lookup data (statuses, currencies) on next restart."
+            echo ""
+            echo "To restart the API and trigger re-seeding:"
+            echo "  kubectl rollout restart deployment/dev-sponspay-api -n sponspay-api-dev"
+          else
+            echo "Error: Failed to truncate tables"
+            exit 1
+          fi
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          runAsUser: 999
+          capabilities:
+            drop:
+            - ALL
+      securityContext:
+        fsGroup: 999

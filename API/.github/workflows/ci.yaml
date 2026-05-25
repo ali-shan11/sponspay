@@ -1,0 +1,262 @@
+name: Build and Deploy API to GKE
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev
+      - main
+    paths-ignore:
+      # Documentation files
+      - '*.md'
+      - 'k8s/README.md'
+      - 'docs/**'
+      
+      # Memory bank files (project documentation)
+      - 'memory-bank/**'
+      
+      # Git and editor configuration
+      - '.gitignore'
+      - '.editorconfig'
+      - '.vscode/**'
+      - '.idea/**'
+      
+      # Deployment scripts and documentation
+      - 'deploy.sh'
+      - 'k8s-deployment.yaml'  # Old deployment file
+      
+      # CI/CD configuration (to prevent infinite loops)
+      - '.github/**'
+      
+      # License and other meta files
+      - 'LICENSE'
+      - 'CHANGELOG.md'
+      - 'CONTRIBUTING.md'
+      
+      # Test files that don't affect production build
+      - '**/*.spec.ts'
+      - '**/*.test.ts'
+      - 'test/**'
+      - 'src/**/*.spec.ts'
+      
+      # Development tools configuration
+      - '.eslintrc.*'
+      - '.prettierrc.*'
+      - 'jest.config.*'
+      - 'nest-cli.json'
+      
+      # Environment files (handled separately)
+      - '.env*'
+
+env:
+  IMAGE: api
+  REGISTRY_BASE: us-east1-docker.pkg.dev
+  GKE_PROJECT: sponspay-deployment
+  ARTIFACT_REGISTRY: sponspay-dev
+  GKE_CLUSTER: dev
+
+jobs:
+  # Pre-build jobs (run in parallel)
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint check
+        run: npm run lint:check
+
+  unit:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm run test:ci
+
+  e2e:
+    name: E2E Tests
+    if: false # Temporarily disabled
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      NODE_ENV: test
+      DB_HOST: 127.0.0.1
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: postgres
+      DB_SYNC: "true"
+
+      # Required by ConfigModule schema - provide harmless dummy values
+      SERVICE_ACCOUNT: test
+      SERVICE_ACCOUNT_PRIVATE_KEY: test
+      SERVICE_ACCOUNT_USER: test
+      SENDGRID_API_KEY: test
+      API_KEY_ALLOWED_DOMAINS: example.com
+      FROM_EMAIL: noreply@example.com
+      CONTACT_US_EMAIL: support@example.com
+      FIREBASE_SERVICE_ACCOUNT: "{}"
+      FIREBASE_CHECK_REVOKED: "false"
+      TIMEZONE_API_URL: https://example.com
+      PHOTOS_BUCKET: test-bucket
+      ZOHO_CLIENT_ID: test
+      ZOHO_CLIENT_SECRET: test
+      ZOHO_REDIRECT_URI: https://example.com/oauth
+      ZOHO_REFRESH_TOKEN: test
+      ZOHO_ENVIRONMENT: production
+      TELEGRAM_SERVICE_URL: http://localhost:9999
+      INTERNAL_API_KEY: test-internal-key
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run E2E tests
+        run: npm run test:e2e
+
+  # Build and deploy (runs after all pre-build jobs succeeded)
+  build_and_deploy:
+    name: Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+    needs: [lint, unit]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set environment variables
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "ENVIRONMENT=prod" >> $GITHUB_ENV
+            echo "GKE_ZONE=us-east1" >> $GITHUB_ENV
+            echo "NAMESPACE=sponspay-api-prod" >> $GITHUB_ENV
+            echo "IMAGE_TAG=api-prod-${{ github.sha }}" >> $GITHUB_ENV
+          else
+            echo "ENVIRONMENT=dev" >> $GITHUB_ENV
+            echo "GKE_ZONE=us-east1" >> $GITHUB_ENV
+            echo "NAMESPACE=sponspay-api-dev" >> $GITHUB_ENV
+            echo "IMAGE_TAG=api-dev-${{ github.sha }}" >> $GITHUB_ENV
+          fi
+
+      - name: Set GitHub environment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const environment = process.env.ENVIRONMENT;
+            core.exportVariable('GITHUB_ENVIRONMENT', environment === 'prod' ? 'production' : 'development');
+
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: ${{ secrets.GKE_SA_KEY }}
+
+      - name: Setup Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.GKE_PROJECT }}
+          install_components: 'gke-gcloud-auth-plugin'
+
+      - name: Configure Docker for Artifact Registry
+        run: |
+          gcloud auth configure-docker ${{ env.REGISTRY_BASE }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ env.REGISTRY_BASE }}/${{ env.GKE_PROJECT }}/${{ env.ARTIFACT_REGISTRY }}/${{ env.IMAGE }}:${{ env.IMAGE_TAG }} .
+          docker tag ${{ env.REGISTRY_BASE }}/${{ env.GKE_PROJECT }}/${{ env.ARTIFACT_REGISTRY }}/${{ env.IMAGE }}:${{ env.IMAGE_TAG }} \
+                     ${{ env.REGISTRY_BASE }}/${{ env.GKE_PROJECT }}/${{ env.ARTIFACT_REGISTRY }}/${{ env.IMAGE }}:${{ env.ENVIRONMENT }}-latest
+
+      - name: Push Docker image
+        run: |
+          docker push ${{ env.REGISTRY_BASE }}/${{ env.GKE_PROJECT }}/${{ env.ARTIFACT_REGISTRY }}/${{ env.IMAGE }}:${{ env.IMAGE_TAG }}
+          docker push ${{ env.REGISTRY_BASE }}/${{ env.GKE_PROJECT }}/${{ env.ARTIFACT_REGISTRY }}/${{ env.IMAGE }}:${{ env.ENVIRONMENT }}-latest
+
+      - name: Get GKE credentials
+        run: |
+          gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }} --region ${{ env.GKE_ZONE }} --project ${{ env.GKE_PROJECT }}
+
+      - name: Create namespace if it doesn't exist
+        run: |
+          kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Update Kustomization with new image tag
+        run: |
+          cd k8s/environments/${{ env.ENVIRONMENT }}
+          # Update the image tag in kustomization.yaml
+          kustomize edit set image ${{ env.REGISTRY_BASE }}/${{ env.GKE_PROJECT }}/${{ env.ARTIFACT_REGISTRY }}/${{ env.IMAGE }}:${{ env.IMAGE_TAG }}
+
+      - name: Deploy to Kubernetes
+        run: |
+          echo "Deploying to ${{ env.ENVIRONMENT }} environment..."
+          kubectl apply -k k8s/environments/${{ env.ENVIRONMENT }}
+
+      - name: Wait for deployment to be ready
+        run: |
+          kubectl rollout status deployment -n ${{ env.NAMESPACE }} --timeout=300s
+
+      - name: Get deployment status
+        run: |
+          echo "=== Deployment Status ==="
+          kubectl get pods -n ${{ env.NAMESPACE }} -l app=sponspay-api
+          echo ""
+          echo "=== Ingress Status ==="
+          kubectl get ingress -n ${{ env.NAMESPACE }}
+          echo ""
+          echo "=== Certificate Status ==="
+          kubectl get managedcertificate -n ${{ env.NAMESPACE }}
+
+      - name: Deployment Summary
+        run: |
+          if [[ "${{ env.ENVIRONMENT }}" == "prod" ]]; then
+            echo "🚀 Production API deployment completed successfully!"
+            echo "🌐 API should be available at: https://api.sponspay.com"
+          else
+            echo "🚀 Development API deployment completed successfully!"
+            echo "🌐 API should be available at: https://api-dev.sponspay.com"
+          fi
+          echo "📦 Image: ${{ env.REGISTRY_BASE }}/${{ env.GKE_PROJECT }}/${{ env.ARTIFACT_REGISTRY }}/${{ env.IMAGE }}:${{ env.IMAGE_TAG }}"
+          echo "🏷️  Environment: ${{ env.ENVIRONMENT }}"
+          echo "📍 Namespace: ${{ env.NAMESPACE }}"

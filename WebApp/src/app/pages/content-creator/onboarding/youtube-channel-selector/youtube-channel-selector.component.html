@@ -1,0 +1,51 @@
+<div class="youtube-channel-selector">
+  <!-- Header -->
+  <div class="header mb-4">
+    <h2 class="title">Connect Your YouTube Channel</h2>
+    <p class="subtitle">We'll use this to access your channel analytics and viewer data</p>
+  </div>
+
+  <!-- Not Connected State -->
+  @if (!youtubeConnectionStatus.connected) {
+    <div class="connect-section">
+      <div class="connect-card">
+        <app-inline-svg [src]="svgIcon.youtubeIconBig" class="youtube-icon"></app-inline-svg>
+        <h3>Connect to YouTube</h3>
+        <p>Click below to authorize your YouTube channel</p>
+        <app-button
+          btnText="Connect YouTube Account"
+          type="primary"
+          [disabled]="isConnectingYouTube"
+          (btnClick)="connectYouTube()"
+          class="w-100"
+          data-cy="youtube-connect-btn"
+        ></app-button>
+      </div>
+
+      @if (youtubeConnectionStatus.error) {
+        <div class="error-message mt-3" data-cy="youtube-error">
+          @if (youtubeConnectionStatus.error === 'denied') {
+            <p>Access was denied. You need to grant permission to proceed.</p>
+          } @else if (youtubeConnectionStatus.error === 'no_channel') {
+            <p class="m-0">This Google account doesn't have a YouTube channel. You can try connecting a different YouTube account above, or use the "Sign Out & Go Back" button below to choose a different Google account.</p>
+          } @else {
+            <p class="m-0">Connection failed. Please try again.</p>
+          }
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Connected State -->
+  @if (youtubeConnectionStatus.connected) {
+    <div class="success-section" data-cy="youtube-connected">
+      <div class="success-card">
+        <div class="d-flex gap-2 align-items-center">
+          <app-inline-svg [src]="svgIcon.badgeCheckIcon" class="yt-success-icon"></app-inline-svg>
+          <h3>YouTube Connected!</h3>
+        </div>
+        <p class="m-0">Your YouTube channel has been successfully connected. You can now proceed to the next step.</p>
+      </div>
+    </div>
+  }
+</div>

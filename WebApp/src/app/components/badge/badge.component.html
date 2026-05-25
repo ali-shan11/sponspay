@@ -1,0 +1,6 @@
+<div class="custom-badge" [ngClass]="{'selected': isSelected, 'disabled': disabled}">
+    {{badgeText}}
+    @if (isSelected) {
+        <app-inline-svg class="icon" [src]="svgIcons.badgeCheckIcon" ></app-inline-svg>
+    }
+</div>

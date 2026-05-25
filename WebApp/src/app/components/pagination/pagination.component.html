@@ -1,0 +1,95 @@
+<div class="pagination-wrapper d-flex flex-column flex-lg-row justify-between align-items-center gap-3">
+
+  <div class="lg-sc-title gray-text d-flex d-md-none d-lg-block">
+    Showing {{ startItem }} to {{ endItem }} of {{ totalItems }}
+  </div>
+
+  <ul class="pagination mb-0 d-none d-md-flex">
+    <li class="page-wrapper" [class.disabled]="currentPage === 1">
+      <button class="arrow-icon" (click)="goToPreviousPage()">
+        <app-inline-svg [src]="svgIcon.arrowLeftIcon" ></app-inline-svg>
+      </button>
+    </li>
+
+    <!-- Always show page 1 if it's not in visible pages -->
+    @if (totalPages > maxVisiblePages + 2 && !visiblePages.includes(1)) {
+      <li class="page-wrapper" [class.active]="currentPage === 1">
+        <button class="page-num" (click)="onPageClick(1)">
+          1
+        </button>
+      </li>
+    }
+
+    <!-- Left ellipsis -->
+    @if (showLeftEllipsis) {
+      <li class="page-wrapper disabled">
+        <span class="page-num">...</span>
+      </li>
+    }
+
+    <!-- Visible pages -->
+    @for (page of visiblePages; track $index) {
+      <li class="page-wrapper" [class.active]="page === currentPage">
+        <button class="page-num" (click)="onPageClick(page)">
+          {{ page }}
+        </button>
+      </li>
+    }
+
+    <!-- Right ellipsis -->
+    @if (showRightEllipsis) {
+      <li class="page-wrapper disabled" >
+        <span class="page-num">...</span>
+      </li>
+    }
+
+    <!-- Always show last page if it's not in visible pages -->
+    @if (totalPages > maxVisiblePages + 2 && !visiblePages.includes(totalPages)) {
+      <li class="page-wrapper" [class.active]="currentPage === totalPages">
+        <button class="page-num" (click)="onPageClick(totalPages)">
+          {{ totalPages }}
+        </button>
+      </li>
+    }
+
+    <li class="page-wrapper" [class.disabled]="currentPage === totalPages">
+      <button class="arrow-icon" (click)="goToNextPage()">
+        <app-inline-svg [src]="svgIcon.arrowRightIcon" ></app-inline-svg>
+      </button>
+    </li>
+  </ul>
+
+  <div class="d-flex justify-content-between gap-2 w-100 custom-select-width align-items-center">
+    <div class="gray-text d-none d-md-block d-lg-none">
+      Showing {{ startItem }} to {{ endItem }} of {{ totalItems }}
+    </div>
+
+    <div class="d-flex align-items-center gap-2 d-block d-md-none">
+      <div class="page-wrapper" [class.disabled]="currentPage === 1">
+        <button class="arrow-icon" (click)="goToPreviousPage()">
+          <app-inline-svg [src]="svgIcon.arrowLeftIcon" ></app-inline-svg>
+        </button>
+      </div>
+
+      <select class="form-select form-select-sm w-auto page-size-selection" [(ngModel)]="currentPage">
+        @for (page of totalPagesArray; track page) {
+          <option [value]="page">Page {{ page }}</option>
+        }
+      </select>
+
+      <div class="page-wrapper" [class.disabled]="currentPage === totalPages">
+        <button class="arrow-icon" (click)="goToNextPage()">
+          <app-inline-svg [src]="svgIcon.arrowRightIcon" ></app-inline-svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center gap-2">
+      <label for="page-selection" class="gray-text d-none d-md-block d-lg-none">Show</label>
+      <app-custom-select [controlName]="sizeControl" [data]="pageSizeOptions" bindLabel="name" bindValue="name" [clearable]="false" ></app-custom-select>
+      <!-- <select name="page-selection" class="form-select form-select-sm w-auto page-size-selection" [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+      <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }} rows</option>
+    </select> -->
+  </div>
+</div>
+</div>

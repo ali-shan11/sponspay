@@ -1,0 +1,15 @@
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: sponspay-webapp-config
+  labels:
+    app: sponspay-webapp
+    component: frontend
+spec:
+  healthCheck:
+    port: 80
+    type: HTTP
+    requestPath: /
+  timeoutSec: 30
+  connectionDraining:
+    drainingTimeoutSec: 60

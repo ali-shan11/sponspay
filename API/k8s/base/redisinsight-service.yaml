@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: redisinsight-service
+  labels:
+    app: redisinsight
+  annotations:
+    cloud.google.com/backend-config: '{"default": "redisinsight-backendconfig"}'
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 5540
+    protocol: TCP
+    name: http
+  selector:
+    app: redisinsight

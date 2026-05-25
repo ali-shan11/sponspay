@@ -1,0 +1,16 @@
+<button
+  class="copy-link-pill"
+  [class.copied]="isTextCopied"
+  [class.no-glow]="hasInteracted"
+  [disabled]="isLoading"
+  (click)="copyToClipboard()"
+  @fadeSlideIn
+>
+  @if (isTextCopied) {
+    <i class="bi bi-check2"></i>
+    <span class="pill-text">Copied!</span>
+  } @else {
+    <i class="bi bi-link-45deg"></i>
+    <span class="pill-text">Copy Sponspay Link</span>
+  }
+</button>

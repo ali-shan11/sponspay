@@ -1,0 +1,19 @@
+<div class="localization-card setting-card p-3 p-md-4">
+    <div class="title">Localization</div>
+    <div class="text">Select your preferences for your region.</div>
+
+    <div class="pt-2">
+        <div class="divider"></div>
+    </div>
+
+    <div class="inputs-wrapper d-flex flex-column gap-3">
+        <app-custom-select label="Country" [data]="countriesList" placeholder="Select Country" bindValue="name" bindLabel="name" [showImage]="true" ></app-custom-select>
+        <app-custom-select label="Currency" [data]="currencyList" placeholder="Select Currency" bindValue="name" bindLabel="name" ></app-custom-select>
+        <app-custom-select label="TimeZone and Format" [data]="timeZoneList" placeholder="Select Timezone" bindValue="name" bindLabel="name" ></app-custom-select>
+    </div>
+</div>
+
+<div class="mt-3 d-flex gap-3 w-100">
+    <app-button class="w-100" btnText="Discard" type="secondary" ></app-button>
+    <app-button class="w-100" btnText="Apply Changes" type="primary" ></app-button>
+</div>

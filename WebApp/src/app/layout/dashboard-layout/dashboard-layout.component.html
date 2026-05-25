@@ -1,0 +1,16 @@
+<div class="d-flex">
+    <div class="d-none d-md-block position-fixed top-0 start-0 vh-100 side-bar-wrapper">
+        <app-dashboard-sidebar></app-dashboard-sidebar>
+    </div>
+    <div class="main-content">
+        <div class="sticky-top z-3">
+            <app-dashboard-header></app-dashboard-header>
+        </div>
+        <div class="content-wrapper">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
+<div class="d-md-none">
+    <app-copy-link-control></app-copy-link-control>
+</div>

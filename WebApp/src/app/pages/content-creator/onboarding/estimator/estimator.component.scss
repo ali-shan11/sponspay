@@ -1,0 +1,212 @@
+.onboard-card{
+    padding: 55px 64px 30px 64px !important;
+}
+.estimator-check-img{
+    width: 100px !important;
+}
+.text-regular{
+    color: #030712 !important;
+}
+
+.youtube-card{
+    z-index: 100;
+    border-radius: 15.384px;
+    border: 1px solid #E6E6E6;
+    background: #fff;
+    box-shadow: 0 1.162px 3.485px 0 rgba(16, 24, 40, 0.10), 0 1.162px 2.324px -1.162px rgba(16, 24, 40, 0.10);
+
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    .user-card{
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        .user-details{
+            display: flex;
+            gap: 15px;
+            .user-img{
+                height: 60px;
+                width: 60px;
+                border-radius: 50px;
+            }
+            .name{
+                color: #0B0B0C;
+                font-size: 18px;
+                font-weight: 600;
+                line-height: 150%;
+            }
+            .user-tag{
+                color: #5D5D77;
+                font-size: 15px;
+                font-weight: 400;
+                line-height: 150%;
+            }
+        }
+    }
+    .divider{
+        background: #E9E9EF;
+        height: 1.3px;
+    }
+    .stats-wrapper{
+        padding: 10px;
+        .stat{
+            .title{
+                color: #8E8E8F;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 150%;
+            }
+            .value{
+                color: #030712;
+                font-size: 16px;
+                font-weight: 500;
+                line-height: 150%;
+                text-align: right;
+            }
+        }
+    }
+    .estimated-stats{
+        border-radius: 6.344px;
+        background: #E1E8F4;
+        padding: 16px 20px;
+        .title{
+            color: #68686A;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 150%;
+        }
+        .value{
+            text-align: right;
+            color: #007AFF;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 150%;
+        }
+    }
+}
+.youtube-card-backgrounds{
+    .background1, .background2{
+        position: relative;
+        z-index: 10;
+        border-radius: 15px;
+        height: 40px;
+        margin-top: -25px !important;
+        background: #fff;
+        border: #E6E6E6;
+        box-shadow: 0 1.162px 3.485px 0 rgba(16, 24, 40, 0.10), 0 1.162px 2.324px -1.162px rgba(16, 24, 40, 0.10);
+    }
+    .background2{
+        z-index: 5 !important;
+        margin: 0px 10px;
+    }
+}
+.text-regular-bottom{
+    color: #8E8E8F !important;
+}
+
+::ng-deep .estimator-detail-text{
+    color: #8E8E8F;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: -0.14px;
+    div{
+        cursor: pointer;
+    }
+    svg{
+        margin-top: -2px;
+        path{
+            stroke: #8E8E8F !important;
+        }
+    }
+}
+
+/* Tablet breakpoint (below 992px) */
+@media (max-width: 991.98px) {
+    .estimator-check-img{
+        width: 80px !important;
+    }
+    .estimator-detail-text{
+        font-size: 13px;
+    }
+    .youtube-card{
+        .user-card{
+            .user-details{
+                .name{
+                    font-size: 17px;
+                }
+                .user-tag{
+                    font-size: 14px;
+                }
+            }
+        }
+        .stats-wrapper{
+            .stat{
+                .title{
+                    font-size: 13px;
+                }
+                .value{
+                    font-size: 15px;
+                }
+            }
+        }
+        .estimated-stats{
+            .title{
+                font-size: 13px;
+            }
+            .value{
+                font-size: 15px;
+            }
+        }
+    }
+}
+
+/* Mobile breakpoint (below 768px) */
+@media (max-width: 767.98px) {
+    .estimator-check-img{
+        width: 60px !important;
+    }
+    .estimator-detail-text{
+        font-size: 12px;
+        ::ng-deep .svg-wrapper svg{
+            width: 14px;
+        }
+    }
+    .youtube-card{
+        gap: 20px;
+        .user-card{
+            padding: 0px;
+            .user-details{
+                .name{
+                    font-size: 16px;
+                }
+                .user-tag{
+                    font-size: 13px;
+                }
+            }
+        }
+        .stats-wrapper{
+            padding: 0px;
+            .stat{
+                .title{
+                    font-size: 12px;
+                }
+                .value{
+                    font-size: 14px;
+                }
+            }
+        }
+        .estimated-stats{
+            .title{
+                font-size: 12px;
+            }
+            .value{
+                font-size: 14px;
+            }
+        }
+    }
+  }
+  

@@ -1,0 +1,55 @@
+<!-- fullscreen below md, centered above -->
+<div #modal class="custom-modal modal fade modal-fullscreen-md-down">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">  
+            <div class="modal-body onboard-card">
+                <button class="btn close-icon cursor-pointer p-0 border-0" (click)="close()">
+                    <img src="svg/menu/sidebar-sponspay-close.svg" alt="close">
+                </button>
+                <div class="d-flex gap-4 justify-content-center onboard-wrapper-images">
+                    <img class="integration-img" src="svg/content-creator/integration.svg" alt="Integration">
+                </div>
+                <div class="title-wrapper mt-3">
+                    <div class="text-medium text-center">Connect Telegram</div>
+                    <div class="text-regular text-center mt-3">We’ll create a Telegram channel for you. Connect your Telegram account to enable replies and engage with premium messages from your audience.</div>
+                </div>
+                
+                <div class="telegram-handle mt-3">
+                    <div class="text-center">
+                        <div class="mt-3">
+                            <img src="svg/content-creator/integration-qr.svg" alt="qr">
+                        </div>
+                        <div class="points-wrapper mt-3">
+                            <div class="point">
+                                <div class="count">1</div>
+                                <div class="title">Open Telegram on your phone</div>
+                            </div>
+                            <div class="point">
+                                <div class="count">2</div>
+                                <div class="title">Go to <strong>Settings > Devices > Link Desktop Device</strong></div>
+                            </div>
+                            <div class="point">
+                                <div class="count">3</div>
+                                <div class="title">Point your phone camera at the QR code above</div>
+                            </div>
+                        </div>
+            
+                        <div class="divider d-flex align-items-center my-3">
+                            <hr class="flex-grow-1" />
+                            <span class="px-3">or enter a custom handle</span>
+                            <hr class="flex-grow-1" />
+                        </div>
+            
+                        <div class="handle-input-wrapper pt-2">
+                            <app-custom-input class="input" placeholder="@yourhandle" label="Telegram Handle" ></app-custom-input>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="d-flex mt-4 gap-4">
+                    <app-button class="w-100" btnText="I'll do this later" type="secondary" (btnClick)="close()" ></app-button>
+                </div>
+            </div>
+      </div>
+    </div>
+</div>

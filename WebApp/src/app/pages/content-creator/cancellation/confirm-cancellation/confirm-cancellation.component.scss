@@ -1,0 +1,117 @@
+.condition-img{
+    width: 190px !important;
+}
+.onboard-wrapper-images{
+    margin-top: 20px;
+}
+.text-regular{
+    color: #030712 !important;
+}
+.text-grey{
+    color: #68686a;
+}
+.conditions-wrapper{
+    border-radius: 12px;
+    background: #F7F7F8;
+    padding: 25px;
+
+    height: 440px;
+    overflow-y: auto;
+}
+
+.condition-text{
+    color: #030712;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.16px;
+}
+
+.message-wrapper{
+    label{
+        font-family: Inter;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 12px;
+        letter-spacing: -1%;
+    }
+    .optional{
+        color: rgba(174, 175, 176, 1);
+    }
+    textarea:focus-visible ,textarea:focus{
+        outline: none;
+        border: none;
+        box-shadow: none;
+    }
+}
+
+::ng-deep .accept-condition{
+    border-radius: 8px;
+    background: #FFF;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 23px 44px 0 rgba(176, 183, 195, 0.14);
+    border: 1px solid transparent;
+
+    display: flex;
+    gap: 15px;
+    padding: 10px 15px;
+    align-items: start;
+    &.accepted{
+        border-radius: 8px;
+        border: 1px solid #213458;
+        background: #E1E8F4;
+        box-shadow: none;
+    }
+    .accept-condititon-checkbox {
+        margin-top: 4px;
+        width: 16px;
+        height: 16px;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        border-radius: 4px;
+        border: 1px solid #E6E6E6;
+        background: #FFF;
+        cursor: pointer;
+        position: relative;
+      }
+    
+      .accept-condititon-checkbox:checked {
+        background-color: #213458; /* Bootstrap primary color or your own */
+        border-color: #213458;
+      }
+    
+      .accept-condititon-checkbox:checked::after {
+        content: "";
+        position: absolute;
+        left: 5px;
+        top: 2px;
+        width: 4px;
+        height: 8px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+    }
+}
+
+/* Tablet breakpoint (below 992px) */
+@media (max-width: 991.98px) {
+    .accept-condition{
+        padding: 10px;
+    }
+    .onboard-wrapper-images{
+        margin-top: 10px;
+    }
+    .integration-img{
+        width: 150px !important;
+    }
+}
+
+/* Mobile breakpoint (below 768px) */
+@media (max-width: 767.98px) {
+    .onboard-wrapper-images{
+        margin-top: 0px;
+    }
+    .condition-img{
+        width: 100px !important;
+    }
+}

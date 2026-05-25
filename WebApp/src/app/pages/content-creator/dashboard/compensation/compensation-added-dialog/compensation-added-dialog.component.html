@@ -1,0 +1,18 @@
+<!-- fullscreen below md, centered above -->
+<div #modal class="custom-modal modal fade modal-fullscreen-md-down">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">  
+            <div class="modal-body">
+                <div class="added-wrapper text-center">
+                    <button class="btn close-icon border-0 p-0 m-0" (click)="close()">
+                        <img src="svg/content-creator/compensation/close.svg" alt="close">
+                    </button>
+                    <img class="icon" src="svg/content-creator/estimator-check.svg" alt="check">
+                    <div class="heading">Compensation Added!</div>
+                    <div class="text">Your compensation method has been configured successfully. You will now receive payouts through your selected method.</div>
+                    <app-button class="w-100" btnText="Close" (click)="close()"></app-button>
+                </div>
+            </div>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+@if (!isLoading) {
+    @if (value !== null && value !== undefined) {
+        <div class="growth-wrapper" [ngClass]="trendFlow">
+            @if (trendFlow === 'up') {
+                <img [src]="svgIcon.growth" alt="up">
+            } @else if (trendFlow === 'down') {
+                <img [src]="svgIcon.deteriorate" alt="down">
+            }
+            <div class="align-self-center">{{parsedValue}}%</div>
+        </div>
+    }
+}@else {
+    <div class="skeleton skeleton-text growth-skeleton"></div>
+}

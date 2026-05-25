@@ -1,0 +1,19 @@
+<div class="otp-container">
+  @for (i of [0,1,2,3,4,5]; track $index) {
+    <input
+        type="text"
+        inputmode="numeric"
+        maxlength="1"
+        pattern="[0-9]*"
+        [formControl]="otpControls[$index]"
+        (input)="onInput($event, $index)"
+        (keydown)="onKeydown($event, $index)"
+        (paste)="onPaste($event)"
+        class="otp-input"
+        #otpInput
+    />
+  }
+</div>
+@if (formControl.invalid && formControl.touched) {
+    <div class="error">Please enter a valid 6-digit OTP</div>
+}

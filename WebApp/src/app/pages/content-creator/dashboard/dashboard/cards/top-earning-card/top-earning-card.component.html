@@ -1,0 +1,54 @@
+<div class="card card2">
+    <div class="sub-heading d-flex align-items-center gap-1">
+        Top Earning Country
+        <div class="info-tooltip-wrapper">
+            <svg class="info-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="8" cy="8" r="7" stroke="#84818a" stroke-width="1.5"/>
+                <path d="M8 7v4" stroke="#84818a" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="8" cy="5" r="0.75" fill="#84818a"/>
+            </svg>
+            <div class="info-tooltip">USD values are estimates based on current exchange rates and may differ from actual settlement amounts.</div>
+        </div>
+    </div>
+    <div class="countries-wrapper mt-3" [class.no-data]="!isLoading && !topEarningCountries?.items?.length">
+        @if (topEarningCountries) {
+            @if (topEarningCountries.items.length>0) {
+                @for (country of topEarningCountries.items; track $index) {
+                    <div class="earning-wrapper">
+                        <div class="country w-100">
+                            <img class="flag" [src]="country.flag" alt="flag" [ngClass]="{'skeleton': isLoading}">
+                            <div class="d-flex flex-column gap-1 align-self-center">
+                                <div class="country-name">
+                                    {{country.country}}
+                                </div>
+                                <div class="country-value">{{country.localAmountTotal | number}} {{country.currency.code}}</div>
+                            </div>
+                        </div>
+                        <div class="value d-flex gap-1 align-self-center">
+                            <div class="dollar-icon">$</div>
+                            {{country.usdTotal | number}}
+                        </div>
+                    </div>
+                }
+            }@else{
+                <div class="empty-state">
+                    <img src="svg/content-creator/dashboard/no-top-countries.svg" alt="No countries yet">
+                </div>
+            }
+        }
+        @if (isLoading) {
+            @for (item of [1,2,3,4,5]; track $index) {
+                <div class="earning-wrapper">
+                    <div class="country w-100">
+                        <div class="flag skeleton"></div>
+                        <div class="d-flex flex-column gap-2 align-self-center" [style.width]="'150px'" [style.height]="'41px'">
+                            <div class="skeleton-text"></div>
+                            <div class="skeleton-text"></div>
+                        </div>
+                    </div>
+                    <div class="skeleton-text value-skeleton"></div>
+                </div>
+            }
+        }
+    </div>
+</div>

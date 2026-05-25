@@ -1,0 +1,136 @@
+.custom-input-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    .custom-input-label{
+        color: rgba(3, 7, 18, 1);
+        font-family: Inter;
+        font-weight: 500;
+        font-size: 14px;
+    }
+    .info-mark{
+        font-size: 11px;
+        font-weight: 600;
+        color: #8E8E8F;
+        width: 18px;
+        height: 18px;
+        border-radius: 50px;
+        border: 2px solid #8E8E8F;
+        align-self: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: help;
+        position: relative;
+        &::after {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+        }
+        &:hover::after {
+            content: attr(data-info); /* Replace this with your desired text */
+            position: absolute;
+            top: -35px; /* Adjust depending on how far you want the tooltip to appear */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 5px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap; /* Prevent text from wrapping */
+            opacity: 1;
+            visibility: visible;
+            z-index: 10;
+
+            // max-width: 400px;
+            // width: max-content;
+        }
+    }
+    .custom-input{
+        // border-radius: var(--rounding-2, 8px);
+        // border: 1px solid var(--neutral-100, #E6E6E6);
+        // background: var(--base-white, #FFF);
+        box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.05);
+
+        border: 1px solid #E6E6E6;
+        background: rgba(255, 255, 255, 1);
+        padding: 14px 30px 14px 16px;
+        border-radius: 8px;
+        color: rgba(3, 7, 18, 1);
+        font-family: Inter;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: normal;
+
+        &.invalid{
+            border: 1.4px solid rgba(234, 67, 52, 1) !important;
+        }
+
+        &:focus, &:focus-visible{
+            outline: none;
+            border: 1.5px solid rgba(54, 85, 145, 1) !important;
+        }
+        &::placeholder{
+            color: #AEAFB0;
+        }
+    }
+}
+
+.error-icon{
+    position: absolute;
+    top: 16px;
+    right: 13px;
+}
+
+.error{
+    color: rgba(234, 67, 52, 1);
+    font-family: Inter;
+    font-weight: 400;
+    font-style: Regular;
+    font-size: 14px;
+}
+
+@media (max-width: 991.98px) {
+    .custom-input-wrapper{
+        .info-mark{
+            &:hover::after {
+                top: -45px; /* Adjust depending on how far you want the tooltip to appear */
+                left: 100%;
+                font-size: 10px;
+                white-space: wrap; /* Prevent text from wrapping */
+    
+                max-width: 300px;
+                width: max-content;
+            }
+        }
+    }
+}
+
+@media (max-width: 426px) {
+    .custom-input-wrapper{
+        .custom-input{
+            font-size: 14px;
+        }
+        .info-mark{
+            &:hover::after {
+                top: -40px; /* Adjust depending on how far you want the tooltip to appear */
+                left: 50%;
+                font-size: 10px;
+                white-space: wrap; /* Prevent text from wrapping */
+
+                max-width: 250px;
+                width: max-content;
+            }
+        }
+    }
+}
+
+// Smallest Mobile Screen
+@media (max-width: 338.99px) {
+    .custom-input-wrapper{
+        .custom-input-label, .sub-label{
+            font-size: 12px;
+        }
+    }
+}

@@ -1,0 +1,17 @@
+<button class="custom-btn" [ngClass]="[type, disabled ? 'disabled' :'']" [disabled]="disabled" (click)="onButtonClick()">
+    @if (iconUrl && iconPlacement==='before') {
+        @if (iconType==='svg') {
+            <app-inline-svg class="icon before" [src]="iconUrl" ></app-inline-svg>
+        }@else {
+            <img class="icon before" [src]="iconUrl" alt="icon">
+        }
+    }
+    <div>{{btnText}}</div>
+    @if (iconUrl && iconPlacement==='after') {
+        @if (iconType==='svg') {
+            <app-inline-svg class="icon after" [src]="iconUrl" ></app-inline-svg>
+        }@else {
+            <img class="icon after" [src]="iconUrl" alt="icon">
+        }
+    }
+</button>

@@ -1,0 +1,32 @@
+.side-bar-wrapper {
+  width: 250px !important;
+  background: #f8f9fa;
+  overflow-y: auto;
+  z-index: 1040;
+}
+
+.content-wrapper {
+  height: calc(100vh - 80px);
+  background-color: #fafafa;
+  padding: 1.4rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.main-content {
+  margin-left: 250px;
+  width: calc(100vw - 250px);
+  min-height: 100vh;
+}
+
+@media (max-width: 767.98px) {
+  .content-wrapper {
+    height: calc(100vh - 100px);
+    padding: 20px 10px 40px 10px;
+    overflow-y: auto;
+  }
+  .main-content {
+    width: 100%;
+    margin-left: 0px;
+  }
+}

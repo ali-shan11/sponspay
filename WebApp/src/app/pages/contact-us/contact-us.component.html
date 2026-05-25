@@ -1,0 +1,89 @@
+<div class="contact-us">
+  <div class="page">
+    <form [formGroup]="contactForm" class="d-flex flex-column g-3" data-cy="contact-form">
+      <!-- Title -->
+      <div class="row g-3">
+        <div class="col-12">
+          <h2 id="contact-us" class="form-title">Contact Us</h2>
+        </div>
+      </div>
+
+      <!-- Name Fields Row -->
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="form-floating">
+            <app-custom-input label="First Name" placeholder="Enter First Name" [controlName]="firstName" ></app-custom-input>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-floating">
+             <app-custom-input label="Last Name" placeholder="Enter Last Name" [controlName]="lastName" ></app-custom-input>
+          </div>
+        </div>
+      </div>
+
+      <!-- Email Field -->
+      <div class="row g-3">
+        <div class="col-12">
+          <div class="form-floating">
+             <app-custom-input label="Email" type="email" placeholder="Enter Email" [controlName]="email" ></app-custom-input>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone and Country Row -->
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="form-floating">
+              <app-custom-input label="Whatsapp Number" type="tel" placeholder="Enter Whatsapp Number" [controlName]="phoneNumber" ></app-custom-input>
+            @if (phoneNumber.value && !isPhoneValid) {
+            <div class="invalid-feedback">
+              Please enter a valid phone number (e.g., {{phoneHint}})
+            </div>
+            }
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-floating">
+            <app-custom-select label="Country" [controlName]="country" [data]="countyCodes" placeholder="Select Country" bindValue="code" bindLabel="country" > </app-custom-select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interest Field -->
+      <div class="row g-3">
+        <div class="col-12">
+          <div class="form-floating">
+            <app-custom-select label="What Is Your Interest In SponsPay?" [controlName]="interest" [data]="interests" placeholder="Select your interest" bindValue="value" bindLabel="label" > </app-custom-select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Message Field -->
+      <div class="row g-3">
+        <div class="col-12">
+          <div class="form-floating">
+            <app-custom-textarea label="Message" placeholder="Enter Message" [rows]="4" [controlName]="message" ></app-custom-textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="row g-3">
+        <div class="col-12">
+          <app-button (btnClick)="onSubmit()" [disabled]="loading || !isFormValid || formSubmittedSuccessfully" btnText="Send"></app-button>
+          <!-- <button type="submit" class="btn btn-primary w-100" [disabled]="loading || !isFormValid || formSubmittedSuccessfully" data-cy="contact-submit">
+            @if (formSubmittedSuccessfully) {
+            <span>Contact info sent</span>
+            } @else if (loading) {
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            <span>Send</span>
+            } @else {
+            <span>Send</span>
+            }
+          </button> -->
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,191 @@
+<div class="header-main">
+    <div class="header-wrapper d-flex justify-content-between">
+        <div class="heading d-none d-md-flex align-items-center gap-2">
+            {{pageTitle}}
+            <span class="beta-badge">BETA</span>
+        </div>
+        <div class="logo d-flex d-md-none align-self-center align-items-center gap-2">
+            <img [src]="svgIcon.logoDark" alt="Logo">
+            <span class="beta-badge">BETA</span>
+        </div>
+        @if (user) {
+            <div class="d-none d-md-flex gap-3">
+                <app-current-youtube-channel-selection></app-current-youtube-channel-selection>
+                <div class="notification-wrapper align-self-center">
+                    <img class="align-self-center" [src]="svgIcon.notification" alt="notification" [width]="24">
+                    <span class="soon-badge">Soon</span>
+                    <span class="coming-soon-tooltip">Coming Soon</span>
+                </div>
+                <div class="user-profile cursor-pointer" [ngClass]="{'active': isDropdownOpen}">
+                    <div class="user-img d-flex gap-2" role="presentation" (click)="toggleDropdown($event)">
+                        <img class="align-self-center profile-image" [src]="user.photoURL" alt="User" referrerPolicy="no-referrer">
+                        <div class="user-details">
+                            <div class="name">{{user.displayName}}</div>
+                            <div class="info-tooltip-wrapper">
+                                <div class="tag email-tag" >{{user.email}}</div>
+                                <div class="info-tooltip">{{user.email}}</div>
+                            </div>
+                        </div>
+                        <div>
+                            <img src="svg/user-profile-dropdown.svg" class="dropdown-icon" alt="">
+                        </div>
+                    </div>
+    
+                    @if (isDropdownOpen) {
+                        <ng-container *ngTemplateOutlet="user_menu_dropdown"></ng-container>
+                    }
+                </div>
+            </div>
+        }
+        <div class="d-md-none align-self-center">
+            <button class="btn p-0 border-0" (click)="toggleMobileMenu()" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
+              <img src="svg/menu-dark.svg" alt="Menu" width="24" class="menu">
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="mobile-menu-overlay d-md-none" role="presentation" [class.open]="mobileMenuOpen" (click)="toggleMobileMenu()">
+    <div class="mobile-menu" role="presentation" (click)="$event.stopPropagation()">
+      <div class="text-end d-flex justify-content-between">
+        <div class="menu-logo">
+            <img [src]="svgIcon.logoDark" alt="Logo">
+        </div>
+        <button class="btn-close btn-close-dark align-self-center border-0" (click)="toggleMobileMenu()"> </button>
+      </div>
+
+        <div class="mt-4 d-flex flex-column gap-3 full-mobile-height">
+            @if (user) {
+                <div class="user-profile cursor-pointer" [ngClass]="{'active': isDropdownOpen}">
+                    <div class="user-img d-flex gap-2 justify-content-between" role="presentation" (click)="toggleDropdown($event)">
+                        <div class="d-flex gap-2">
+                            <img class="align-self-center profile-image" [src]="user.photoURL" alt="User" referrerPolicy="no-referrer">
+                            <div class="user-details">
+                                <div class="name">{{user.displayName}}</div>
+                                <div class="info-tooltip-wrapper">
+                                    <div class="tag email-tag email-sub-tag" >{{user.email}}</div>
+                                    <div class="info-tooltip">{{user.email}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <img src="svg/user-profile-dropdown.svg" class="dropdown-icon" alt="dropdown">
+                        </div>
+                    </div>
+                    @if (isDropdownOpen) {
+                        <ng-container *ngTemplateOutlet="user_menu_dropdown"></ng-container>
+                    }
+                </div>
+            }
+
+            <app-current-youtube-channel-selection></app-current-youtube-channel-selection>
+    
+            <div class="d-flex flex-column gap-2 justify-content-between m-2 menu-main-wrapper h-100">
+                <div class="menu-wrapper">
+                    @for (menu of menuList; track $index) {
+                        @if (menu.children) {
+                            <div class="menu-child-wrapper d-flex flex-column gap-1">
+                                @for (child of menu.children; track $index) {
+                                    <button [routerLink]="child.comingSoon ? null : child.link" routerLinkActive="active" #rla="routerLinkActive" class="btn menu-child d-flex gap-2" [class.coming-soon]="child.comingSoon" [routerLinkActiveOptions]="{ exact: false }" (click)="child.comingSoon ? null : toggleMobileMenu()">
+                                        <div class="icon" [class.stroke-icon]="child.link&&child.link.includes('transaction-activity')">
+                                            <app-inline-svg [src]="child.icon" ></app-inline-svg>
+                                        </div>
+                                        <div class="name">{{child.label}}</div>
+                                        @if (child.comingSoon) {
+                                            <span class="soon-badge">Soon</span>
+                                            <span class="coming-soon-tooltip">Coming Soon</span>
+                                        }
+                                        @if (rla.isActive && !child.comingSoon) {
+                                            <div class="left-bar"></div>
+                                        }
+                                    </button>
+                                }
+                            </div>
+                        }
+                        @if (menu.children && $index !== menu.children.length-1) {
+                            <div class="divider">
+                                <hr>
+                            </div>
+                        }
+                    }
+                </div>
+        
+                <div class="bottom-wrapper">
+                    <div class="sponspay-card p-3">
+                        <div class="d-flex justify-content-between">
+                            <img src="svg/menu/sidebar-sponspay-icon.svg" alt="Sponspay" >
+                            <!-- <img class="cursor-pointer" src="svg/menu/sidebar-sponspay-close.svg" alt="close" > -->
+                        </div>
+                        <div class="heading">
+                            Your Unique Sponspay Link
+                        </div>
+                        <div class="text">
+                            Share this link with your audience to start earning 
+                        </div>
+                        <div class="mt-3">
+                            <app-button [btnText]="isTextCopied?'Copied!':'Copy Link'" type="secondary" [disabled]="isLoading" (btnClick)="copyToClipboard()" ></app-button>
+                        </div>
+                    </div>
+        
+                    <button class="menu-child div-btn d-flex gap-2 mt-3 w-100" (click)="handleSignout()">
+                        <img src="svg/menu/logout.svg" alt="logout">
+                        <div class="align-self-center">Logout</div>
+                    </button>
+                </div>
+            </div>
+    
+        </div>
+    </div>
+</div>
+
+<ng-template #user_menu_dropdown>
+    @if (user) {
+        <div class="user-menu-dropdown">
+            <div class="user-img d-flex gap-2" role="presentation" (click)="toggleDropdown($event)">
+                <img class="align-self-center profile-image" [src]="user.photoURL" alt="User" referrerPolicy="no-referrer">
+                <div class="user-details">
+                    <div class="name">{{user.displayName}}</div>
+                    <div class="info-tooltip-wrapper">
+                        <div class="tag email-tag email-sub-tag" >{{user.email}}</div>
+                        <div class="info-tooltip">{{user.email}}</div>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-2">
+            <div class="d-flex flex-column gap-2">
+                <button class="menu-item div-btn coming-soon">
+                    <div class="icon">
+                        <app-inline-svg src="svg/content-creator/dashboard/user-menu-setting.svg" ></app-inline-svg>
+                    </div>
+                    <div class="text">Settings</div>
+                    <span class="soon-badge">Soon</span>
+                    <span class="coming-soon-tooltip">Coming Soon</span>
+                </button>
+                <div class="menu-heading">SUPPORT</div>
+                <button class="menu-item div-btn coming-soon">
+                    <div class="icon">
+                        <app-inline-svg src="svg/content-creator/dashboard/user-menu-help.svg" ></app-inline-svg>
+                    </div>
+                    <div class="text">Help Center</div>
+                    <span class="soon-badge">Soon</span>
+                    <span class="coming-soon-tooltip">Coming Soon</span>
+                </button>
+                <button class="menu-item div-btn coming-soon">
+                    <div class="icon">
+                        <app-inline-svg src="svg/content-creator/dashboard/user-menu-call.svg" ></app-inline-svg>
+                    </div>
+                    <div class="text">Contact Us</div>
+                    <span class="soon-badge">Soon</span>
+                    <span class="coming-soon-tooltip">Coming Soon</span>
+                </button>
+            </div>
+            <hr class="my-2">
+            <button class="menu-item div-btn mt-2 w-100" (click)="handleSignout()">
+                <div class="icon">
+                    <app-inline-svg src="svg/content-creator/dashboard/user-menu-logout.svg" ></app-inline-svg>
+                </div>
+                <div class="text">Logout</div>
+            </button>
+        </div>
+    }
+</ng-template>

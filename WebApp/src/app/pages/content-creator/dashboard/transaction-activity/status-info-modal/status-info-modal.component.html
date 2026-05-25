@@ -1,0 +1,45 @@
+<div #modal class="custom-modal modal fade modal-fullscreen-md-down">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="d-flex justify-content-between w-100">
+          <div class="heading">Reply Statuses</div>
+          <button class="btn close-icon p-0 m-0 border-0" (click)="close()">
+            <img src="svg/content-creator/compensation/close.svg" alt="close">
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <p class="intro">Each message you receive has a reply status. Replying personally to your fans builds stronger connections and keeps your audience engaged.</p>
+
+        <div class="status-item awaiting">
+          <div class="status-header">
+            <span class="compensation-status pending">Awaiting Reply</span>
+          </div>
+          <div class="status-description">
+            You haven't replied to this message yet. Reply before the deadline to let your fan know you appreciate their support. You'll soon be able to reply directly from your dashboard.
+          </div>
+        </div>
+
+        <div class="status-item earned">
+          <div class="status-header">
+            <span class="compensation-status completed">Earned</span>
+          </div>
+          <div class="status-description">
+            You replied to this message. Your fans appreciate the personal touch!
+          </div>
+        </div>
+
+        <div class="status-item auto-replied">
+          <div class="status-header">
+            <span class="compensation-status auto-replied">Auto-Replied</span>
+          </div>
+          <div class="status-description">
+            The reply deadline passed, so an automatic reply was sent on your behalf. Try to reply personally when you can — your fans love hearing from you directly.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

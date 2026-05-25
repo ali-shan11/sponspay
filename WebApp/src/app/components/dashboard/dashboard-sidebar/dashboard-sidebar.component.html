@@ -1,0 +1,75 @@
+<div class="side-bar-main h-100 bg-white">
+    <div class="logo-wrapper">
+        <button class="div-btn" (click)="gotoHomePage()">
+            <img [src]="svgIcons.logoDark" alt="Logo">
+        </button>
+    </div>
+
+    <div class="d-flex flex-column gap-2 justify-content-between m-2 menu-main-wrapper">
+        <div class="menu-wrapper">
+            @for (menu of menuList; track $index) {
+                <div class="menu-main d-flex gap-2 justify-content-between">
+                    <div class="label">{{menu.label}}</div>
+                    <!-- <div class="icon">
+                        <img [src]="menuIcons.dots" alt="dots">
+                    </div> -->
+                </div>
+                @if (menu.children) {
+                    <div class="menu-child-wrapper d-flex flex-column gap-1">
+                        @for (child of menu.children; track $index) {
+                            <div [routerLink]="child.comingSoon ? null : child.link" routerLinkActive="active" #rla="routerLinkActive" class="menu-child d-flex gap-2" [class.coming-soon]="child.comingSoon" [routerLinkActiveOptions]="{ exact: false }">
+                                <div class="icon align-self-center" [class.stroke-icon]="child.link&&child.link.includes('transaction-activity')">
+                                    <app-inline-svg [src]="child.icon" ></app-inline-svg>
+                                </div>
+                                <div class="name">{{child.label}}</div>
+                                @if (child.comingSoon) {
+                                    <span class="soon-badge">Soon</span>
+                                    <span class="coming-soon-tooltip">Coming Soon</span>
+                                }
+                                @if (rla.isActive && !child.comingSoon) {
+                                    <div class="left-bar"></div>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+                @if (menu.children && $index !== menu.children.length-1) {
+                    <div class="divider">
+                        <hr>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="bottom-wrapper">
+            <div class="sponspay-card p-3">
+                <div class="d-flex justify-content-between">
+                    <img src="svg/menu/sidebar-sponspay-icon.svg" alt="sponspay" >
+                    <!-- <img class="cursor-pointer" src="svg/menu/sidebar-sponspay-close.svg" alt="close" > -->
+                </div>
+                <div class="heading">
+                    Your Unique Sponspay Link
+                </div>
+                <div class="text">
+                    Share this link with your audience to start earning 
+                </div>
+                <div class="mt-3">
+                    @if (isLoading) {
+                        <div class="copy-url skeleton skeleton-text align-self-center w-100"></div>
+                    }@else {
+                        <app-button [btnText]="isTextCopied?'Copied!':'Copy Link'" type="secondary" [disabled]="isLoading" (btnClick)="copyToClipboard()" ></app-button>
+                    }
+                </div>
+            </div>
+
+            <div class="divider px-2">
+                <hr>
+            </div>
+
+            <button class="menu-child div-btn d-flex gap-2 w-100" (click)="handleSignout()">  
+                <img src="svg/menu/logout.svg" alt="logout">
+                <div class="align-self-center">Logout</div>
+            </button>
+        </div>
+    </div>
+</div>

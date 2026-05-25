@@ -1,0 +1,86 @@
+<!-- Mock Data Toggle (Development Only) -->
+@if (!isProduction) {
+  <div class="mock-data-toggle">
+    <div class="form-check">
+      <input 
+        class="form-check-input" 
+        type="checkbox" 
+        id="mockDataToggle"
+        [(ngModel)]="useMockData"
+        (change)="onMockDataToggle()">
+      <label class="form-check-label" for="mockDataToggle">
+        Use mock data for testing
+      </label>
+    </div>
+    
+    <!-- Mock Data Sliders (only visible when mock data is enabled) -->
+    @if (useMockData) {
+      <div class="mock-data-sliders mt-3 p-3 border rounded bg-light">
+        <h6 class="mb-3">Mock Data Controls</h6>
+        
+        <!-- Subscriber Count Slider -->
+        <div class="mb-3">
+          <label for="subscriberSlider" class="form-label">
+            Total Subscribers: <strong>{{ mockSubscribers.toLocaleString() }}</strong>
+          </label>
+          <input 
+            type="range" 
+            class="form-range" 
+            id="subscriberSlider"
+            min="0" 
+            max="1000" 
+            step="50"
+            [(ngModel)]="mockSubscribers"
+            (input)="onSubscriberChange()">
+          <div class="d-flex justify-content-between">
+            <small class="text-muted">0</small>
+            <small class="text-muted">1000</small>
+          </div>
+        </div>
+        
+        <!-- Viewers in Supported Countries Slider -->
+        <div class="mb-3">
+          <label for="viewersSlider" class="form-label">
+            Viewers in Supported Countries: <strong>{{ mockViewers.toLocaleString() }}</strong>
+            <small class="text-muted">(max: {{ mockSubscribers.toLocaleString() }})</small>
+          </label>
+          <input 
+            type="range" 
+            class="form-range" 
+            id="viewersSlider"
+            min="0" 
+            [max]="mockSubscribers" 
+            step="5"
+            [(ngModel)]="mockViewers"
+            (input)="onSliderChange()">
+          <div class="d-flex justify-content-between">
+            <small class="text-muted">0</small>
+            <small class="text-muted">{{ mockSubscribers.toLocaleString() }}</small>
+          </div>
+        </div>
+        
+        <!-- Validation Info -->
+        <div class="alert alert-secondary mb-2">
+          <small>
+            <i class="fas fa-info-circle me-1"></i>
+            <strong>Note:</strong> Viewers in supported countries cannot exceed total subscribers, as viewers are a subset of your subscriber base.
+          </small>
+        </div>
+        
+        <!-- Current Data Source/Variation Indicator -->
+        <div class="alert alert-info mb-0">
+          <small>
+            <strong>
+              @if (showVariationIndicator) {
+                Current Variation:
+              } @else {
+                Viewing:
+              }
+            </strong> 
+            {{ getVariationDisplayText() }}
+          </small>
+        </div>
+      </div>
+    }
+  </div>
+}

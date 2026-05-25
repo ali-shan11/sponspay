@@ -1,0 +1,131 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - "3000:3000"
+      - "8000:8000"
+      - "9229:9229"
+    volumes:
+      - .:/api:delegated
+    depends_on:
+      - db
+      - redis
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://api:3000/health | grep -q '\"status\":\"ok\"' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    environment:
+      - SERVICE_ACCOUNT=${SERVICE_ACCOUNT}
+      - SERVICE_ACCOUNT_PRIVATE_KEY=${SERVICE_ACCOUNT_PRIVATE_KEY}
+      - SERVICE_ACCOUNT_USER=${SERVICE_ACCOUNT_USER}
+      - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+      - FIREBASE_SERVICE_ACCOUNT=${FIREBASE_SERVICE_ACCOUNT}
+      - ZOHO_CLIENT_ID=${ZOHO_CLIENT_ID}
+      - ZOHO_CLIENT_SECRET=${ZOHO_CLIENT_SECRET}
+      - ZOHO_REFRESH_TOKEN=${ZOHO_REFRESH_TOKEN}
+      - ZOHO_REDIRECT_URI=${ZOHO_REDIRECT_URI}
+      - TELEGRAM_SERVICE_URL=http://telegram-service:3000
+      - INTERNAL_API_KEY=${INTERNAL_API_KEY}
+      - PAWAPAY_API_TOKEN=${PAWAPAY_API_TOKEN}
+      - INFOBIP_API_KEY=${INFOBIP_API_KEY}
+      - ANONYMIZATION_SALT=${ANONYMIZATION_SALT}
+      - EXCHANGE_RATE_API_KEY=${EXCHANGE_RATE_API_KEY}
+      - YOUTUBE_TOKEN_ENCRYPTION_KEY=${YOUTUBE_TOKEN_ENCRYPTION_KEY}
+      - GOOGLE_OAUTH_CLIENT_ID=${GOOGLE_OAUTH_CLIENT_ID}
+      - GOOGLE_OAUTH_CLIENT_SECRET=${GOOGLE_OAUTH_CLIENT_SECRET}
+      - GOOGLE_OAUTH_REDIRECT_URI=${GOOGLE_OAUTH_REDIRECT_URI}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - REDIS_URL=redis://redis:6379
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: filip
+      POSTGRES_PASSWORD: startervesna
+      POSTGRES_DB: dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+  # -----------------------------------------------------------------------
+  # Telegram microservice (separate repo, pulled from Artifact Registry).
+  # First-time setup:
+  #   gcloud auth configure-docker us-east1-docker.pkg.dev
+  # This grants Docker permission to pull from the sponspay Artifact Registry.
+  # You only need to run it once per machine.
+  # -----------------------------------------------------------------------
+  telegram-service:
+    image: us-east1-docker.pkg.dev/sponspay-deployment/sponspay-dev/telegram-service:latest
+    environment:
+      - TELEGRAM_API_ID=${TELEGRAM_API_ID}
+      - TELEGRAM_API_HASH=${TELEGRAM_API_HASH}
+      - TELEGRAM_SESSION_STRING=${TELEGRAM_SESSION_STRING}
+      - INTERNAL_API_KEY=${INTERNAL_API_KEY}
+      - MAIN_API_URL=http://api:3000
+      - PORT=3000
+    depends_on:
+      - api
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:3000/health | grep -q '\"connected\":true' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    restart: unless-stopped
+  ngrok:
+    image: ngrok/ngrok:latest
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+    command: http api:3000
+    ports:
+      - "4040:4040"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+      PGADMIN_CONFIG_WTF_CSRF_ENABLED: 'False'
+      PGADMIN_CONFIG_SESSION_COOKIE_SECURE: 'False'
+      PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: 'False'
+      PGHOST: db
+      PGPORT: 5432
+      PGDATABASE: dev
+      PGUSER: filip
+      PGPASSWORD: startervesna
+    ports:
+      - "8080:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+      - ./pgadmin/servers.json.template:/pgadmin4/servers.json.template:ro
+    depends_on:
+      - db
+    command: >
+      sh -c "envsubst < /pgadmin4/servers.json.template > /pgadmin4/servers.json && /entrypoint.sh"
+    restart: unless-stopped
+volumes:
+  db-data:
+  redis-data:
+  pgadmin-data:

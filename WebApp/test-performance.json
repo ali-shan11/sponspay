@@ -1,0 +1,61 @@
+{
+  "runs": [
+    {
+      "totalTests": 824,
+      "executionTime": 6472,
+      "totalTime": 6797,
+      "passedTests": 824,
+      "failedTests": 0,
+      "skippedTests": 7,
+      "timestamp": "2025-06-29T20:28:53.163Z",
+      "browser": "ChromeHeadlessOptimized",
+      "memoryUsage": 447,
+      "testsPerSecond": 127,
+      "overhead": 325,
+      "overheadPercentage": 5,
+      "performance": {
+        "executionTimeOk": false,
+        "memoryUsageOk": true,
+        "testsPerSecondOk": true
+      }
+    },
+    {
+      "totalTests": 824,
+      "executionTime": 6472,
+      "totalTime": 6797,
+      "passedTests": 824,
+      "failedTests": 0,
+      "skippedTests": 7,
+      "timestamp": "2025-06-29T20:30:08.300Z",
+      "browser": "ChromeHeadlessOptimized",
+      "memoryUsage": 447,
+      "testsPerSecond": 127,
+      "overhead": 325,
+      "overheadPercentage": 5,
+      "performance": {
+        "executionTimeOk": false,
+        "memoryUsageOk": true,
+        "testsPerSecondOk": true
+      }
+    },
+    {
+      "totalTests": 824,
+      "executionTime": 6472,
+      "totalTime": 6797,
+      "passedTests": 824,
+      "failedTests": 0,
+      "skippedTests": 7,
+      "timestamp": "2025-06-29T20:42:48.443Z",
+      "browser": "ChromeHeadlessOptimized",
+      "memoryUsage": 447,
+      "testsPerSecond": 127,
+      "overhead": 325,
+      "overheadPercentage": 5,
+      "performance": {
+        "executionTimeOk": false,
+        "memoryUsageOk": true,
+        "testsPerSecondOk": true
+      }
+    }
+  ]
+}

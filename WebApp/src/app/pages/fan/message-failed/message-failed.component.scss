@@ -1,0 +1,72 @@
+.onboard-wrapper-images{
+    margin-top: 30px;
+}
+.welcome-img{
+    width: 120px !important;
+}
+.estimator-check-img{
+    width: 100px !important;
+}
+.text-regular{
+    color: #8e8e8f !important;
+}
+// .title-wrapper{
+//     padding: 0px 30px;
+// }
+::ng-deep .message-card {
+    border-radius: 8px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12),
+      0 23px 44px 0 rgba(176, 183, 195, 0.14);
+    padding: 20px;
+
+    background-image: url('/svg/fan/message-declined-bg.svg');
+    background-repeat: no-repeat;
+    background-position: top center;
+}
+
+/* Tablet breakpoint (below 992px) */
+@media (max-width: 991.98px) {
+    .onboard-wrapper {
+        margin-top: 30px;
+    }
+    .onboard-wrapper-images{
+        margin-top: 15px;
+    }
+    .text-regular{
+        color: #8e8e8f !important;
+        padding: 0px 80px;
+    }
+    .welcome-img{
+        width: 100px !important;
+    }
+    // .title-wrapper{
+    //     padding: 0px 30px;
+    // }   
+    .message-card {
+        padding: 55px 20px 30px 20px;
+    } 
+}
+
+/* Mobile breakpoint (below 768px) */
+@media (max-width: 767.98px) {
+    .onboard-wrapper {
+        margin-top: 20px;
+    }
+    .onboard-wrapper-images{
+        margin-top: 0px;
+    }
+    .text-regular{
+        color: #8e8e8f !important;
+        padding: 0px 20px;
+    }
+    .welcome-img{
+        width: 80px !important;
+    }
+    // .title-wrapper{
+    //     padding: 0px 10px;
+    // }
+    .message-card {
+        padding: 55px 15px 26px 15px;
+    }
+}
+  

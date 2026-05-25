@@ -1,0 +1,17 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "Local PostgreSQL",
+      "Group": "Servers",
+      "Host": "$PGHOST",
+      "Port": $PGPORT,
+      "MaintenanceDB": "$PGDATABASE",
+      "Username": "$PGUSER",
+      "Password": "$PGPASSWORD",
+      "SSLMode": "prefer",
+      "Favorite": true,
+      "Comment": "Auto-configured PostgreSQL database connection",
+      "SavePassword": true
+    }
+  }
+}

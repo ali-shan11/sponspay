@@ -1,0 +1,51 @@
+.divider{
+    margin: 17px 0px;
+    height: 1px;
+    opacity: 1;
+    background: #E6E6E6;
+}
+
+.user-link-wrapper{
+    .label{
+        color: #030712;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 18px;
+        letter-spacing: -0.14px;
+        .gray-text{
+            color: #AEAFB0;
+        }
+    }
+    .user-link{
+        border-radius: 8px;
+        border: 1px solid #E6E6E6;
+        background: #FFF;
+        box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.05);
+        color: #AEAFB0;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+        letter-spacing: -0.14px;
+  
+        .company-url{
+          padding: 6px 16px;
+          border-right: 1px solid #E6E6E6;
+          min-width: 170px;
+        }
+        .user-url{
+          padding: 11px 16px;
+        }
+    }
+}
+
+@media (max-width: 426px) {
+    .user-link-wrapper{
+        .user-link{
+            .company-url{
+                min-width: auto;
+            }
+        }
+    }
+}
+  

@@ -1,0 +1,16 @@
+
+<div class="dashboard-card-wrapper mt-4 mt-lg-5">
+    <div class="w-100">
+        <app-transaction-total-earning [isLoading]="isMessageStatLoading" [messageStats]="messageStatistics" (refreshStats)="getMessageStats()" ></app-transaction-total-earning>
+    </div>
+    <div class="w-100">
+        <app-transaction-avg-earning [isLoading]="isMessageStatLoading" [messageStats]="messageStatistics" ></app-transaction-avg-earning>
+    </div>
+    <div class="w-100">
+        <app-transaction-top-earning-country [isLoading]="isMessageStatLoading" [messageStats]="messageStatistics" ></app-transaction-top-earning-country>
+    </div>
+</div>
+
+<div class="payment-overview-wrapper mt-3">
+    <app-latest-transaction></app-latest-transaction>
+</div>

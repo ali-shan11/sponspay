@@ -1,0 +1,44 @@
+::ng-deep .onboard-card {
+  border-radius: 8px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12),
+    0 23px 44px 0 rgba(176, 183, 195, 0.14);
+  padding: 50px 60px 30px 60px;
+
+  &.welcome-bg{
+    background-image: url('/svg/content-creator/welcome-bg.svg');
+    background-position: top center;
+  }
+}
+
+.onboard-wrapper {
+  margin-top: 50px;
+}
+
+.w-max-content {
+  width: max-content;
+}
+
+/* Tablet breakpoint (below 992px) */
+@media (max-width: 991.98px) {
+  .onboard-card {&.welcome-bg{
+      background-image: url('/svg/content-creator/welcome-bg-mobile.svg');
+      background-position: top center;
+    }
+  }
+  .onboard-wrapper {
+    margin-top: 30px;
+  }
+  .onboard-card {
+    padding: 40px 25px 25px 25px;
+  }
+}
+
+/* Mobile breakpoint (below 768px) */
+@media (max-width: 767.98px) {
+  .onboard-wrapper {
+    margin-top: 15px;
+  }
+  .onboard-card {
+    padding: 30px 16px 20px 16px;
+  }
+}

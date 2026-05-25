@@ -1,0 +1,11 @@
+.onboarding-content-wrapper {
+    height: calc(100vh - 80px);
+    overflow-y: auto;
+}
+
+/* Mobile breakpoint (below 768px) */
+@media (max-width: 767.98px) {
+    .onboarding-content-wrapper {
+        height: calc(100vh - 80px);
+    }    
+}

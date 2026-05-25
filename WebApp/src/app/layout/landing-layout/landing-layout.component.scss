@@ -1,0 +1,53 @@
+.landing-content-wrapper {
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    .home-wrapper {
+      background: #070b13;
+      position: relative;
+      background-image: url("/svg/landing/star.svg");
+      background-repeat: no-repeat;
+      .top-star {
+        position: absolute;
+        top: 0px;
+        z-index: 10;
+      }
+    }
+    
+    .footer-div {
+      margin-top: -100px;
+    }
+
+    .texture-wrapper {
+        position: relative;
+
+        .desktop-dots {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+        .desktop-texture {
+            position: absolute;
+            left: 30%;
+            top: 188%;
+        }
+    }
+
+    .bring-forward{
+        position: relative;
+        z-index: 100;
+
+        div {
+            position: relative;
+            z-index: 100;
+        }
+    }
+    .bring-backward{
+        z-index: 10;
+    }
+
+
+}
+

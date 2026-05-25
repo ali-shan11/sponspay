@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dev-pgadmin-ingress
+  namespace: sponspay-api-dev
+  labels:
+    environment: development
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "dev-pgadmin-ip"
+    networking.gke.io/managed-certificates: "dev-pgadmin-cert"
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.allow-http: "false"
+    cloud.google.com/health-checks: '{"80":{"path":"/misc/ping","port":80}}'
+spec:
+  defaultBackend:
+    service:
+      name: pgadmin-service
+      port:
+        number: 80

@@ -1,0 +1,17 @@
+@use "legal-page" as lp;
+
+.terms {
+  @include lp.legal-page;
+}
+
+@media (max-width: 991.98px) {
+  .terms {
+    @include lp.legal-page-tablet;
+  }
+}
+
+@media (max-width: 600.98px) {
+  .terms {
+    @include lp.legal-page-mobile;
+  }
+}

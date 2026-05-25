@@ -1,0 +1,13 @@
+{
+  "connected": true,
+  "channels": [
+    {
+      "id": "UC_test_channel_123",
+      "title": "Test Creator Channel",
+      "subscriberCount": "15000",
+      "viewCount": "500000",
+      "videoCount": "120",
+      "thumbnailUrl": "https://yt3.ggpht.com/test-thumb"
+    }
+  ]
+}

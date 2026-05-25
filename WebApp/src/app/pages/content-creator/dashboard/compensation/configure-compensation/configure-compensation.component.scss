@@ -1,0 +1,144 @@
+.custom-modal{
+    .modal-header{
+        display: flex;
+        justify-content: space-between;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 22px;
+        letter-spacing: -1%;
+        padding: 15px 23px;
+    }
+
+    .modal-content{
+        border-radius: 12px;
+    }
+    .modal-body{
+        padding: 12px;
+    }
+
+    .creation-card{
+        position: relative;
+        background: rgba(225, 232, 244, 1);
+        padding: 12px;
+        border-radius: 12px;
+
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        .close-icon{
+            position: absolute;
+            cursor: pointer;
+            top: 10px;
+            right: 10px;
+        }
+        .icon-wrapper{
+            align-self: center;
+        }
+
+        .icon{
+            width: 90px;
+        }
+        .heading{
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 22px;
+            letter-spacing: -0.26px;
+            color: rgba(3, 7, 18, 1);
+        }
+        .desc{
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 19px;
+            letter-spacing: -1%;
+            color: rgba(142, 142, 143, 1);
+        }
+    }
+
+    .country-select{
+        label{
+            color: rgba(3, 7, 18, 1);
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 20px;
+            letter-spacing: -1%;
+        }
+    }
+
+    .modal-footer{
+        border-radius: 0px 0px 8px 8px;
+        background: rgba(247, 247, 248, 1);
+    }
+}
+
+.bottom-text{
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 19px;
+    letter-spacing: -1%;
+    color: rgba(174, 175, 176, 1);
+}
+
+.heading-wrapper{
+    .heading{
+        color: #030712;
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 24px;
+        letter-spacing: -0.2px;
+    }
+    .text{
+        color: #8E8E8F;
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 20px;
+        letter-spacing: -0.14px;
+    }
+}
+
+.resend-btn-wrapper{
+    display: flex;
+    justify-content: center;
+    .resend-btn{
+        color: #213458;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 20px;
+        letter-spacing: -0.14px;
+
+        padding: 3px 10px;
+        border-radius: 32px;
+        border: 1px solid #213458;
+        
+        &:disabled{
+            border: 1px solid #E6E6E6;
+            color: #8E8E8F;
+        }
+    }
+}
+
+/* Mobile breakpoint (below 768px) */
+@media (max-width: 767.98px) {
+}
+
+@media (max-width: 426px) {
+    .custom-modal{
+        .modal-body{
+            padding: 10px;
+        }
+    
+        .creation-card{
+    
+            .icon{
+                width: 70px;
+            }
+            .heading{
+                font-size: 16px;
+                line-height: 20px;
+            }
+            .desc{
+                font-size: 12px;
+                line-height: 17px;
+            }
+        }
+    }
+}

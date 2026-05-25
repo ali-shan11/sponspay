@@ -1,0 +1,10 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: dev-pgadmin-cert
+  namespace: sponspay-api-dev
+  labels:
+    environment: development
+spec:
+  domains:
+  - db-dev.sponspay.com

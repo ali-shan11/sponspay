@@ -1,0 +1,33 @@
+<div #modal class="custom-modal modal fade modal-fullscreen-md-down">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-body">
+            <div class="row justify-content-center onboard-wrapper p-0 m-0">
+                <div class="col-12 p-0">
+                    <div class="message-card bg-white">
+                        <div class="d-flex gap-4 justify-content-center onboard-wrapper-images">
+                            <div class="w-fit-content position-relative">
+                                <img class="welcome-img" src="svg/fan/modal-white-circle.svg" alt="Circle">
+                                <img class="welcome-img loader-img spinner" src="svg/fan/modal-loading.svg" alt="Loading">
+                            </div>
+                        </div>
+                        <div class="title-wrapper mt-2 pt-0 pb-2 pb-lg-4 pt-lg-2">
+                            <div class="text-medium text-center">{{messageReceived?'Message sent! ':''}} Your payment is processing</div>
+                            <div class="text-regular text-center mt-3">Please approve the transaction on your phone. Do not close this window.</div>
+                            @if (remainingSeconds > 0) {
+                                <div class="text-medium text-center mt-3">{{ formattedTime }}</div>
+                            }
+                            @if (showRetryButton) {
+                                <div class="retry-section mt-3">
+                                    <app-button class="w-100" btnText="Try with a different number" type="secondary" (btnClick)="onRetry()"></app-button>
+                                    <div class="text-regular text-center mt-2 retry-warning">If the original payment still goes through, your message will still be sent. Only use this if you're sure you cannot complete the transaction with your current number.</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>

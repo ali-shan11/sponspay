@@ -1,0 +1,38 @@
+<!-- fullscreen below md, centered above -->
+<div #modal class="custom-modal modal fade modal-fullscreen-md-down">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="d-flex justify-content-between gap-3">
+                <div class="heading">Filter</div>
+                <button class="btn close-icon p-0 m-0 border-0" (click)="close()">
+                    <img src="svg/content-creator/compensation/close.svg" alt="close">
+                </button>
+            </div>
+        </div>
+
+        <div class="modal-body pb-3">
+            <div>
+                <app-custom-select [controlName]="countryControl" label="Country" [data]="countryList" [multipleSelection]="true" [showImage]="true" placeholder="Select Country" bindValue="countryCode" bindLabel="countryName" [showImage]="true" ></app-custom-select>
+            </div>
+            <div class="mt-3">
+                <app-custom-select [controlName]="statusControl" label="Reply Status" [data]="revenueStatusList" [multipleSelection]="true" placeholder="Select Reply Status" bindValue="name" bindLabel="value" ></app-custom-select>
+            </div>
+            <div class="mt-3">
+                <app-custom-select [controlName]="dateRangeControl" label="Date Range" [data]="dateRangeOptions" placeholder="Select Date Range" bindValue="value" bindLabel="text" ></app-custom-select>
+            </div>
+        </div>
+
+        <div class="modal-footer p-3">
+            <div class="d-flex flex-column gap-2 w-100">
+                <div class="d-flex gap-2 w-100">
+                    <!-- <app-button class="w-100" btnText="Cancel" type="secondary" (btnClick)="close()" ></app-button> -->
+                    <app-button class="w-100" btnText="Reset" type="secondary" (btnClick)="clearAll()" ></app-button>
+                    <app-button class="w-100" btnText="Apply" (click)="onConfirmClick()" ></app-button>
+                </div>
+                <!-- <button class="btn clear-all-btn w-100" (click)="clearAll()">Clear all filters</button> -->
+            </div>
+        </div>
+    </div>
+  </div>
+</div>

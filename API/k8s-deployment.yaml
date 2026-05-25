@@ -1,0 +1,162 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  namespace: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+      - name: api
+        image: us-east1-docker.pkg.dev/sponspay-deployment/sponspay-dev/api:f5
+        resources:
+          requests:
+            cpu: 100m
+            ephemeral-storage: 1Gi
+            memory: 128Mi
+          limits:
+            cpu: 1000m
+            ephemeral-storage: 1Gi
+            memory: 512Mi
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: password
+        - name: NODE_ENV
+          value: "production"
+        - name: DB_HOST
+          value: "10.67.208.3"
+        - name: DB_NAME
+          value: "dev"
+        - name: DB_SYNC
+          value: "true"
+        - name: SERVICE_ACCOUNT
+          valueFrom:
+            secretKeyRef:
+              name: google-meet-account
+              key: service-account
+        - name: SERVICE_ACCOUNT_PRIVATE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: google-meet-account
+              key: service-account-private-key
+        - name: SERVICE_ACCOUNT_USER
+          valueFrom:
+            secretKeyRef:
+              name: google-meet-account
+              key: service-account-user
+        - name: SENDGRID_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: sendgrid-api-key
+              key: apikey
+        - name: API_KEY_ALLOWED_DOMAINS
+          value: '["https://dev.sponspay.com"]'
+        - name: FROM_EMAIL
+          value: "noreply@sponspay.com"
+        - name: CONTACT_US_EMAIL
+          value: "contactus@sponspay.com"
+        - name: FIREBASE_SERVICE_ACCOUNT
+          valueFrom:
+            secretKeyRef:
+              name: firebase-service-account
+              key: account
+        - name: TIMEZONE_API_URL
+          value: "https://timeapi.io/"
+        - name: PHOTOS_BUCKET
+          value: "sponspay-dev-images"
+        - name: ZOHO_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: zoho
+              key: client_id
+        - name: ZOHO_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: zoho
+              key: client_secret
+        - name: ZOHO_REFRESH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: zoho
+              key: refresh_token
+        - name: ZOHO_REDIRECT_URI
+          valueFrom:
+            secretKeyRef:
+              name: zoho
+              key: redirect_uri
+
+---
+
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: api-cert
+  namespace: api
+spec:
+  domains:
+    - api.dev.sponspay.com
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-service
+  namespace: api
+  annotations:
+    beta.cloud.google.com/backend-config: '{"default": "api-test"}'
+spec:
+  selector:
+    app: api
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 3000
+
+---
+
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: api-test
+  namespace: api
+spec:
+  healthCheck:
+    port: 3000
+    type: HTTP
+    requestPath: /health
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-ingress
+  namespace: api
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: dev-static-ip
+    networking.gke.io/managed-certificates: api-cert
+    kubernetes.io/ingress.class: "gce"
+spec:
+  defaultBackend:
+    service:
+      name: api-service
+      port:
+        number: 80

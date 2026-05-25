@@ -1,0 +1,77 @@
+@use '../../../../../theme/variables' as vars;
+@use '../../../../../theme/mixins' as mixins;
+
+.mock-data-toggle {
+  margin-bottom: 1rem;
+  padding: 12px;
+  background-color: vars.$bg-light;
+  border: 1px solid vars.$border-light;
+  border-radius: vars.$border-radius-sm;
+  
+  @include mixins.form-check-custom;
+  
+  .form-check {
+    margin-bottom: 0;
+    
+    .form-check-input {
+      width: 1.25em;
+      height: 1.25em;
+      margin-top: 0.125em;
+      margin-right: 0.75rem;
+      border: 2px solid vars.$gray-600;
+      border-radius: 0.25em;
+      background-color: vars.$bg-white;
+      
+      &:checked {
+        background-color: vars.$sponspay-purple;
+        border-color: vars.$sponspay-purple;
+      }
+      
+      &:focus {
+        border-color: vars.$sponspay-purple;
+        box-shadow: vars.$shadow-focus;
+      }
+    }
+    
+    .form-check-label {
+      font-family: vars.$font-family-primary;
+      font-weight: 500;
+      color: vars.$gray-700;
+      cursor: pointer;
+    }
+  }
+  
+  .mock-data-sliders {
+    background-color: vars.$bg-light !important;
+    border: 1px solid vars.$border-light !important;
+    border-radius: vars.$border-radius-sm !important;
+    
+    h6 {
+      font-family: vars.$font-family-primary;
+      color: vars.$gray-700;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    
+    .form-label {
+      font-family: vars.$font-family-primary;
+      color: vars.$gray-700;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    
+    .form-range {
+      margin-bottom: 0.5rem;
+    }
+    
+    .alert-info {
+      background-color: vars.$info-bg;
+      border-color: vars.$info-border;
+      color: vars.$info-text;
+      
+      small {
+        margin: 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,67 @@
+<div class="comments-wrapper">
+  @if (commentList && commentList.length > 0) {
+    @for (comment of displayList; track comment.telegramMessageId || $index) {
+      <div class="comment"
+           [class.new-message]="comment.isNew"
+           [class.is-reply]="!!comment.parent"
+           [class.is-creator]="isCreator(comment)">
+
+        @if (comment.isNew) {
+          <div class="your-message-label">Your message</div>
+        }
+
+        <div class="comment-head">
+          <div class="sender">
+            @if (isCreator(comment)) {
+              <img src="svg/fan/crown.svg" alt="creator" class="sender-icon">
+            } @else {
+              <img src="svg/fan/coin.svg" alt="paid" class="sender-icon">
+            }
+            <span class="name">{{ displayName(comment) }}</span>
+            @if (comment.timestamp) {
+              <span class="time">· {{ formatRelativeTime(comment.timestamp) }}</span>
+            }
+          </div>
+          @if (comment.amount) {
+            <span class="amount-chip">{{ comment.amount | number }}</span>
+          }
+        </div>
+
+        @if (comment.parent) {
+          <div class="reply-chip" title="Replying to">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+              <path d="M4.5 2L1.5 5L4.5 8M1.5 5H7.5C8.33 5 9 5.67 9 6.5V8" stroke="#4B5563" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="reply-preview">{{ parentPreview(comment.parent) }}</span>
+          </div>
+        }
+
+        @if (comment.subject) {
+          <div class="subject-chip">{{ comment.subject }}</div>
+        }
+
+        <div class="message">{{ comment.content }}</div>
+
+        @if (comment.youtubeVideoId) {
+          <button class="video-chip"
+                  type="button"
+                  (click)="openVideo(comment.youtubeVideoId)"
+                  [title]="comment.youtubeVideoTitle || 'Open video'">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
+              <path d="M3 2.5V8.5C3 8.85 3.38 9.07 3.68 8.87L8.32 5.87C8.6 5.69 8.6 5.31 8.32 5.13L3.68 2.13C3.38 1.93 3 2.15 3 2.5Z" fill="#6B7280"/>
+            </svg>
+            <span>on: {{ comment.youtubeVideoTitle || comment.youtubeVideoId }}</span>
+          </button>
+        }
+      </div>
+    }
+  } @else {
+    <div class="no-data-wrapper no-comments">
+      <img src="svg/content-creator/dashboard/no-payment-data.svg" alt="no payments">
+      <div class="text-center">
+        <div class="heading">No Messages Found!</div>
+        <div class="text mt-2">There are no messages on this channel yet. Be the first to start the conversation.</div>
+      </div>
+    </div>
+  }
+</div>

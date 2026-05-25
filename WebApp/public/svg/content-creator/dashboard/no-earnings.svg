@@ -1,0 +1,39 @@
+<svg width="200" height="180" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="100" cy="75" r="60" fill="#F0F4FF"/>
+
+  <!-- Chart base / clipboard -->
+  <rect x="60" y="35" width="80" height="85" rx="6" fill="white" stroke="#D4DDEF" stroke-width="1.5"/>
+
+  <!-- Chart grid lines -->
+  <line x1="72" y1="55" x2="128" y2="55" stroke="#EDF0F7" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="72" y1="70" x2="128" y2="70" stroke="#EDF0F7" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="72" y1="85" x2="128" y2="85" stroke="#EDF0F7" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="72" y1="100" x2="128" y2="100" stroke="#EDF0F7" stroke-width="1" stroke-dasharray="3 3"/>
+
+  <!-- Flat line (no data) -->
+  <path d="M72 95 L85 95 L95 95 L105 95 L115 95 L128 95" stroke="#C5CEE0" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 4"/>
+
+  <!-- Ghost bars showing potential -->
+  <rect x="76" y="78" width="8" height="22" rx="2" fill="#E8EDFB" opacity="0.6"/>
+  <rect x="88" y="72" width="8" height="28" rx="2" fill="#E8EDFB" opacity="0.5"/>
+  <rect x="100" y="65" width="8" height="35" rx="2" fill="#E8EDFB" opacity="0.4"/>
+  <rect x="112" y="58" width="8" height="42" rx="2" fill="#E8EDFB" opacity="0.3"/>
+
+  <!-- Upward arrow hint -->
+  <path d="M135 60 L142 48 L149 60" stroke="#3863FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+  <line x1="142" y1="48" x2="142" y2="72" stroke="#3863FF" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Small decorative dots -->
+  <circle cx="50" cy="50" r="3" fill="#E8EDFB"/>
+  <circle cx="155" cy="90" r="4" fill="#E8EDFB"/>
+  <circle cx="45" cy="95" r="2.5" fill="#F0F4FF"/>
+
+  <!-- Dollar sign with circle -->
+  <circle cx="152" cy="42" r="12" fill="#F0F4FF" stroke="#D4DDEF" stroke-width="1"/>
+  <text x="152" y="47" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="600" fill="#C5CEE0">$</text>
+
+  <!-- Text -->
+  <text x="100" y="150" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="500" fill="#84818A">No earnings yet</text>
+  <text x="100" y="165" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="400" fill="#ADAFB9">Your daily earning trends will appear here</text>
+</svg>

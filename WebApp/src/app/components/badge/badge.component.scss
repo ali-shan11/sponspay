@@ -1,0 +1,35 @@
+.custom-badge{
+    color: rgba(26, 26, 26, 1);
+    font-family: Inter;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: normal;
+
+    padding: 7px 13px;
+    border-radius: 32px;
+    border: 1px solid rgba(214, 214, 214, 1);
+    width: max-content;
+
+    cursor: pointer;
+    display: flex;
+    gap: 5px;
+
+    &:hover:not(.disabled){
+        border: 1px solid rgba(153, 202, 255, 1);
+        background: rgba(204, 228, 255, 1);
+        color: rgba(0, 122, 255, 1);
+    }
+
+    &.selected:not(.disabled){
+        border: 1px solid rgba(153, 202, 255, 1);
+        background: rgba(204, 228, 255, 1);
+        color: rgba(0, 122, 255, 1);
+    }
+
+    &.disabled{
+        cursor: not-allowed;
+        border: 1px solid #e8e8e8;
+        background: #e8e8e8;
+        color: black;
+    }
+}

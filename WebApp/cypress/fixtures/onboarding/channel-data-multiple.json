@@ -1,0 +1,21 @@
+{
+  "connected": true,
+  "channels": [
+    {
+      "id": "UC_channel_main",
+      "title": "Main Creator Channel",
+      "subscriberCount": "15000",
+      "viewCount": "500000",
+      "videoCount": "120",
+      "thumbnailUrl": "https://yt3.ggpht.com/test-thumb-1"
+    },
+    {
+      "id": "UC_channel_second",
+      "title": "Second Channel",
+      "subscriberCount": "3000",
+      "viewCount": "100000",
+      "videoCount": "40",
+      "thumbnailUrl": "https://yt3.ggpht.com/test-thumb-2"
+    }
+  ]
+}

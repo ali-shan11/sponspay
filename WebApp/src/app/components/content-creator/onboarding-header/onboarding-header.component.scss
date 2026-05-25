@@ -1,0 +1,108 @@
+.header-main{
+  height: 80px;
+}
+.header-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1050;
+  background: white;
+
+  padding: 20px 30px;
+  // padding-top: 35px;
+  border-bottom: 1px solid #e4e4e4;
+  box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.05);
+  .menu-wrapper {
+    gap: 60px;
+  }
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1050;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  overflow: hidden;
+
+  .mobile-menu {
+    padding-top: 15px;
+    background-image: url("/svg/landing/star.svg");
+    background-repeat: no-repeat;
+    background-color: #070b13;
+    width: 90%;
+    max-width: 360px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    .login-btn {
+      text-align: left;
+    }
+  }
+
+  &.open {
+    opacity: 1;
+    pointer-events: auto;
+
+    .mobile-menu {
+      transform: translateX(0);
+    }
+  }
+}
+
+.menu-logo img {
+  width: 170px;
+}
+
+.logo{
+    img{
+        cursor: pointer;
+    }
+}
+
+.btn-close-white {
+  filter: invert(1);
+  opacity: 1;
+}
+
+/* Tablet breakpoint (below 992px) */
+@media (max-width: 991.98px) {
+    .header-wrapper{
+        padding: 15px 30px;
+    }
+}
+
+/* Mobile breakpoint (below 768px) */
+@media (max-width: 767.98px) {
+  .header-wrapper {
+    padding: 15px 10px;
+    margin: 0px 1%;
+    .logo{
+        img{
+            width: 160px;
+        }
+    }
+  }
+}
+
+/* Small mobile (below 576px) */
+// @media (max-width: 575.98px) {
+//   .header-wrapper {
+//     padding: 20px 10px;
+//     margin: 0px 1%;
+//   }
+// }

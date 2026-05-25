@@ -1,0 +1,115 @@
+.card2 {
+  .countries-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    &.no-data{
+      min-height: 200px;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+    }
+    .earning-wrapper {
+      display: flex;
+      justify-content: space-between;
+      border-radius: 6px;
+      padding: 8px 12px;
+      border: 1px solid #e4e4e4;
+      background: #fff;
+      box-shadow: 0 3px 4px -5px rgba(24, 24, 28, 0.03),
+        0 1px 2px 0 rgba(24, 24, 28, 0.04);
+      .country {
+        display: flex;
+        gap: 10px;
+        .flag{
+          width: 35px;
+          height: 35px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+        .country-name {
+          color: #2e2c34;
+          font-size: 14px;
+          font-weight: 500;
+          line-height: 20px;
+          letter-spacing: -0.14px;
+        }
+        .country-value {
+          color: #84818a;
+          font-size: 12px;
+          font-weight: 400;
+          line-height: 17px;
+          letter-spacing: -0.12px;
+        }
+      }
+      .value {
+        display: flex;
+        color: #2e2c34;
+        font-family: "Plus Jakarta Sans";
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 20px;
+        .dollar-icon {
+          margin-top: -2px;
+          margin-right: -2px;
+          color: #8e8e8f;
+          text-align: right;
+          font-size: 13px;
+          font-weight: 700;
+          line-height: 16px;
+        }
+      }
+    }
+  }
+}
+
+.empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 200px;
+  img {
+    max-width: 180px;
+  }
+}
+
+.info-tooltip-wrapper {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+
+  .info-icon {
+    width: 14px;
+    height: 14px;
+    opacity: 0.5;
+  }
+
+  .info-tooltip {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2e2c34;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 16px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    width: 220px;
+    z-index: 10;
+    white-space: normal;
+  }
+
+  &:hover .info-tooltip,
+  &:active .info-tooltip {
+    display: block;
+  }
+}
+
+.value-skeleton{
+  width: 30px;
+  align-self: center;
+}

@@ -1,0 +1,20 @@
+export const APP_ENDPOINTS = {
+    CONTACT_US: '/marketing/contactus',
+    LANDING_PAGE_DETAILS: '/marketing/landing-page-details',
+    NEWS_LATEST: '/marketing/news/latest/',
+    FAN: '/fan/',
+    FAN_PAYMENT: '/payment',
+    COUNTRIES_LIST: '/accounts/countries',
+    PAWAPAY_PROVIDERS: '/pawapay/providers',
+    PAWAPAY_PREDICT_PROVIDER: '/pawapay/predict-provider',
+    CHECK_CHANNEL_AVAILABILITY: '/telegram/check-channel-availability',
+    ACCEPT_TERMS: '/creator/accept-terms',
+    SIGN_IN_CREATOR: '/creator/sign-in',
+    CANCEL_ONBOARDING: '/creator/onboard/cancel',
+    CREATOR_YOUTUBE_CHANNELS: '/creator/channels',
+    CHANNEL_INVITE_INFO: '/telegram/channel-invite-info',
+    CO_ADMIN_STATUS: '/telegram/co-admin-status',
+    TERMS_LATEST: '/terms/latest',
+    COUNTRY_MARKET_DATA: '/marketing/country-market-data',
+
+};

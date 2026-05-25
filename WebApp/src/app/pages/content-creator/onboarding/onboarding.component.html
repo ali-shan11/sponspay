@@ -1,0 +1,109 @@
+<div class=" pb-4">
+    <div class="row justify-content-center onboard-wrapper px-3 px-md-4 px-lg-0 mx-0">
+        @if (isInitializing) {
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 400px;">
+            <img src="svg/loader.svg" alt="loading">
+        </div>
+        } @else {
+        @if (onboardingService.currentStep) {
+        <div class="row justify-content-center px-1">
+            <div class="col-11 col-md-10 col-lg-10 p-0">
+                <app-step-tracker [stepList]="stepList"
+                    [currentStep]="onboardingService.currentStep"></app-step-tracker>
+            </div>
+        </div>
+        }
+        @switch (onboardingService.currentStep) {
+        @case (STEP.GET_STARTED) {
+        <div class="col-11 col-md-10 col-lg-8 col-xl-7 p-1" data-cy="step-get-started">
+            <div class="onboard-card bg-white">
+                <app-get-started (goToNextStep)="onboardingService.currentStep=1"></app-get-started>
+            </div>
+        </div>
+        }
+        @case (STEP.YOUTUBE_CHANNEL) {
+        <div class="col-11 col-md-10 col-lg-8 col-xl-6 p-1 mt-3" data-cy="step-youtube">
+            <div class="onboard-card bg-white">
+                <app-youtube-channel-selector></app-youtube-channel-selector>
+            </div>
+            <div class="d-flex flex-column-reverse flex-md-row mt-4 gap-2 gap-md-4">
+                <app-button class="w-100" btnText="Sign Out & Go Back" iconPlacement="before"
+                    [iconUrl]="svgIcon.arrowLeftIcon" type="secondary" (click)="goBackToLogin()"
+                    data-cy="step-back"></app-button>
+                <app-button class="w-100" btnText="Continue" [iconUrl]="svgIcon.arrowRightIcon"
+                    [disabled]="!youtubeConnected"
+                    (btnClick)="onboardingService.currentStep=onboardingService.currentStep+1"
+                    data-cy="step-continue"></app-button>
+            </div>
+        </div>
+        }
+        @case (STEP.REVENUE_ESTIMATOR) {
+        <div class="col-11 col-md-10 p-1 mt-3" [ngClass]="showPotentialEarning ? 'col-lg-12 col-xl-11 col-xxl-10' : 'col-lg-8 col-xl-6'"
+            data-cy="step-estimator">
+            <div class="onboard-card bg-white">
+                <app-estimator (showEarningClick)="onShowEarningClick($event)"></app-estimator>
+            </div>
+            <div class="d-flex flex-column-reverse flex-md-row mt-4 gap-2 gap-md-4">
+                <app-button class="w-100" btnText="Back" iconPlacement="before" [iconUrl]="svgIcon.arrowLeftIcon"
+                    type="secondary" (click)="goBackToYouTubeStep()" data-cy="step-back"></app-button>
+                <app-button class="w-100" btnText="Cancel" type="secondary" (click)="onCancelClick()"
+                    data-cy="step-cancel"></app-button>
+                <app-button class="w-100" btnText="Continue" [iconUrl]="svgIcon.arrowRightIcon"
+                    [disabled]="selectedChannel?.subscriberCount===0 || !availableChannels || availableChannels.length===0"
+                    (btnClick)="goToIntegration()" data-cy="step-continue"></app-button>
+            </div>
+        </div>
+        <!-- @if (!showPotentialEarning) {
+            }@else {
+                <div class="col-11 col-md-10 col-lg-8 p-1 mt-3">
+                    <div class="onboard-card bg-white">
+                        <app-potential-earning></app-potential-earning>
+                    </div>
+                    <div class="d-flex mt-4 gap-4">
+                        <app-button class="w-100" btnText="Cancel" type="secondary" (btnClick)="showPotentialEarning=false" ></app-button>
+                        <app-button class="w-100" btnText="Continue" [iconUrl]="svgIcon.arrowRightIcon" (btnClick)="goToIntegration()" ></app-button>
+                    </div>
+                </div>
+            } -->
+        }
+        @case (STEP.INTEGRATION) {
+        <div class="col-11 col-md-10 col-lg-8 col-xl-6 p-1 mt-3" data-cy="step-integration">
+            <div class="onboard-card bg-white">
+                <app-integration></app-integration>
+            </div>
+            <div class="d-flex flex-column-reverse flex-md-row mt-4 gap-2 gap-md-4">
+                <app-button class="w-100" btnText="Back" iconPlacement="before" [iconUrl]="svgIcon.arrowLeftIcon"
+                    type="secondary" (btnClick)="goBackToEstimator()" data-cy="step-back"></app-button>
+                <app-button class="w-100" btnText="Continue" [iconUrl]="svgIcon.arrowRightIcon"
+                    (btnClick)="onboardingService.currentStep=onboardingService.currentStep+1"
+                    [disabled]="!onboardingService.telegramJoined" data-cy="step-continue"></app-button>
+            </div>
+        </div>
+        }
+        @case (STEP.TERMS_CONDITIONS) {
+        <div class="col-11 col-md-10 col-lg-8 col-xl-6 p-1 mt-3" data-cy="step-terms">
+            <div class="onboard-card bg-white">
+                <app-finish (acceptedTerms)="acceptedTerms($event)"></app-finish>
+            </div>
+            <div class="d-flex flex-column-reverse flex-md-row mt-4 gap-2 gap-md-4">
+                <!-- <app-button class="w-100" btnText="Back" iconPlacement="before" type="secondary"
+                    [iconUrl]="svgIcon.arrowLeftIcon"
+                    (btnClick)="onboardingService.currentStep=onboardingService.currentStep-1"
+                    data-cy="step-back"></app-button> -->
+                <app-button class="w-100" btnText="Continue" [disabled]="AcceptedTermsVersion===0"
+                    [iconUrl]="svgIcon.arrowRightIcon" (btnClick)="acceptTermsContinue()"
+                    data-cy="step-continue"></app-button>
+            </div>
+        </div>
+        }
+        @case (STEP.WELCOME) {
+        <div class="col-11 col-md-10 col-lg-8 col-xl-6 p-1 mt-3" data-cy="step-welcome">
+            <div class="onboard-card welcome-bg bg-white">
+                <app-welcome></app-welcome>
+            </div>
+        </div>
+        }
+        }
+        }
+    </div>
+</div>

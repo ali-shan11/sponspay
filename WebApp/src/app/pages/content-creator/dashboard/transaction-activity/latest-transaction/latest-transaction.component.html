@@ -1,0 +1,304 @@
+<div class="payment-list-wrapper">
+    <div class="heading-wrapper d-flex flex-column flex-md-row gap-3 justify-content-between">
+        <div class="heading-overview">
+            <div class="heading">Latest Transactions</div>
+            <!-- <div class="desc">Payments from different countries are retrieved every day at 10:00 PM Local Time</div> -->
+        </div>
+    </div>
+    @if (transactionData) {
+        <div class="mt-3 d-flex justify-content-between">
+            <div class="search-wrapper align-self-center d-flex gap-1 gap-md-2 gap-lg-3 flex-wrap flex-md-nowrap">
+                <div class="search-field align-self-center">
+                    <img class="search-icon" src="svg/content-creator/dashboard/search.svg" alt="search">
+                    <input type="text" class="search-input" placeholder="Search..."
+                           [(ngModel)]="searchTerm" (input)="onSearchInput()">
+                </div>
+                <button class="btn filter-wrapper d-flex gap-2" (click)="isFilterModalOpen = true">
+                    <img src="svg/content-creator/dashboard/filter.svg" alt="filter">
+                    <div class="d-none d-md-block align-self-center">Filter</div>
+                    @if (activeFilterCount > 0) {
+                        <button class="filter-badge clear-badge" (click)="resetFilters($event)">&times;</button>
+                    }
+                </button>
+                <button class="btn filter-wrapper d-flex gap-2" (click)="toggleDropdown($event)">
+                    <img src="svg/content-creator/dashboard/sort.svg" alt="sort">
+                    <div class="align-self-center d-none d-md-block">Sort</div>
+                    @if (hasActiveSort) {
+                        <button class="filter-badge clear-badge" (click)="resetSort($event)">&times;</button>
+                    }
+                </button>
+                @if (isSortDropdownOpen) {
+                    <ng-container *ngTemplateOutlet="sort_dropdown"></ng-container>
+                }
+                <!-- <div class="search-wrapper align-self-center d-flex gap-3 flex-wrap flex-md-nowrap position-relative">
+                </div> -->
+                @if (hasActiveFilters || hasActiveSort) {
+                    <button class="btn clear-all-btn align-self-center" (click)="resetAll()">Clear all</button>
+                }
+            </div>
+        </div>
+    }
+
+    @if (isLoading) {
+        <div class="no-data-wrapper">
+            <img class="loader" src="svg/loader.svg" alt="loader">
+        </div>
+    }
+
+    @if (transactionData && transactionData.items.length>0) {
+        @if (!isLoading) {
+            <div class="desktop-table custom-table table-responsive mt-2 mt-md-3">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th (click)="onHeaderSort('multiplier')" [class.sorted]="selectedSortBy === 'multiplier'">
+                                <span class="label-full">Multiple</span>
+                                <span class="label-short">Mult.</span>
+                                <img [src]="selectedSortBy === 'multiplier' ? (selectedSortOrder === 'asc' ? 'svg/table/sort-asc.svg' : 'svg/table/sort-des.svg') : 'svg/table/sort.svg'" alt="sort">
+                            </th>
+                            <th (click)="onHeaderSort('createdAt')" [class.sorted]="selectedSortBy === 'createdAt'">
+                                <span class="label-full">Received Date</span>
+                                <span class="label-short">Date</span>
+                                <img [src]="selectedSortBy === 'createdAt' ? (selectedSortOrder === 'asc' ? 'svg/table/sort-asc.svg' : 'svg/table/sort-des.svg') : 'svg/table/sort.svg'" alt="sort">
+                            </th>
+                            <th (click)="onHeaderSort('country')" [class.sorted]="selectedSortBy === 'country'">
+                                <span class="label-full">Sender Country</span>
+                                <span class="label-short">Country</span>
+                                <img [src]="selectedSortBy === 'country' ? (selectedSortOrder === 'asc' ? 'svg/table/sort-asc.svg' : 'svg/table/sort-des.svg') : 'svg/table/sort.svg'" alt="sort">
+                            </th>
+                            <th (click)="onHeaderSort('amount')" [class.sorted]="selectedSortBy === 'amount'">
+                                <span class="label-full">Amount Sent</span>
+                                <span class="label-short">Amount</span>
+                                <img [src]="selectedSortBy === 'amount' ? (selectedSortOrder === 'asc' ? 'svg/table/sort-asc.svg' : 'svg/table/sort-des.svg') : 'svg/table/sort.svg'" alt="sort">
+                            </th>
+                            <th (click)="onHeaderSort('revenueStatus')" [class.sorted]="selectedSortBy === 'revenueStatus'">
+                                <span class="label-full">Reply Status</span>
+                                <span class="label-short">Status</span>
+                                <img [src]="selectedSortBy === 'revenueStatus' ? (selectedSortOrder === 'asc' ? 'svg/table/sort-asc.svg' : 'svg/table/sort-des.svg') : 'svg/table/sort.svg'" alt="sort">
+                                <span class="status-help-btn" role="button" tabindex="0" (click)="isStatusInfoModalOpen = true; $event.stopPropagation()" (keyup.enter)="isStatusInfoModalOpen = true; $event.stopPropagation()">?</span>
+                            </th>
+                            <th>
+                                <span class="label-full">Reply Deadline</span>
+                                <span class="label-short">Deadline</span>
+                            </th>
+                            <th>
+                                Details
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="payment-table-body">
+                        @for (transaction of transactionData.items; track $index) {
+                            <tr class="custom-row">
+                                <td>
+                                    <div class="message-id">
+                                        <div class="count">
+                                            {{transaction.multiplier}}x
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="double-heading">
+                                        <div class="count">
+                                            {{transaction.createdAt | date:'MMM dd, yyyy'}}
+                                        </div>
+                                        <div class="sub-heading">
+                                            {{transaction.createdAt | date:'hh:mm a'}}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="country-wrapper d-flex gap-2">
+                                        <img class="flag" [src]="transaction.flag" alt="flag">
+                                        <div class="name align-self-center">{{transaction.country}}</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="double-heading">
+                                        <div class="count">
+                                            {{transaction.localAmount | number}} {{transaction.localCurrencyCode}}
+                                        </div>
+                                        <!-- <div class="sub-heading">
+                                            ~${{transaction.usdEstimatedValue}}
+                                        </div> -->
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="total-message compensation-status d-flex justify-content-center gap-2 p-0" role="button" tabindex="0" (click)="isStatusInfoModalOpen = true; $event.stopPropagation()" (keyup.enter)="isStatusInfoModalOpen = true; $event.stopPropagation()">
+                                        @switch (transaction.revenueStatus) {
+                                            @case (TRANSACTION_REVENUE_STATUS.Earned) {
+                                                <div class="status completed clickable">Earned</div>
+                                            }
+                                            @case (TRANSACTION_REVENUE_STATUS.AutoReplied) {
+                                                <div class="status auto-replied clickable">Auto-Replied</div>
+                                            }
+                                            @case (TRANSACTION_REVENUE_STATUS.AwaitingReply) {
+                                                <div class="status pending clickable">Awaiting Reply</div>
+                                            }
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    @if (transaction.replyDeadline) {
+                                        <div class="double-heading">
+                                            <div class="count">
+                                                {{transaction.replyDeadline | date:'MMM dd, yyyy'}}
+                                            </div>
+                                            <div class="sub-heading">
+                                                {{transaction.replyDeadline | date:'hh:mm a'}}
+                                            </div>
+                                        </div>
+                                    }@else {
+                                        <div [style.padding-left]="'30px'"> N/A </div>
+                                    }
+                                </td>
+                                <td>
+                                    <button class="action-card div-btn" (click)="viewMessage($event, transaction)">
+                                        <div class="align-self-center">
+                                            <span class="label-full">View Message</span>
+                                            <span class="label-short">View</span>
+                                        </div>
+                                        <app-inline-svg src="svg/content-creator/dashboard/view-message.svg"></app-inline-svg>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-3 mobile-payment-list">
+                @for (transaction of transactionData.items; track $index) {
+                    <div class="payment-card">
+                        <!-- <div class="country-wrapper d-flex justify-content-between mb-2">
+                            <div class="d-flex gap-2">
+                                <img class="flag" [src]="payment.flag" alt="flag">
+                                <div class="align-self-center name">{{payment.country}}</div>
+                            </div>
+                            <app-inline-svg [src]="svgIcon.arrowRightIcon"></app-inline-svg>
+                        </div> -->
+        
+                        <div class="message-id list d-flex justify-content-between">
+                            <div class="heading">Multiple</div>
+                            <div class="value">
+                                <div class="amount">{{transaction.multiplier}}x</div>
+                            </div>
+                        </div>
+                        <div class="total-earning list d-flex justify-content-between">
+                            <div class="heading">RECEIVED DATE</div>
+                            <div class="value">
+                                <div class="amount">{{transaction.createdAt | date:'MMM dd, yyyy'}}</div>
+                                <div class="percentage">{{transaction.createdAt | date:'hh:mm a'}}</div>
+                            </div>
+                        </div>
+                        <div class="country-wrapper list d-flex justify-content-between">
+                            <div class="heading">SENDER COUNTRY</div>
+                            <div class="d-flex gap-2">
+                                <div class="align-self-center name">{{transaction.country}}</div>
+                                <img class="flag" [src]="transaction?.flag" alt="flag">
+                            </div>
+                        </div>
+                        <div class="total-earning list d-flex justify-content-between">
+                            <div class="heading">AMOUNT SENT</div>
+                            <div class="value">
+                                <div class="amount">{{transaction.localAmount|number}} {{transaction.localCurrencyCode}}</div>
+                                <!-- <div class="percentage">~${{transaction.usdEstimatedValue}}</div> -->
+                            </div>
+                        </div>
+                        <div class="total-message list d-flex justify-content-between">
+                            <div class="heading">REPLY STATUS</div>
+                            <div class="value compensation-status d-flex gap-2" role="button" tabindex="0" (click)="isStatusInfoModalOpen = true" (keyup.enter)="isStatusInfoModalOpen = true">
+                                @switch (transaction.revenueStatus) {
+                                    @case (TRANSACTION_REVENUE_STATUS.Earned) {
+                                        <div class="status completed clickable">Earned</div>
+                                    }
+                                    @case (TRANSACTION_REVENUE_STATUS.AutoReplied) {
+                                        <div class="status auto-replied clickable">Auto-Replied</div>
+                                    }
+                                    @case (TRANSACTION_REVENUE_STATUS.AwaitingReply) {
+                                        <div class="status pending clickable">Awaiting Reply</div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="pay-date total-earning list d-flex justify-content-between">
+                            <div class="heading">REPLY DEADLINE</div>
+                            <div class="value">
+                                @if (transaction.replyDeadline) {
+                                    <div class="amount">{{transaction.replyDeadline | date:'MMM dd, yyyy'}}</div>
+                                    <div class="percentage">{{transaction.replyDeadline | date:'hh:mm a'}}</div>
+                                }@else {
+                                    <div [style.padding-left]="'30px'"> N/A </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="pay-date total-earning list d-flex justify-content-between">
+                            <div class="heading">Details</div>
+                            <div class="value">
+                               <button class="action-card div-btn" (click)="viewMessage($event, transaction)">
+                                    <div class="align-self-center">View Message</div>
+                                    <app-inline-svg src="svg/content-creator/dashboard/view-message.svg"></app-inline-svg>
+                               </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        <div class="mt-3">
+            <app-pagination [totalItems]="transactionData.totalRecords" [currentPage]="page" [defaultPageSize]="limit" (reloadData)="handleReloadData($event)" ></app-pagination>
+        </div>
+    }
+    @if (!isLoading && transactionData && transactionData.items.length===0 && hasActiveFilters) {
+        <div class="no-data-wrapper">
+            <img src="svg/content-creator/dashboard/no-payment-data.svg" alt="no results">
+            <div class="text-center">
+                <div class="heading">No transactions found</div>
+                <div class="text mt-2">Try adjusting your search or filters.</div>
+            </div>
+        </div>
+    }
+    @if (!isLoading && (!transactionData || (transactionData.items.length===0 && !hasActiveFilters))) {
+        <div class="no-data-wrapper">
+            <img src="svg/content-creator/dashboard/no-payment-data.svg" alt="no Transactions">
+            <div class="text-center">
+                <div class="heading">You don’t have any Transactions yet!</div>
+                <div class="text mt-2">Share your unique SponsPay link with your audience to start receiving transactions.</div>
+            </div>
+        </div>
+    }
+
+</div>
+
+<ng-template #sort_dropdown>
+    <div class="sort-dropdown">
+        <div class="section-label">Sort by</div>
+        @for (sortBy of sortByList; track $index) {
+            <button class="menu-item" [ngClass]="{'selected': selectedSortBy===sortBy.key}" (click)="onSortByClick(sortBy.key)">
+                <div class="text">{{sortBy.value}}</div>
+            </button>
+        }
+        <hr>
+        <div class="section-label">Order</div>
+        @for (sortOrder of sortOrderList; track $index) {
+            <button class="menu-item" [ngClass]="{'selected': selectedSortOrder===sortOrder.key}" (click)="onSortOrderClick(sortOrder.key)">
+                <div class="text">{{sortOrder.value}}</div>
+            </button>
+        }
+        <!-- @if (hasActiveSort) {
+            <hr>
+            <button class="menu-item reset-item" (click)="resetSort()">
+                <div class="text">Reset to default</div>
+            </button>
+        } -->
+    </div>
+</ng-template>
+
+@if (isFilterModalOpen) {
+    <app-filter-modal [filterObj]="filterObj" [countryList]="transactionData.availableCountries" (closed)="filterModalClose($event)"></app-filter-modal>
+}
+@if (isMessageModalOpen && selectedTransaction) {
+    <app-message-modal [message]="selectedTransaction" (closed)="messageModalClose($event)"></app-message-modal>
+}
+@if (isStatusInfoModalOpen) {
+    <app-status-info-modal (closed)="isStatusInfoModalOpen = false"></app-status-info-modal>
+}

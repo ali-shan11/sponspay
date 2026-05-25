@@ -1,0 +1,22 @@
+<div class="progress-wrapper">
+  @for (item of stepList; track $index) {
+    <div class="d-flex gap-2 gap-md-3">
+      <div class="track" [ngClass]="{'current': $index === currentStep, 'selected': $index < currentStep}" >
+        <div class="count">
+          @if ($index >= currentStep) {
+            <span >{{$index+1}}</span>
+          }
+          @if ($index < currentStep) {
+            <app-inline-svg class="icon" [src]="svgIcons.checkIcon" ></app-inline-svg>
+          }
+        </div>
+        <div class="label">{{item.label}}</div>
+      </div>
+      @if ( stepList.length !== $index+1) {
+        <div class="arrow-icon">
+          <app-inline-svg class="icon" [src]="svgIcons.arrowRightIcon" ></app-inline-svg>
+        </div>
+      }
+    </div>
+  }
+</div>

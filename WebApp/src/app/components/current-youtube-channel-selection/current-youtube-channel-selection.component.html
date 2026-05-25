@@ -1,0 +1,24 @@
+@if (channelList.length > 1) {
+    <div class="date-main">
+        <div class="date-wrapper align-self-center justify-content-center" [class.active]="isChannelDropdownOpen" role="presentation" (click)="toggleChannelDropdown($event)">
+            <div class="d-flex gap-2 w-100">
+                <img src="svg/content-creator/dashboard/user-youtube.svg" alt="youtube">
+                <span class="w-100 align-self-center">Channel : <span class="black-text">{{selectedChannelOption ? selectedChannelOption.channelName : ''}}</span></span>
+            </div>
+            <img class="dropdown-icon" src="svg/user-profile-dropdown.svg" alt="dropdown">
+        </div>
+        @if (isChannelDropdownOpen) {
+            <ng-container *ngTemplateOutlet="channel_dropdown"></ng-container>
+        }
+    </div>
+}
+
+<ng-template #channel_dropdown>
+    <div class="days-dropdown">
+        @for (channel of channelList; track $index) {
+            <button class="menu-item" (click)="onChannelOptionClick(channel.id)">
+                <div class="text">{{channel.channelName}}</div>
+            </button>
+        }
+    </div>
+</ng-template>

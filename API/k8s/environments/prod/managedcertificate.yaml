@@ -1,0 +1,10 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: prod-sponspay-api-cert
+  namespace: sponspay-api-prod
+  labels:
+    environment: production
+spec:
+  domains:
+  - api.sponspay.com

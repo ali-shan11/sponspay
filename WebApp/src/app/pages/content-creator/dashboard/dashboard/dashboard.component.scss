@@ -1,0 +1,201 @@
+.good-morning {
+  color: #030712;
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 120%;
+  letter-spacing: -0.36px;
+}
+
+.connection {
+  color: #8e8e8f;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.14px;
+  .connect-btn {
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 32px;
+    border: 1px solid #fbd8d5;
+    color: #ea4334;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.14px;
+  }
+}
+.black-text {
+  color: #1a1a1a;
+}
+
+.dropdown-icon {
+  margin-left: -5px;
+  margin-right: -8px;
+}
+
+.refresh-btn {
+  cursor: pointer;
+  border: none;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+  padding: 9px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    background: #F7F7F8;
+  }
+}
+
+.date-main{
+  position: relative;
+}
+
+.date-wrapper {
+  cursor: pointer;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+
+  display: flex;
+  padding: 9px 12px;
+  align-items: center;
+  gap: 10px;
+
+  color: #84818a;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  min-width: 212px;
+
+  .dropdown-icon {
+    transform: rotateX(0deg);
+    transition: transform 0.5s ease;
+  }
+  &:hover, &.active{
+    background: #F7F7F8;
+    .dropdown-icon{
+      transform: rotateX(180deg);
+    }
+  }
+}
+
+.days-dropdown{
+  position: absolute;
+  top: 55px;
+  right: -2px;
+  border: 1px solid #EBEBEB;
+  border-radius: 8px;
+  box-shadow: 0px 16px 32px -12px #0E121B1A;
+  background: white;
+  width: 100%;
+  z-index: 99;
+
+  hr{
+    opacity: 1;
+    color: #EBEBEB;
+    margin: 0px;
+  }
+  .menu-item{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    cursor: pointer;
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: #171717;
+    &:first-child{
+      border-radius: 8px 8px 0px 0px;
+    }
+    &:last-child{
+      border-radius: 0px 0px 8px 8px;
+    }
+    .text{
+      font-family: Inter;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 14px;
+      letter-spacing: -0.6%;
+    }
+    &:hover{
+      background: #F7F7F7;
+    }
+  }
+}
+
+.dashboard-card-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+
+  > * {
+    min-width: 0; // prevent content from forcing unequal columns
+  }
+}
+
+::ng-deep .card {
+  padding: 22px 24px;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12),
+    0 23px 44px 0 rgba(176, 183, 195, 0.14);
+}
+::ng-deep .sub-heading {
+  color: #8c8e9c;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: -0.16px;
+}
+
+::ng-deep .selection-wrapper{
+  .ng-select-container{
+    border-radius: 5px !important;
+    padding: 12px 10px !important;
+    min-width: 200px;
+    border: 1px solid transparent !important;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+  }
+}
+
+/* 2 columns - cards need ~350px+ min for graphs */
+@media (max-width: 1399.98px) {
+  .dashboard-card-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+/* 1 column when content area is too narrow for 2 cols with sidebar */
+@media (max-width: 999.98px) {
+  .dashboard-card-wrapper {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* Mobile breakpoint (below 768px) - sidebar hidden */
+@media (max-width: 767.98px) {
+  .date-wrapper {
+    width: 100%;
+    justify-content: center;
+  }
+  ::ng-deep .dashboard-card-wrapper {
+    .card {
+      padding: 12px 14px;
+    }
+  }
+}
+
+@media (max-width: 426px) {
+  .company-url {
+    border-right: none;
+    border-bottom: 1px solid #E6E6E6;
+  }
+}

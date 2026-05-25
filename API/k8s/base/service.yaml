@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sponspay-api-service
+  labels:
+    app: sponspay-api
+  annotations:
+    cloud.google.com/backend-config: '{"default": "sponspay-api-config"}'
+spec:
+  type: ClusterIP
+  # Session affinity at service level for WebSocket connections
+  # Ensures clients connect to the same pod for Socket.IO state consistency
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 3600
+  ports:
+  - port: 80
+    targetPort: 3000
+    protocol: TCP
+    name: http
+  selector:
+    app: sponspay-api

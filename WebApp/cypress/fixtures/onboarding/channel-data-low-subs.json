@@ -1,0 +1,13 @@
+{
+  "connected": true,
+  "channels": [
+    {
+      "id": "UC_small_channel",
+      "title": "Small Channel",
+      "subscriberCount": "0",
+      "viewCount": "1000",
+      "videoCount": "5",
+      "thumbnailUrl": "https://yt3.ggpht.com/test-thumb-small"
+    }
+  ]
+}

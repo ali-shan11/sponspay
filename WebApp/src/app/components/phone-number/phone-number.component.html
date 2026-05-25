@@ -1,0 +1,33 @@
+<div class="custom-input-wrapper custom-intl-input">
+    @if (label) {
+        <label for="phone-input" class="custom-input-label text-start">{{ label }}</label>
+    }
+    <div class="position-relative">
+        <input
+            #phoneInput
+            type="tel"
+            id="phone-input"
+            class="form-control iti__tel-input"
+            [attr.placeholder]="placeholder || 'Enter Phone Number'"
+        />
+        @if (controlName.invalid && controlName.touched) {
+            <img class="error-icon" [src]="svgIcons.errorIcon" alt="error">
+        }
+    </div>
+
+    @if (controlName.invalid && controlName.touched) {
+        <div class="error">
+            @if (controlName.errors?.['required']) {
+                <small>{{label||'This field'}} is required.</small>
+            }
+            @if (controlName.errors?.['invalidPhone']) {
+               @switch (controlName.errors?.['invalidPhone']?.errorMessage) {
+                  @case ('Too short') { <small>Phone number is too short.</small> }
+                  @case ('Too long') { <small>Phone number is too long.</small> }
+                  @case ('Invalid country code') { <small>Invalid country code.</small> }
+                  @default { <small>Invalid phone number.</small> }
+               }
+            }
+        </div>
+    }
+</div>

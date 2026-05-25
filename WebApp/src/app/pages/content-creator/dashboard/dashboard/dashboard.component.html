@@ -1,0 +1,58 @@
+<div class="d-flex flex-column flex-md-row justify-content-between">
+    <div>
+        <div class="good-morning">{{greeting}}, {{user?.displayName}}</div>
+        <div class="connection d-flex flex-column flex-md-row gap-2 align-items-start align-items-md-center">
+            <span class="black-text">{{currentDate | date:'EEEE, dd MMMM yyyy'}}. </span>
+            @if (signInResponse && !isTelegramConnected) {
+                <div class="d-flex gap-2 align-items-start align-items-md-center">
+                    <span>You haven't connected Telegram yet. </span>
+                    <div class="connect-btn">
+                        <span>Connect Now</span>
+                        <img src="svg/content-creator/dashboard/full-arrow-right.svg" alt="arrow-right">
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="d-flex gap-2 mt-2 mt-md-0 align-self-start align-items-stretch selection-wrapper">
+        <div class="date-main">
+            <div class="date-wrapper align-self-center justify-content-center" [class.active]="isDaysDropdownOpen" role="presentation" (click)="toggleDropdown($event)">
+                <img src="svg/content-creator/dashboard/calendar.svg" alt="calendar">
+                <span class="w-100">Show : <span class="black-text">{{selectedDaysOption ? selectedDaysOption.text : ''}}</span></span>
+                <img class="dropdown-icon" src="svg/user-profile-dropdown.svg" alt="dropdown">
+            </div>
+            @if (isDaysDropdownOpen) {
+                <ng-container *ngTemplateOutlet="days_dropdown"></ng-container>
+            }
+        </div>
+        <button class="refresh-btn" (click)="refreshDashboard()">
+            <img src="svg/refresh-icon.svg" alt="refresh" width="16">
+        </button>
+    </div>
+</div>
+
+<div class="dashboard-card-wrapper mt-4 mt-md-5">
+    <div class="w-100">
+        <app-total-earning-card></app-total-earning-card>
+    </div>
+    <div class="w-100">
+        <app-top-earning-card></app-top-earning-card>
+    </div>
+    <div class="w-100">
+        <app-link-management-card></app-link-management-card>
+    </div>
+</div>
+
+<div class="payment-overview-wrapper mt-3">
+    <app-payment-overview></app-payment-overview>
+</div>
+
+<ng-template #days_dropdown>
+    <div class="days-dropdown">
+        @for (dayOption of daysOptions; track $index) {
+            <button class="menu-item" (click)="onDayOptionClick(dayOption.value)">
+                <div class="text">{{dayOption.text}}</div>
+            </button>
+        }
+    </div>
+</ng-template>

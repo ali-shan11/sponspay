@@ -1,0 +1,20 @@
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: dev-sponspay-webapp-config
+  labels:
+    app: sponspay-webapp
+    component: frontend
+    environment: dev
+spec:
+  healthCheck:
+    port: 80
+    type: HTTP
+    requestPath: /
+  timeoutSec: 30
+  connectionDraining:
+    drainingTimeoutSec: 60
+  iap:
+    enabled: true
+    oauthclientCredentials:
+      secretName: oauth-client-secret

@@ -1,0 +1,17 @@
+<div class="d-flex gap-4 justify-content-center onboard-wrapper-images">
+    <img class="condition-img" src="svg/content-creator/cancellation.svg" alt="Condition">
+</div>
+<div class="title-wrapper mt-4">
+    <div class="text-medium text-center">Are you sure you want to cancel?</div>
+    <div class="text-regular text-center mt-3 px-3 px-md-5">You’re about to cancel your registration. If you’d like to stay informed about <strong>future updates, features, or availability</strong> in your country, you can choose to receive occasional emails from us.</div>
+</div>
+
+<div class="accept-condition mt-3 mt-md-3 mt-lg-4" [ngClass]="{'accepted': keepMeUpdated}">
+    <div><input class="accept-condititon-checkbox" [(ngModel)]="keepMeUpdated" type="checkbox" id="keepMeUpdated" name="accept-condition" data-cy="keep-updated-checkbox"></div>
+    <label for="keepMeUpdated" class="condition-text">Keep me updated with relevant news and features. <br> <span class="text-grey">(You can unsubscribe at any time.)</span> </label>
+</div>
+
+<div class="cancel-reason mt-3 mt-md-3 mt-lg-4">
+    <label for="message">Reason</label>
+    <textarea class="form-control mt-2" id="message" name="message" rows="4" placeholder="Please Enter the Reason for Cancellation" data-cy="cancel-reason" [(ngModel)]="reason" (ngModelChange)="handleReasonChange()" ></textarea>
+</div>

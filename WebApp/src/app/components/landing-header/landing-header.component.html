@@ -1,0 +1,141 @@
+<div class="header-main">
+    <div class="header-wrapper d-flex justify-content-between" [ngClass]="{'mobile-glass-header': isScrolled}">
+        <div class="logo">
+            <img src="svg/logo.svg" alt="Logo" routerLink="/">
+        </div>
+        <div class="menu-wrapper d-none d-md-flex d-flex gap-lg-5 gap-md-4 align-self-center">
+            <div class="d-flex gap-md-4 gap-lg-5 align-self-center">
+                @if (user) {
+                    @if (signInResponse && !isOnboardingComplete) {
+                        <div class="menu" routerLink="/onboarding">Continue Onboarding</div>
+                    } @else {
+                        <div class="menu" routerLink="/dashboard">Go To Dashboard</div>
+                    }
+                }
+                <div class="menu" routerLink="/about" routerLinkActive="active">About Us</div>
+                <div class="menu" routerLink="/contact-us" routerLinkActive="active">Contact Us</div>
+                <div class="menu" routerLink="/faq" routerLinkActive="active">FAQ</div>
+            </div>
+            @if (!user) {
+                <div class="action">
+                    <button class="login-btn" (click)="onLoginClick()">Login</button>
+                </div>
+            } @else {
+                <div class="user-profile cursor-pointer" [ngClass]="{'active': isDropdownOpen}">
+                    <div class="user-img d-flex gap-2" role="presentation" (click)="toggleDropdown($event)">
+                        <img class="align-self-center profile-image" [src]="user.photoURL" alt="User" referrerPolicy="no-referrer">
+                        <div class="user-details">
+                            <div class="name">{{user.displayName}}</div>
+                            <div class="info-tooltip-wrapper">
+                                <div class="tag email-tag">{{user.email}}</div>
+                                <div class="info-tooltip">{{user.email}}</div>
+                            </div>
+                        </div>
+                        <div>
+                            <img src="svg/user-profile-dropdown.svg" class="dropdown-icon" alt="">
+                        </div>
+                    </div>
+    
+                    @if (isDropdownOpen) {
+                        <ng-container *ngTemplateOutlet="user_menu_dropdown"></ng-container>
+                    }
+                </div>
+            }
+        </div>
+        <div class="d-md-none">
+            <button class="btn" (click)="toggleMobileMenu()">
+              <img src="svg/menu.svg" alt="Menu" width="24">
+            </button>
+        </div>    
+    </div>
+</div>
+
+<div class="mobile-menu-overlay" role="presentation" [class.open]="mobileMenuOpen" (click)="toggleMobileMenu()">
+    <div class="mobile-menu" role="presentation" (click)="$event.stopPropagation()">
+      <div class="text-end p-3 d-flex justify-content-between">
+        <div class="menu-logo">
+            <img src="svg/logo.svg" alt="Logo">
+        </div>
+        <button class="btn-close btn-close-white" (click)="toggleMobileMenu()"> </button>
+      </div>
+      <div class="p-4 d-flex flex-column gap-3">
+        @if (user) {
+            <div class="user-profile cursor-pointer" [ngClass]="{'active': isDropdownOpen}">
+                <div class="user-img d-flex gap-2 justify-content-between" role="presentation" (click)="toggleDropdown($event)">
+                    <div class="d-flex gap-2">
+                        <img class="align-self-center profile-image" [src]="user.photoURL" alt="User" referrerPolicy="no-referrer">
+                        <div class="user-details">
+                            <div class="name">{{user.displayName}}</div>
+                            <div class="info-tooltip-wrapper">
+                                <div class="tag email-tag email-sub-tag">{{user.email}}</div>
+                                <div class="info-tooltip">{{user.email}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="svg/user-profile-dropdown.svg" class="dropdown-icon" alt="dropdown">
+                    </div>
+                </div>
+                @if (isDropdownOpen) {
+                    <ng-container *ngTemplateOutlet="user_menu_dropdown"></ng-container>
+                }
+            </div>
+        }@else {
+            <button class="login-btn mb-4" (click)="onLoginClick()">Login</button>
+        }
+        @if (user) {
+            @if (signInResponse && !isOnboardingComplete) {
+                <div class="menu" routerLink="/onboarding">Continue Onboarding</div>
+            } @else {
+                <div class="menu" routerLink="/dashboard">Go To Dashboard</div>
+            }
+        }
+        <div class="menu" routerLink="/about" routerLinkActive="active">About Us</div>
+        <div class="menu" routerLink="/contact-us" routerLinkActive="active">Contact Us</div>
+        <div class="menu" routerLink="/faq" routerLinkActive="active">FAQ</div>
+      </div>
+    </div>
+</div>
+
+<ng-template #user_menu_dropdown>
+    @if (user) {
+        <div class="user-menu-dropdown">
+            <!-- <div class="user-img d-flex gap-2" role="presentation" (click)="toggleDropdown($event)">
+                <img class="align-self-center profile-image" [src]="user.photoURL" alt="User" referrerPolicy="no-referrer">
+                <div class="user-details">
+                    <div class="name">{{user.displayName}}</div>
+                    <div class="tag">{{user.email}}</div>
+                </div>
+            </div>
+            <hr class="my-2">
+            <div class="d-flex flex-column gap-2">
+                <button class="menu-item div-btn" routerLink="/settings">
+                    <div class="icon">
+                        <app-inline-svg src="svg/content-creator/dashboard/user-menu-setting.svg" ></app-inline-svg>
+                    </div>
+                    <div class="text">Settings</div>
+                </button>
+                <div class="menu-heading">SUPPORT</div>
+                <button class="menu-item div-btn">
+                    <div class="icon">
+                        <app-inline-svg src="svg/content-creator/dashboard/user-menu-help.svg" ></app-inline-svg>
+                    </div>
+                    <div class="text">Help Center</div>
+                </button>
+                <button class="menu-item div-btn">
+                    <div class="icon">
+                        <app-inline-svg src="svg/content-creator/dashboard/user-menu-call.svg" ></app-inline-svg>
+                    </div>
+                    <div class="text">Contact Us</div>
+                </button>
+            </div>
+            <hr class="my-2"> -->
+            <button class="menu-item div-btn w-100" (click)="handleSignout()">
+                <div class="icon">
+                    <app-inline-svg src="svg/content-creator/dashboard/user-menu-logout.svg" ></app-inline-svg>
+                </div>
+                <div class="text">Logout</div>
+            </button>
+        </div>
+    }
+</ng-template>

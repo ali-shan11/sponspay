@@ -1,0 +1,85 @@
+<div>
+    <button class="btn mobile-link-wrapper d-flex justify-content-between d-md-none p-2 mb-3 w-100" (click)="toggleDropdown()">
+        <div class="d-flex flex-column gap-1">
+            <div class="link d-flex gap-2 p-2">
+                <div [class]="'icon '+activeChild?.label">
+                    <app-inline-svg [src]="activeChild?.icon||''" ></app-inline-svg>
+                </div>
+                <div class="name">{{activeChild?.label}}</div>
+            </div>
+        </div>
+        <div class="icon align-self-center">
+            <app-inline-svg [src]="svgIcon.arrowDownIcon" ></app-inline-svg>
+        </div>
+    </button>
+
+    @if (isDropdownOpen) {
+        <div class="link-dropdown-menu dropdown-menu show mt-2 p-2">
+            <div class="d-flex flex-column gap-2 justify-content-between menu-main-wrapper">
+                <div class="menu-wrapper">
+                    @for (menu of tabMenu; track $index) {
+                        <div class="menu-main d-flex gap-2 justify-content-between">
+                            <div class="label ms-2 py-2">{{menu.label}}</div>
+                        </div>
+                        @if (menu.children) {
+                            <div class="menu-child-wrapper d-flex flex-column gap-1">
+                                @for (child of menu.children; track $index) {
+                                    <button [routerLink]="child.link" routerLinkActive="active" #rla="routerLinkActive" class="btn menu-child d-flex gap-2" [routerLinkActiveOptions]="{ exact: false }" (click)="toggleDropdown()">
+                                        <div [class]="'icon '+child.label">
+                                            <app-inline-svg [src]="child.icon" ></app-inline-svg>
+                                        </div>
+                                        <div class="name">{{child.label}}</div>
+                                    </button>
+                                }
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+          </div>
+          
+          <!-- Backdrop -->
+           @if (isDropdownOpen) {
+               <button 
+                 class="btn backdrop position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50"
+                 (click)="isDropdownOpen=false">
+               </button>
+           }
+    }
+
+    <div class="row justify-content-start onboard-wrapper px-0 mx-0">
+        <div class="d-none d-md-block col-12 col-md-4 col-lg-2 p-1">
+            <div class="tab-wrapper">
+                <div class="d-flex flex-column gap-2 justify-content-between menu-main-wrapper">
+                    <div class="menu-wrapper">
+                        @for (menu of tabMenu; track $index) {
+                            <div class="menu-main d-flex gap-2 justify-content-between">
+                                <div class="label ms-2">{{menu.label}}</div>
+                            </div>
+                            @if (menu.children) {
+                                <div class="menu-child-wrapper d-flex flex-column gap-1">
+                                    @for (child of menu.children; track $index) {
+                                        <div [routerLink]="child.link" routerLinkActive="active" #rla="routerLinkActive" class="menu-child d-flex gap-2" [routerLinkActiveOptions]="{ exact: true }">
+                                            <div [class]="'icon '+child.label">
+                                                <app-inline-svg [src]="child.icon" ></app-inline-svg>
+                                            </div>
+                                            <div class="name">{{child.label}}</div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            @if (menu.children && $index < menu.children.length-1) {
+                                <div class="divider">
+                                    <hr>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-8 col-lg-5 p-1 px-0 px-md-4">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

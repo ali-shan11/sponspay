@@ -1,0 +1,88 @@
+$gap: 30px;
+
+.contact-us {
+    height: 100%;
+    padding: 2rem;
+    max-width: 600px;
+    margin: 0 auto;
+    margin-bottom: 200px;
+    z-index: 100;
+    position: relative;
+
+    ::ng-deep .custom-input-label{
+        color: white !important;
+    }
+
+    ::ng-deep .custom-select-label{
+        color: white !important;
+    }
+
+    .wrapper {
+        gap: $gap;
+    }
+
+    .adjusted-col {
+        width: calc( (100% / 12 * 6) - $gap / 2 );
+    }
+
+    .form-title {
+        color: #fff;
+        text-align: center;
+        margin-bottom: 1rem;
+        font-family: Inter;
+        font-size: 50px;
+        font-weight: 500;
+        line-height: 72px;
+        letter-spacing: -1.2px;
+    }
+
+    // Bootstrap floating labels styling
+    .form-floating {
+        margin-bottom: 1rem;
+
+        .form-control,
+        .form-select {
+            &:focus {
+                border-color: var(--secondary-dark);
+                box-shadow: 0 0 0 0.25rem rgba(var(--secondary-dark-rgb, 13, 110, 253), 0.25);
+            }
+
+            &.is-invalid {
+                border-color: var(--error);
+                
+                &:focus {
+                    border-color: var(--error);
+                    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+                }
+            }
+        }
+
+        label {
+            color: #666;
+            
+            .text-danger {
+                color: var(--error) !important;
+            }
+        }
+    }
+
+    .btn-primary {
+        background-color: var(--secondary-dark);
+        border-color: var(--secondary-dark);
+        padding: 0.75rem;
+        font-size: 1rem;
+        border-radius: 4px;
+
+        &:hover {
+            filter: brightness(0.9);
+        }
+    }
+
+    .invalid-feedback {
+        display: block;
+        width: 100%;
+        margin-top: 0.25rem;
+        font-size: .875em;
+        color: var(--error);
+    }
+}

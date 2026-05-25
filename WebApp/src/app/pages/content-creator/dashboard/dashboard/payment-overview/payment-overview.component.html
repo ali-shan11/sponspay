@@ -1,0 +1,214 @@
+<div class="payment-list-wrapper">
+    <div class="heading-wrapper d-flex flex-column flex-md-row gap-3 justify-content-between">
+        <div class="heading-overview">
+            <div class="sub-heading">Payments Overview</div>
+            <div class="desc">Your earnings and upcoming payouts broken down by country</div>
+        </div>
+        @if (paymentData && paymentData.items.length>0) {
+            <div class="search-wrapper align-self-center d-flex gap-1 gap-md-2 gap-lg-3 flex-wrap flex-md-nowrap">
+                <div class="search-field align-self-center">
+                    <img class="search-icon" src="svg/content-creator/dashboard/search.svg" alt="search">
+                    <input type="text" class="search-input" placeholder="Search..." [(ngModel)]="searchTerm" (ngModelChange)="onSearch($event)">
+                    @if (searchTerm) {
+                        <button class="clear-btn" (click)="onSearch('')">&times;</button>
+                    }
+                </div>
+                <button class="btn filter-wrapper d-flex gap-2" disabled>
+                    <img src="svg/content-creator/dashboard/filter.svg" alt="filter">
+                    <div class="align-self-center d-none d-md-block">Filter</div>
+                    <span class="coming-soon-tooltip">Coming Soon</span>
+                </button>
+            </div>
+        }
+    </div>
+
+    @if (isLoading) {
+        <div class="no-data-wrapper">
+            <img class="loader" src="svg/loader.svg" alt="loader">
+        </div>
+    }
+
+    @if (paymentData && paymentData.items.length>0) {
+        @if (!isLoading) {
+            <div class="d-none d-lg-block custom-table table-responsive mt-2 mt-md-3">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                Country
+                                <img src="svg/table/sort.svg" alt="sort">
+                            </th>
+                            <th>
+                                Total Earning
+                                <img src="svg/table/sort.svg" alt="sort">
+                            </th>
+                            <th>
+                                Total Messages
+                                <img src="svg/table/sort.svg" alt="sort">
+                            </th>
+                            <th>
+                                Payout
+                                <img src="svg/table/sort.svg" alt="sort">
+                            </th>
+                            <th>
+                                Payout Date
+                                <img src="svg/table/sort.svg" alt="sort">
+                            </th>
+                            <th>
+                                Pay Deadline
+                                <img src="svg/table/sort.svg" alt="sort">
+                            </th>
+                            <th>
+                                Compensation
+                                <img src="svg/table/sort.svg" alt="sort">
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="payment-table-body">
+                        @for (payment of filteredItems; track $index) {
+                            <tr class="custom-row" (click)="openDrawer($index)">
+                                <td>
+                                    <div class="country-wrapper d-flex gap-2">
+                                        <img class="flag" [src]="payment.flag" alt="flag">
+                                        <div class="name align-self-center">{{payment.countryCode}}</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="total-earning">
+                                        <div class="count">
+                                            {{payment.totalLocal | number}} {{payment.localCurrencyCode}}
+                                        </div>
+                                        <div class="percentage">
+                                            ~${{payment.totalUsd}}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="total-message d-flex gap-2">
+                                        <img src="svg/message-table.svg" alt="message">
+                                        <div class="count">
+                                            {{payment.premiumMessages | number}}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="total-amount">
+                                        @if (payment.nextPayAmountLocal !== null) {
+                                            {{payment.nextPayAmountLocal | number}} {{payment.localCurrencyCode}}
+                                        } @else {
+                                            -
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="pay-date coming-soon-text">Coming Soon</div>
+                                </td>
+                                <td>
+                                    <div class="coming-soon-text">Coming Soon</div>
+                                </td>
+                                <td>
+                                    <div class="compensation-wrapper">
+                                        @if (payment.hasAccount) {
+                                            <div class="completed compensation-card">
+                                                <app-inline-svg src="svg/check-outline.svg"></app-inline-svg>
+                                                <div class="align-self-center">Completed</div>
+                                            </div>
+                                        } @else {
+                                            <div class="pending compensation-card disabled-card" tabindex="0" role="button" (click)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()">
+                                                <app-inline-svg src="svg/plus.svg"></app-inline-svg>
+                                                <div class="align-self-center">Configure</div>
+                                                <span class="coming-soon-tooltip">Coming Soon</span>
+                                            </div>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex d-lg-none mt-3 mobile-payment-list">
+                @for (payment of filteredItems; track $index) {
+                    <button class="btn payment-card" (click)="openDrawer($index)">
+                        <div class="country-wrapper d-flex justify-content-between mb-2">
+                            <div class="d-flex gap-2">
+                                <img class="flag" [src]="payment.flag" alt="flag">
+                                <div class="align-self-center name">{{payment.countryCode}}</div>
+                            </div>
+                            <app-inline-svg [src]="svgIcon.arrowRightIcon"></app-inline-svg>
+                        </div>
+
+                        <div class="total-earning list d-flex justify-content-between">
+                            <div class="heading">TOTAL EARNING</div>
+                            <div class="value">
+                                <div class="amount">{{payment.totalLocal|number}} {{payment.localCurrencyCode}}</div>
+                                <div class="percentage">~${{payment.totalUsd}}</div>
+                            </div>
+                        </div>
+                        <div class="total-message list d-flex justify-content-between">
+                            <div class="heading">TOTAL MESSAGES</div>
+                            <div class="value d-flex gap-2">
+                                <img src="svg/message-table.svg" alt="message">
+                                <div class="percentage align-self-center">{{payment.premiumMessages|number}}</div>
+                            </div>
+                        </div>
+                        <div class="total-amount list d-flex justify-content-between">
+                            <div class="heading">PAYOUT</div>
+                            <div class="value">
+                                @if (payment.nextPayAmountLocal !== null) {
+                                    <div class="amount">{{payment.nextPayAmountLocal|number}} {{payment.localCurrencyCode}}</div>
+                                } @else {
+                                    <div class="amount">-</div>
+                                }
+                            </div>
+                        </div>
+                        <div class="pay-date list d-flex justify-content-between">
+                            <div class="heading">PAYOUT DATE</div>
+                            <div class="value">
+                                <div class="coming-soon-text">Coming Soon</div>
+                            </div>
+                        </div>
+                        <div class="pay-date list d-flex justify-content-between">
+                            <div class="heading">PAY DEADLINE</div>
+                            <div class="value">
+                                <div class="coming-soon-text">Coming Soon</div>
+                            </div>
+                        </div>
+                        <div class="pay-date list d-flex justify-content-between">
+                            <div class="heading">COMPENSATION</div>
+                            <div class="value">
+                                <div class="compensation-wrapper">
+                                    @if (payment.hasAccount) {
+                                        <div class="completed compensation-card">
+                                            <app-inline-svg src="svg/check-outline.svg"></app-inline-svg>
+                                            <div class="align-self-center">Completed</div>
+                                        </div>
+                                    } @else {
+                                        <div class="pending compensation-card disabled-card" tabindex="0" role="button" (click)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()">
+                                            <app-inline-svg src="svg/plus.svg"></app-inline-svg>
+                                            <div class="align-self-center">Configure</div>
+                                            <span class="coming-soon-tooltip">Coming Soon</span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                }
+            </div>
+        }
+    }
+    @if (!isLoading && (!paymentData || paymentData.items.length===0)) {
+        <div class="no-data-wrapper">
+            <img src="svg/content-creator/dashboard/no-payment-data.svg" alt="no payments">
+            <div class="text-center">
+                <div class="heading">You don't have any Payments yet!</div>
+                <div class="text mt-2">Share your unique SponsPay link with your audience to start receiving payments from fans worldwide.</div>
+            </div>
+        </div>
+    }
+
+</div>
+
+<app-payment-overview-drawer></app-payment-overview-drawer>

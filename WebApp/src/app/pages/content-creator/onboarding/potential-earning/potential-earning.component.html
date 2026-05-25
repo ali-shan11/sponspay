@@ -1,0 +1,179 @@
+<div class="title-wrapper mt-4">
+  <div class="text-medium text-center">Your potential earnings 🚀</div>
+  <div class="text-regular text-center mt-3">See how SponsPay expands your audience's payment access across supported countries, compared to YouTube's default payment methods.</div>
+</div>
+<button class="detail-text d-flex gap-1 justify-content-center mt-3 pt-2 div-btn w-100" (click)="goBackToResults($event)">
+  <app-inline-svg class="me-2" src="svg/content-creator/video-queue.svg" ></app-inline-svg>
+  <div class="text align-self-center">Back to Results</div>
+  <app-inline-svg [src]="svgIcons.arrowRightIcon" ></app-inline-svg>
+</button>
+
+<div class="d-none d-lg-block profit-table mt-4">
+  <div class="grid-table">
+    <!-- Main Headers -->
+    <div class="header header-countries border-bottom d-flex align-items-center justify-content-start ps-4 p-2 border-end">
+      SponsPay<br>Countries
+    </div>
+    <div class="header header-viewers border-bottom d-flex align-items-center justify-content-start ps-3 p-2 border-end">
+      Viewers in SponsPay Country
+    </div>
+    <div class="header header-youtube border-bottom border-end text-white d-flex align-items-center justify-content-center p-2">
+      <img [src]="svgIcons.youtubeIconBig" alt="Youtube">
+    </div>
+    <div class="header header-sponspay border-bottom text-white d-flex flex-column align-items-center justify-content-center p-2 text-center">
+      <img [src]="svgIcons.logoDark" alt="Sponspay" [width]="150">
+      <div class="desc mt-1">Local & Alternative Payment Access (LAPA) Methods</div>
+    </div>
+
+    <!-- Sub Headers -->
+    <div class="sub-header p-2 border-bottom border-end d-flex align-items-center justify-content-center">
+      Credit Card & Traditional Payment Share*
+    </div>
+    <div class="sub-header p-2 border-bottom border-end d-flex align-items-center justify-content-center">
+      Avg. Viewers with YouTube Payment Access
+    </div>
+    <div class="sub-header p-2 border-bottom border-end d-flex align-items-center justify-content-center bg-grey">
+      Mobile / SIM Card Market Share
+    </div>
+    <div class="sub-header p-2 border-bottom border-end d-flex align-items-center justify-content-center bg-grey">
+      Avg. Additional Viewers with Payment Access
+    </div>
+    <div class="sub-header p-2 border-bottom d-flex align-items-center justify-content-center bg-grey">
+      Avg. Total Viewers with Payment Access
+    </div>
+
+    <!-- Data Rows -->
+    @for (calculation of paymentCalculations; track calculation.country.countryCode) {
+      <div class="data-row">
+        <div class="data-cell d-flex align-items-center gap-3 p-3 border-bottom border-end">
+          <img class="flag" [src]="calculation.country.flag" [alt]="calculation.country.countryName">
+          <span class="sub-text-black">{{calculation.country.countryName}}</span>
+        </div>
+        <div class="data-cell p-3 border-bottom border-end d-flex align-items-center sub-text-black">{{calculation.country.viewersInSponspayCountry.toLocaleString()}}</div>
+        <div class="data-cell p-3 border-bottom border-end d-flex align-items-center sub-text-blue">{{calculation.country.creditCardMarketShare}}%</div>
+        <div class="data-cell p-3 border-bottom border-end d-flex align-items-center sub-text-black">{{calculation.avgTotalViewersWithYouTubeAccess.toLocaleString()}}</div>
+        <div class="data-cell p-3 border-bottom border-end d-flex align-items-center sub-text-blue">{{calculation.country.mobileSimCardMarketShare}}%</div>
+        <div class="data-cell p-3 border-bottom border-end d-flex align-items-center sub-text-black">{{calculation.avgAdditionalViewersWithPaymentAccess.toLocaleString()}}</div>
+        <div class="data-cell p-3 border-bottom d-flex align-items-center sub-text-black">{{calculation.avgTotalViewersWithPaymentAccess.toLocaleString()}}</div>
+      </div>
+    }
+
+    <!-- Total Row -->
+    <div class="total-row">
+      <div class="data-cell p-3 d-flex align-items-center"></div>
+      <div class="data-cell p-3 d-flex align-items-center"></div>
+      <div class="data-cell p-3 d-flex align-items-center"></div>
+      <div class="data-cell p-3 d-flex align-items-center total-text total-text-black">{{totalYouTubeAccess.toLocaleString()}}</div>
+      <div class="data-cell p-3 d-flex align-items-center"></div>
+      <div class="data-cell p-3 d-flex align-items-center total-text total-text-black">{{totalAdditionalAccess.toLocaleString()}}</div>
+      <div class="data-cell p-3 d-flex align-items-center total-text total-text-blue">
+        <span class="green-percentage">+{{sponspayPayablePercent}}%</span>
+        <span>{{totalPaymentAccess.toLocaleString()}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="d-block d-lg-none mt-4">
+  <div class="country-wrapper">
+    <div class="heading">Select Country</div>
+    <div class="country-select">
+      <ng-select
+        class="custom-select w-100"
+        [selectOnTab]="true"
+        [clearable]="false"
+        [searchable]="false"
+        [(ngModel)]="selectedCountry"
+        >
+        @for (item of displayCountryData; track $index) {
+          <ng-option [value]="item">
+            <img [src]="item.flag" width="20px" height="20px" alt="" />
+            {{item.countryName}}
+          </ng-option>
+        }
+      </ng-select>
+    </div>
+  </div>
+
+  @for (calculation of paymentCalculations; track calculation.country.countryCode) {
+
+    @if (calculation.country.countryCode === selectedCountry?.countryCode) {
+      <div class="youtube-wrapper mt-4">
+        <div class="stats">
+          <img [src]="svgIcons.youtubeIconBig" alt="youtube">
+          <div class="count-wrapper d-flex gap-3 justify-content-between mt-3">
+            <div class="title">Credit Card & Traditional Payment Share*</div>
+            <div class="value text-blue">{{calculation.country.creditCardMarketShare}}%</div>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="stats" style="padding-top: 10px; padding-bottom: 15px;">
+          <div class="count-wrapper d-flex gap-3 justify-content-between">
+            <div class="title">Avg. Viewers with YouTube Payment Access</div>
+            <div class="value">{{calculation.avgTotalViewersWithYouTubeAccess.toLocaleString()}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="sponspay-wrapper mt-4">
+        <div class="header">
+          <img class="logo" [src]="svgIcons.logoDark" alt="Logo dark">
+          <div class="desc">Local & Alternative Payment Access (LAPA) Methods  </div>
+        </div>
+        <div class="stats">
+          <div class="count-wrapper d-flex gap-3 justify-content-between">
+            <div class="title">Mobile / SIM Card Market Share</div>
+            <div class="value text-blue">{{calculation.country.mobileSimCardMarketShare}}%</div>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="count-wrapper d-flex gap-3 justify-content-between">
+            <div class="title">Avg. Additional Viewers with Payment Access</div>
+            <div class="value">{{calculation.avgAdditionalViewersWithPaymentAccess.toLocaleString()}}</div>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="count-wrapper d-flex gap-3 justify-content-between">
+            <div class="title">Avg. Total Viewers with Payment Access</div>
+            <div class="value">{{calculation.avgTotalViewersWithPaymentAccess.toLocaleString()}}</div>
+          </div>
+        </div>
+      </div>
+    }
+  }
+
+  <div class="summary-heading mt-4">SUMMARY</div>
+  <div class="summary-wrapper mt-2">
+    <div class="d-flex gap-2 justify-content-between px-2">
+      <div class="countries">
+        @for (item of displayCountryData; track item.countryCode; let index = $index) {
+          @if (index<=4){
+            <img  [src]="item.flag" alt="flag" [width]="30">
+          }
+        }
+        @if (displayCountryData.length>5){
+          <span>+{{(displayCountryData.length-5)}} Others</span>
+        }
+      </div>
+
+      <div class="text-end total">
+        Total Viewers with Payment Access
+      </div>
+    </div>
+    <div class="stats">
+      <div class="d-flex gap-3 justify-content-between">
+        <div class="title">with <img class="ms-2" [src]="svgIcons.youtubeIconBig" alt="youtube" [width]="55"></div>
+        <div class="value">{{totalYouTubeAccess.toLocaleString()}}</div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="d-flex gap-3 justify-content-between">
+        <div class="title">with <img class="ms-2" [src]="svgIcons.logoDark" alt="sponspay" [width]="90"></div>
+        <div class="value text-blue d-flex gap-2">
+          <div class="percentage">+{{sponspayPayablePercent}}%</div>
+          <span>{{totalPaymentAccess.toLocaleString()}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

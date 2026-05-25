@@ -1,0 +1,85 @@
+<div #modal class="custom-modal modal fade modal-fullscreen-md-down">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Premium Message Response and Refund Policy</h2>
+        <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+      </div>
+      <div class="modal-body">
+        <section>
+          <h3>1. Purpose</h3>
+          <p>
+            This policy explains what SponsPay promises when a supporter pays for a Premium Message, how replies
+            and platform-managed responses work, and when refunds may be available.
+          </p>
+        </section>
+
+        <section>
+          <h3>2. What SponsPay promises by default</h3>
+          <ul>
+            <li>SponsPay will process the payment for an accepted Premium Message.</li>
+            <li>SponsPay will deliver the message into the creator's priority SponsPay flow.</li>
+            <li>SponsPay will notify the creator through the configured workflow.</li>
+            <li>SponsPay will provide message-status tracking.</li>
+            <li>If the creator does not personally reply within the disclosed service window, SponsPay may send a platform-managed response.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>3. What SponsPay does not promise by default</h3>
+          <ul>
+            <li>A personal creator reply for every message.</li>
+            <li>Proof that a creator passively viewed a message in Telegram.</li>
+            <li>The same response time or response style for every creator, market, or message type.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>4. Service window</h3>
+          <p>
+            Unless SponsPay clearly discloses a different timing for a particular product tier, the default service window
+            for creator-personal reply or platform-managed fallback response is 14 days from successful submission.
+          </p>
+        </section>
+
+        <section>
+          <h3>5. Platform-managed responses</h3>
+          <p>
+            If the creator does not personally reply within the service window, SponsPay may send a platform-managed
+            response. SponsPay will label that response in a way that does not misrepresent it as a creator-personal
+            reply.
+          </p>
+        </section>
+
+        <section>
+          <h3>6. Refund eligibility</h3>
+          <ul>
+            <li>SponsPay may issue a refund if SponsPay fails to deliver an accepted Premium Message correctly.</li>
+            <li>SponsPay may issue a refund if SponsPay fails to provide the promised service workflow within the disclosed service window.</li>
+            <li>SponsPay may issue a refund if the message is rejected, cancelled, duplicated, or cannot be fulfilled safely or lawfully.</li>
+            <li>SponsPay may deny a refund where the service was completed according to the disclosed workflow, including where a clearly labeled platform-managed response was provided within the service window.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>7. Prohibited or unsafe messages</h3>
+          <p>
+            SponsPay may refuse, remove, or refund messages that violate product rules, community standards, law, or
+            safety requirements, or that create material operational or reputational risk.
+          </p>
+        </section>
+
+        <section>
+          <h3>8. How to request support</h3>
+          <p>
+            Users should use the support channels identified in the product, creator page, or website. SponsPay may
+            request order details, creator details, and message details in order to review the request.
+          </p>
+        </section>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-close-policy" (click)="close()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

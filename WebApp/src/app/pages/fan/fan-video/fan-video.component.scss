@@ -1,0 +1,389 @@
+.fan-video-wrapper {
+    width: 70.666667%;
+    background: #F7F7F8;
+    border: 1px solid #E6E6E6;
+    border-radius: 14px;
+    padding: 14px;
+}
+
+.fan-video-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    align-items: stretch;
+}
+
+.left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 0;
+    min-width: 0;
+}
+
+/* Right column uses grid with a 1fr row so its natural height is driven only
+   by the telegram block. The grid row then matches the left column's height,
+   and the messages slot absorbs the remainder. */
+.right-column {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 14px;
+    min-height: 0;
+    min-width: 0;
+
+    .messages-block {
+        min-height: 0;
+        overflow: hidden;
+    }
+}
+
+.section-card {
+    background: #FFFFFF;
+    border: 1px solid #E6E6E6;
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 2px -1px rgba(16,24,40,0.08), 0 1px 3px 0 rgba(16,24,40,0.05);
+}
+
+.section-header {
+    margin-bottom: 10px;
+
+    .section-title-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .section-title {
+        color: #030712;
+        font-family: Inter, sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 22px;
+        letter-spacing: -0.2px;
+        margin: 0;
+    }
+    .section-caption {
+        color: #8E8E8F;
+        font-family: Inter, sans-serif;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 18px;
+        margin: 2px 0 0;
+    }
+    .creator-identity {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 4px;
+
+        .creator-avatar {
+            width: 18px;
+            height: 18px;
+        }
+        .creator-name {
+            color: #030712;
+            font-family: Inter, sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+        }
+    }
+    .live-pill {
+        background: #EA4334;
+        color: white;
+        font-size: 10px;
+        font-weight: 700;
+        line-height: 1;
+        padding: 3px 6px;
+        border-radius: 4px;
+        letter-spacing: 0.5px;
+    }
+}
+
+/* ---------- Video block ---------- */
+.video-block {
+    .video-frame {
+        position: relative;
+        width: 100%;
+        max-width: 360px;
+        margin: 0 auto;
+        aspect-ratio: 16 / 9;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #000;
+    }
+    .video-frame .youtube-video,
+    .video-frame iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        display: block;
+    }
+    .video-meta {
+        margin-top: 8px;
+        text-align: center;
+    }
+    .video-title {
+        color: #030712;
+        font-family: Inter, sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+        letter-spacing: -0.2px;
+        margin: 0;
+    }
+    .description {
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        color: #4B5563;
+        font-size: 13px;
+        line-height: 20px;
+        margin-top: 4px;
+        text-align: left;
+    }
+    .description.expanded {
+        display: block;
+        -webkit-line-clamp: unset;
+        overflow: visible;
+    }
+    .show-more-btn {
+        background: none;
+        border: none;
+        color: #0066cc;
+        cursor: pointer;
+        font-size: 12px;
+        text-decoration: underline;
+        padding: 2px 0 0;
+        display: block;
+        white-space: nowrap;
+    }
+    .show-more-btn:focus { outline: none; }
+
+    .no-video-placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 36px 20px;
+        background: #FAFAFA;
+        border: 1px dashed #D4D4D4;
+        border-radius: 12px;
+
+        .no-video-title {
+            color: #030712;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .no-video-subtitle {
+            color: #8E8E8F;
+            font-size: 13px;
+            line-height: 18px;
+            text-align: center;
+            max-width: 280px;
+        }
+    }
+}
+
+/* ---------- Messages block ---------- */
+.messages-block {
+    .messages-body {
+        flex: 1 1 0;
+        min-height: 0;
+        overflow: hidden;
+
+        app-user-comment {
+            display: block;
+            height: 100%;
+        }
+    }
+}
+
+/* ---------- Payment block ---------- */
+.payment-block {
+    .payment-body {
+        display: flex;
+        flex-direction: column;
+    }
+    .tips-wrapper {
+        overflow-x: auto;
+
+        .tip {
+            min-width: fit-content;
+            padding: 6px 14px 5px 14px;
+            border-radius: 32px;
+            border: 1px solid #E6E6E6;
+            color: #030712;
+            font-family: Inter, sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: -0.14px;
+            align-self: center;
+
+            &.selected {
+                border: 1px solid #8CA5D4;
+                background: #E1E8F4;
+            }
+        }
+    }
+    .hr-with-text {
+        display: flex;
+        gap: 18px;
+        margin-top: 10px;
+        font-family: Inter, sans-serif;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+        color: #B7B8BD;
+
+        hr { width: 100%; }
+        span { min-width: max-content; }
+    }
+    .refund-policy-text {
+        font-family: Inter, sans-serif;
+        font-size: 12px;
+        line-height: 18px;
+        color: #8E8E8F;
+        text-align: center;
+        margin-bottom: 0;
+
+        .refund-policy-link {
+            color: #0066cc;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    }
+    .no-data-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        padding: 24px 12px;
+
+        .heading {
+            font-size: 16px;
+            font-weight: 600;
+            color: #030712;
+        }
+        .text {
+            color: #8E8E8F;
+            font-size: 13px;
+            line-height: 18px;
+        }
+    }
+}
+
+/* ---------- Telegram block ---------- */
+.telegram-block {
+    .telegram-cta {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+
+        .qr-wrap {
+            background: white;
+            border: 1px solid #E6E6E6;
+            border-radius: 10px;
+            padding: 6px;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: transform 0.15s ease-out, border-color 0.15s ease-out;
+
+            &:hover { transform: translateY(-1px); border-color: #8CA5D4; }
+            &:focus-visible { outline: 2px solid #229ED9; outline-offset: 2px; }
+        }
+        .telegram-qr {
+            width: 88px;
+            height: 88px;
+            display: block;
+        }
+        .telegram-cta-text {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: flex-start;
+
+            .scan-hint {
+                margin: 0;
+                font-size: 12px;
+                color: #4B5563;
+                font-weight: 500;
+            }
+            app-button {
+                width: 100%;
+                max-width: 260px;
+            }
+        }
+    }
+}
+
+.cursor-pointer { cursor: pointer; }
+
+/* ---------- Responsive ---------- */
+
+/* Below 1454 */
+@media (max-width: 1453.99px) {
+    .fan-video-wrapper { width: 85%; }
+}
+
+/* Below 1200 */
+@media (max-width: 1196.99px) {
+    .fan-video-wrapper { width: 95%; }
+}
+
+/* Below 1047 */
+@media (max-width: 1046.99px) {
+    .fan-video-wrapper {
+        width: 100%;
+        padding: 10px;
+    }
+}
+
+/* Stack to single column below 992 */
+@media (max-width: 991.98px) {
+    .fan-video-grid {
+        grid-template-columns: 1fr;
+    }
+    /* Flatten columns so all 4 blocks stack in a single grid row-stack,
+       in order: video → payment → messages → telegram */
+    .left-column, .right-column { display: contents; }
+    .video-block    { order: 1; }
+    .payment-block  { order: 2; }
+    .messages-block { order: 3; }
+    .telegram-block { order: 4; }
+
+    /* Tablet/phone: cap width (height follows 16:9 from aspect-ratio).
+       On phones narrower than 480px, the frame shrinks to 100% width naturally. */
+    .video-block .video-frame {
+        max-width: 480px;
+    }
+    /* Mobile: fixed-height messages card so ~5 comments are always visible */
+    .messages-block .messages-body {
+        flex: 0 0 auto;
+        min-height: 360px;
+        height: 360px;
+    }
+    .telegram-block .telegram-cta {
+        flex-direction: column;
+        align-items: stretch;
+
+        .qr-wrap { align-self: center; }
+        .telegram-cta-text { align-items: stretch; }
+        .telegram-cta-text app-button { max-width: none; align-self: stretch; }
+    }
+}
+
+/* Skeleton shimmer */
+.skeleton {
+    background: linear-gradient(90deg, #EFEFEF 0%, #F7F7F7 50%, #EFEFEF 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.2s infinite;
+}
+@keyframes shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}

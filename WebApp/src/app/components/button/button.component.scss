@@ -1,0 +1,122 @@
+.custom-btn{
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    align-items: center;
+
+    width: 100%;
+    border-radius: 32px;
+    padding: 11px 20px;
+
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: -1%;
+
+    &.danger{
+        color: white;
+        background: #EA4334;
+        box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+        border: 1px solid #EA4334;
+        .icon{
+            margin-top: -2px;
+            path{
+                stroke: rgba(255, 255, 255, 1) !important;
+            }
+        }
+        &.disabled{
+            path{
+                stroke: #8e8e8f !important;
+            }
+        }
+    }
+
+    &.primary{
+        color: white;
+        background: rgba(33, 52, 88, 1);
+        box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+        border: 1px solid rgb(33, 52, 88);
+        .icon{
+            margin-top: -2px;
+            path{
+                stroke: rgba(255, 255, 255, 1) !important;
+            }
+        }
+        &.disabled{
+            path{
+                stroke: #8e8e8f !important;
+            }
+        }
+    }
+    
+    &.secondary{
+        color: rgba(3, 7, 18, 1);
+        background: white;
+        border: 1px solid rgba(230, 230, 230, 1);
+        box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+        .icon{
+            margin-top: -2px;
+            path{
+                stroke: rgba(3, 7, 18, 1) !important;
+            }
+        }
+        &.disabled{
+            path{
+                stroke: #8e8e8f !important;
+            }
+        }
+    }
+
+    &.disabled{
+        background: #e6e6e6;
+        color: #8e8e8f;
+        border: 1px solid #e6e6e6;
+        box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+        cursor: not-allowed;
+    }
+
+    .icon{
+        width: 18px;
+        height: 18px;
+        overflow: hidden;
+    }
+}
+
+::ng-deep{
+    .primary{
+        .icon{
+            path{
+                stroke: rgba(255, 255, 255, 1) !important;
+            }
+        }
+    }
+    .secondary{
+        .icon{
+            path{
+                stroke: rgba(3, 7, 18, 1) !important;
+            }
+        }
+    }
+    .disabled{
+        .icon{
+            path{
+                stroke: rgba(142, 142, 143, 1) !important;
+            }
+        }
+    }
+}
+
+/* Tablet breakpoint (below 992px) */
+@media (max-width: 991.98px) {
+    .custom-btn{
+        font-size: 13px;
+    }
+  }
+  
+  /* Mobile breakpoint (below 768px) */
+  @media (max-width: 767.98px) {
+    .custom-btn{
+        font-size: 12px;
+    }
+  }

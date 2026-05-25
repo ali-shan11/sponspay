@@ -1,0 +1,144 @@
+<!-- fullscreen below md, centered above -->
+<div #modal class="custom-modal modal fade modal-fullscreen-md-down">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="header-content-top d-flex justify-content-between gap-3">
+                <div class="heading">Message Preview</div>
+                <div class="d-flex gap-3">
+                    <div class="status-wrapper clickable" role="button" tabindex="0" (click)="isStatusInfoModalOpen = true" (keyup.enter)="isStatusInfoModalOpen = true">
+                        @switch (message.revenueStatus) {
+                            @case (TRANSACTION_REVENUE_STATUS.Earned) {
+                                <div class="compensation-status completed">Earned</div>
+                            }
+                            @case (TRANSACTION_REVENUE_STATUS.AutoReplied) {
+                                <div class="compensation-status auto-replied">Auto-Replied</div>
+                            }
+                            @case (TRANSACTION_REVENUE_STATUS.AwaitingReply) {
+                                <div class="compensation-status pending">Awaiting Reply</div>
+                            }
+                        }
+                    </div>
+                    <button class="btn close-icon p-0 m-0 border-0" (click)="close()">
+                        <img src="svg/content-creator/compensation/close.svg" alt="close">
+                    </button>
+                </div>
+            </div>
+            <div class="header-content d-flex flex-column flex-lg-row justify-content-between gap-3 mt-3">
+                <div class="received-date heading-wrapper d-flex gap-2 w-100">
+                    <div class="icon-wrapper"><img class="icon" src="svg/transactions/message-date.svg" alt="Message"></div>
+                    <div class="data">
+                        <div class="heading">Received Date</div>
+                        <div class="value d-flex gap-2">
+                            <span>{{message.createdAt | date:'MMM dd, yyyy'}}</span> <span class="heading">{{message.createdAt | date:'hh:mm a'}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-none d-md-block separator align-self-center">|</div>
+                <div class="d-block d-lg-none mobile-separator"></div>
+                <div class="sender-country heading-wrapper d-flex gap-2 w-100">
+                    <div class="icon-wrapper"><img class="icon" [src]="message.flag" alt="Flag"></div>
+                    <div class="data">
+                        <div class="heading">Sender Country</div>
+                        <div class="value d-flex gap-2">
+                            <span>{{message.country}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="header-content-bottom status-explanation mt-3">
+                @switch (message.revenueStatus) {
+                    @case (TRANSACTION_REVENUE_STATUS.AwaitingReply) {
+                        <div class="explanation awaiting">
+                            <span class="explanation-icon">&#9200;</span>
+                            <div>
+                                Reply to this fan's message before
+                                <strong>{{message.replyDeadline | date:'MMM dd, yyyy, hh:mm a'}}</strong>
+                                to show your appreciation.
+                            </div>
+                        </div>
+                    }
+                    @case (TRANSACTION_REVENUE_STATUS.Earned) {
+                        <div class="explanation earned">
+                            <span class="explanation-icon">&#10003;</span>
+                            <span>You replied to this message. Great job keeping your fans engaged!</span>
+                        </div>
+                    }
+                    @case (TRANSACTION_REVENUE_STATUS.AutoReplied) {
+                        <div class="explanation auto-replied">
+                            <span class="explanation-icon">&#9888;</span>
+                            <span>The reply deadline passed. An automatic reply was sent on your behalf.</span>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        @if (message.senderName) {
+            <div class="modal-body pb-0">
+                <div class="heading-wrapper">
+                    <div class="heading large">From</div>
+                    <div class="value mt-2">{{message.senderName}}</div>
+                </div>
+            </div>
+        }
+
+        <div class="modal-body pb-3">
+            <div class="heading-wrapper">
+                <div class="heading large">Message</div>
+                <div class="value mt-2">{{message.messageContent}}</div>
+            </div>
+        </div>
+
+        @if (message.revenueStatus === TRANSACTION_REVENUE_STATUS.AwaitingReply && replyState !== 'sent') {
+            <div class="modal-body pt-0 pb-3">
+                <div class="reply-section">
+                    <div class="heading-wrapper">
+                        <div class="heading large">Reply</div>
+                    </div>
+                    <textarea
+                        class="form-control mt-2"
+                        [(ngModel)]="replyText"
+                        placeholder="Type your reply..."
+                        rows="3"
+                        [disabled]="replyState === 'sending'"
+                        maxlength="4096">
+                    </textarea>
+                    @if (replyState === 'error') {
+                        <div class="reply-error mt-2">{{replyError}}</div>
+                    }
+                    <button
+                        class="btn reply-send-btn mt-2"
+                        (click)="sendReply()"
+                        [disabled]="!replyText.trim() || replyState === 'sending'">
+                        @if (replyState === 'sending') {
+                            <span class="spinner-border spinner-border-sm me-1"></span> Sending...
+                        } @else {
+                            Send Reply
+                        }
+                    </button>
+                </div>
+            </div>
+        }
+        @if (replyState === 'sent') {
+            <div class="modal-body pt-0 pb-3">
+                <div class="reply-success">
+                    <span>&#10003;</span> Reply sent successfully!
+                </div>
+            </div>
+        }
+
+        @if (message.telegramMessageLink) {
+            <div class="modal-footer p-3">
+                <div class="heading-wrapper">
+                    <div class="heading large">Source</div>
+                    <a class="value link mt-2 d-block" [href]="message.telegramMessageLink" target="_blank" rel="noopener noreferrer">{{message.telegramMessageLink}}</a>
+                </div>
+            </div>
+        }
+    </div>
+  </div>
+</div>
+@if (isStatusInfoModalOpen) {
+    <app-status-info-modal (closed)="isStatusInfoModalOpen = false"></app-status-info-modal>
+}

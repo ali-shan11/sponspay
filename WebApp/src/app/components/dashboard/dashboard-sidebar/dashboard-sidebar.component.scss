@@ -1,0 +1,211 @@
+.side-bar-main{
+    border-right: 1px solid #e4e4e4;
+}
+
+.logo-wrapper{
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #e4e4e4;
+}
+
+.menu-wrapper{
+    padding: 12px 22px;
+}
+.divider{
+    padding: 14px 0px;
+    hr{
+        margin: 0px;
+        opacity: 1;
+        color: #E6E7E8;
+    }
+}
+
+.menu-main-wrapper{
+    height: calc(100% - 100px);
+}
+
+.logout-wrapper{
+    display: flex;
+    gap: 10px;
+}
+
+.copy-url{
+    border-radius: 25px;
+    padding: 20px;
+}
+
+::ng-deep.menu-main{
+    .label{
+        color: #8D9299;
+        font-feature-settings: 'liga' off, 'clig' off;
+        font-family: "DM Sans";
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 29px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+}
+
+.sponspay-card{
+    border-radius: 8px;
+    // background: radial-gradient(143.58% 143.58% at 0% 0%, var(--primary-50, #E1E8F4) 0%, var(--primary-200, #8CA5D4) 100%);
+    background-image: url('/svg/menu/side-bar-card-bg.svg');
+    .heading{
+        margin-top: 30px;
+        color: #213458;
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 27px;
+        letter-spacing: -0.24px;
+    }
+    .text{
+        margin-top: 10px;
+        color: #213458;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+        letter-spacing: -0.14px;
+    }
+    .link-btn{
+        cursor: pointer;
+        margin-top: 30px;
+        text-align: center;
+        padding: 10px 16px;
+        border-radius: 32px;
+        background: #FFF;
+        box-shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.10), 0 1px 2px -1px rgba(16, 24, 40, 0.10);
+
+        color: #000424;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+    }
+}
+
+.cursor-pointer{
+    cursor: pointer;
+}
+
+.coming-soon-tooltip {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 6px);
+    transform: translateX(-50%);
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    color: white;
+    background: #1F2937;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s ease, visibility 0.15s ease;
+    z-index: 10;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-top-color: #1F2937;
+    }
+}
+
+.soon-badge {
+    display: inline-block;
+    padding: 1px 6px;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0.3px;
+    color: #D97706;
+    background: #FFFBEB;
+    border: 1px solid #FDE68A;
+    border-radius: 4px;
+    white-space: nowrap;
+    margin-left: auto;
+    align-self: center;
+}
+
+::ng-deep{
+    .menu-child{
+        position: relative;
+        cursor: pointer;
+        color: #8E8E8F;
+        font-family: "DM Sans";
+        font-size: 15px;
+        font-weight: 500;
+        line-height: 20px;
+        padding: 12px;
+        border-radius: 4px;
+        .name{
+            align-self: center;
+        }
+        .left-bar{
+            position: absolute;
+            left: -30px;
+            top: 0;
+            height: 100%;
+            width: 6px;
+            background-color: #213458;
+            border-radius: 0px 20px 20px 0px;
+        }
+        .stroke-icon{
+            svg{
+                path{
+                    stroke: #8E8E8F;
+                    fill: none !important;
+                }
+            }
+
+        }
+        svg{
+            path{
+                fill: #8E8E8F;
+            }
+        }
+
+        &:hover, &.active{
+            border-radius: 4px;
+            background: #E1E8F4;
+            .name{
+                color: #213458;
+            }
+            .stroke-icon{
+                svg{
+                    path{
+                        stroke: #213458 !important;
+                        fill: none !important;
+                    }
+                }
+            }
+            svg{
+                path{
+                    fill: #213458;
+                }
+            }
+        }
+
+        &.coming-soon {
+            opacity: 0.5;
+            cursor: default;
+
+            &:hover, &.active {
+                background: none;
+                .name { color: #8E8E8F; }
+                svg path { fill: #8E8E8F; }
+            }
+
+            &:hover .coming-soon-tooltip {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+    }
+}

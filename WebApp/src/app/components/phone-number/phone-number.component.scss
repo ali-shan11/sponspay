@@ -1,0 +1,110 @@
+.custom-input-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    .custom-input-label{
+        color: rgba(3, 7, 18, 1);
+        font-family: Inter;
+        font-weight: 500;
+        font-size: 14px;
+    }
+    .custom-input{
+        box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.05);
+
+        border: 1px solid #E6E6E6;
+        background: rgba(255, 255, 255, 1);
+        padding: 14px 30px 14px 16px;
+        border-radius: 8px;
+        color: rgba(3, 7, 18, 1);
+        font-family: Inter;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: normal;
+
+        &:focus, &:focus-visible{
+            outline: none;
+            border: 1.5px solid rgba(54, 85, 145, 1) !important;
+        }
+        &::placeholder{
+            color: #AEAFB0;
+        }
+    }
+}
+
+.error-icon{
+    position: absolute;
+    top: 17px;
+    right: 13px;
+}
+
+.error{
+    color: rgba(234, 67, 52, 1);
+    font-family: Inter;
+    font-weight: 400;
+    font-style: Regular;
+    font-size: 14px;
+}
+
+::ng-deep .custom-intl-input{
+    .iti{
+        width: 100%;
+        border: 1px solid rgba(230, 230, 230, 1);
+        border-radius: 8px;
+        min-height: 46px;
+    }
+    .iti__selected-dial-code{
+        font-family: Inter;
+        font-weight: 500;
+        font-size: 14px;
+        color: rgba(3, 7, 18, 1);
+    }
+    .iti__tel-input{
+        border: none;
+        border-left: 1px solid rgba(230, 230, 230, 1);
+        border-radius: 0 8px 8px 0;
+        padding-top: 12px !important;
+        padding-bottom: 12px !important;
+
+        color: rgba(3, 7, 18, 1);
+        font-family: Inter;
+        font-weight: 500;
+        font-size: 14px;
+
+        &::placeholder{
+            color: #AEAFB0;
+        }
+
+        &:focus{
+            box-shadow: none;
+            outline: none;
+        }
+    }
+    .iti__arrow{
+        display: none;
+    }
+    .iti__country-container{
+        cursor: pointer;
+    }
+    .iti__search-input{
+        font-family: Inter;
+        font-size: 14px;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+    }
+}
+
+@media (max-width: 426px) {
+    .custom-input-wrapper{
+        .custom-input{
+            font-size: 14px;
+        }
+    }
+}
+// Smallest Mobile Screen
+@media (max-width: 338.99px) {
+    .custom-input-wrapper{
+        .custom-input-label{
+            font-size: 12px;
+        }
+    }
+}

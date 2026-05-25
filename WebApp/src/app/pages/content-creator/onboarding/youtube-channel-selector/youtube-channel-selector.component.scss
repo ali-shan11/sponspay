@@ -1,0 +1,127 @@
+.youtube-channel-selector {
+  padding: 2rem;
+
+  .header {
+    text-align: center;
+
+    .title {
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #1a1a1a;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #666;
+    }
+  }
+
+  .connect-section {
+    .connect-card {
+      text-align: center;
+      padding: 3rem 2rem;
+      border: 2px dashed #e0e0e0;
+      border-radius: 12px;
+      background-color: #fafafa;
+
+      .youtube-icon {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 1.5rem;
+      }
+
+      h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        color: #1a1a1a;
+      }
+
+      p {
+        color: #666;
+        margin-bottom: 2rem;
+      }
+    }
+
+    .error-message {
+      padding: 1rem;
+      background-color: #fee;
+      border: 1px solid #fcc;
+      border-radius: 8px;
+      color: #c33;
+      text-align: center;
+    }
+  }
+
+ ::ng-deep .yt-success-icon{
+    circle{
+      fill:green
+    }
+  }
+}
+
+/* Tablet breakpoint (below 992px) */
+@media (max-width: 991.98px) {
+  .youtube-channel-selector {
+    padding: 1.5rem;
+
+    .header .title {
+      font-size: 1.5rem;
+    }
+
+    .connect-section .connect-card {
+      padding: 2rem 1.5rem;
+
+      .youtube-icon {
+        width: 52px;
+        height: 52px;
+      }
+
+      h3 {
+        font-size: 1.1rem;
+      }
+    }
+  }
+}
+
+/* Mobile breakpoint (below 768px) */
+@media (max-width: 767.98px) {
+  .youtube-channel-selector {
+    padding: 1rem;
+
+    .header {
+      .title {
+        font-size: 1.25rem;
+      }
+      .subtitle {
+        font-size: 0.875rem;
+      }
+    }
+
+    .connect-section .connect-card {
+      padding: 1.5rem 1rem;
+
+      .youtube-icon {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 1rem;
+      }
+
+      h3 {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+      }
+
+      p {
+        font-size: 0.875rem;
+        margin-bottom: 1.5rem;
+      }
+    }
+
+    .connect-section .error-message {
+      padding: 0.75rem;
+      font-size: 0.875rem;
+    }
+  }
+}
